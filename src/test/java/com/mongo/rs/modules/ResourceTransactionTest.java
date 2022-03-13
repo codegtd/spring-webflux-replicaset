@@ -1,11 +1,9 @@
 package com.mongo.rs.modules;
 
-import com.github.javafaker.Faker;
 import com.mongo.rs.core.annotations.ResourceTcContainerForTransactions;
 import com.mongo.rs.core.testconfigs.TestCoreConfig;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.model.User;
-import com.mongo.rs.modules.user.repo.TemplColections;
 import com.mongo.rs.modules.user.service.IServiceCrud;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import lombok.extern.slf4j.Slf4j;
@@ -19,32 +17,30 @@ import reactor.core.publisher.Flux;
 import java.util.List;
 
 import static com.mongo.rs.core.databuilders.UserBuilder.userNoID;
-import static com.mongo.rs.core.databuilders.UserBuilder.userWithID;
-import static com.mongo.rs.core.routes.Routes.TRANSACT_CLASSIC;
-import static com.mongo.rs.core.routes.Routes.ROOT;
+import static com.mongo.rs.core.routes.Routes.*;
 import static com.mongo.rs.core.utils.BlockhoundUtils.blockHoundTestCheck;
 import static com.mongo.rs.core.utils.RestAssureSpecs.requestSpecsSetPath;
 import static com.mongo.rs.core.utils.RestAssureSpecs.responseSpecs;
 import static com.mongo.rs.core.utils.TestUtils.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static java.util.Arrays.asList;
-import static java.util.List.of;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 
 /*
   ╔══════════════════════════════════════════════════════════════════════╗
-  ║                         SILAEV + TRANSACTIONS                        ║
+  ║    SILAEV + TRANSACTIONS + REPLICASET + TEST-CONTAINER-CONTAINER     ║
   ╠══════════════════════════════════════════════════════════════════════╣
-  ║ MongoDBContainer does replicaset init automatically:                 ║
-  ║ a) add a static field with MongoDBContainer                          ║
-  ║ b) run it in @BeforeAll and                                          ║
-  ║ c) create a 'STATIC CLASS INITIALIZER' to set spring.data.mongodb.uri║
-  ║ d) define @ContextConfiguration with 'static class Initializer'      ║
+  ║ MongoDBContainer does REPLICASET init automatically:                 ║
+  ║  a) Static-Extension-Annotation Class starts automatically           ║
+  ║  b) the MongoDBContainer this TcContainer has a Replicaset           ║
+  ║  c) This Class gets the URI from this MongoDBContainer               ║
+  ║  d) and setting this URI in 'Properties of the Test'                 ║
   ╚══════════════════════════════════════════════════════════════════════╝
 */
-@Import({TestCoreConfig.class, TemplColections.class})
+@Import({TestCoreConfig.class})
 @Slf4j
 @DisplayName("2 ResourceTransactTest")
 @ResourceTcContainerForTransactions
@@ -62,8 +58,6 @@ public class ResourceTransactionTest {
 ║      B.2) DO NOT USE TEST-CONTAINER-DOCKER-COMPOSE-MODULE  ║
 ╚════════════════════════════════════════════════════════════╝
 */
-  // STATIC-@Container: one service for ALL tests -> SUPER FASTER
-  // NON-STATIC-@Container: one service for EACH test
 
   final String enabledTest = "true";
 
@@ -79,6 +73,9 @@ public class ResourceTransactionTest {
   @Autowired
   IServiceCrud serviceCrud;
 
+  private User user1;
+  private User user2;
+  private User userNoId;
 
 
   @BeforeAll
@@ -86,18 +83,15 @@ public class ResourceTransactionTest {
 
     globalBeforeAll();
     globalTestMessage(testInfo.getDisplayName(), "class-start");
-
     RestAssuredWebTestClient.reset();
     RestAssuredWebTestClient.requestSpecification =
          requestSpecsSetPath("http://localhost:8080" + ROOT);
     RestAssuredWebTestClient.responseSpecification = responseSpecs();
   }
 
-
   @AfterAll
   static void afterAll(TestInfo testInfo) {
 
-    //    closeTcContainer();
     globalAfterAll();
     globalTestMessage(testInfo.getDisplayName(), "class-end");
   }
@@ -109,15 +103,16 @@ public class ResourceTransactionTest {
     globalTestMessage(testInfo.getTestMethod()
                               .toString(), "method-start");
 
-    User user1 = userNoID().create();
+    user1 = userNoID().create();
 
-    User userWithId = userWithID().create();
+    user2 = userNoID().create();
 
-    List<User> userList = asList(user1, userWithId);
-    Flux<User> projectFlux = dbUtils.saveProjectList(userList);
+    userNoId = userNoID().create();
 
-    dbUtils.countAndExecuteFlux(projectFlux, 2);
+    List<User> userList = asList(user1, user2);
+    Flux<User> userFlux = dbUtils.saveProjectList(userList);
 
+    dbUtils.countAndExecuteFlux(userFlux, 2);
   }
 
 
@@ -126,47 +121,64 @@ public class ResourceTransactionTest {
 
     globalTestMessage(testInfo.getTestMethod()
                               .toString(), "method-end");
-
-    dbUtils.cleanTestDb();
   }
 
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
-  @DisplayName("createUserTransaction")
-  public void createUserTransaction() {
-
-    dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 2);
-
-    var newTaskName = Faker.instance()
-                           .name()
-                           .firstName();
-
-    User user = userWithID().create();
+  @DisplayName("saveReplicaset")
+  public void saveContainerReplicaset() {
 
     RestAssuredWebTestClient
          .given()
          .webTestClient(mockedWebClient)
 
-         .body(user)
-         .queryParam("taskNameInitial", newTaskName)
+         .body(user1)
 
          .when()
-         .post(TRANSACT_CLASSIC)
+         .post(CRUD_SAVE)
 
          .then()
          .log()
          .everything()
 
          .statusCode(CREATED.value())
-         .body("id", equalTo(user.getId()))
-         .body("name", equalTo(newTaskName))
+         .body("id", equalTo(user1.getId()))
+         .body("name", equalTo(user1.getName()))
          .body(matchesJsonSchemaInClasspath("contracts/save.json"))
     ;
-
-    dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 3);
   }
 
+  @Test
+  @EnabledIf(expression = enabledTest, loadContext = true)
+  @DisplayName("FindReplicaset")
+  public void FindAllContainerReplicaset() {
+
+    dbUtils.checkFluxListElements(
+         serviceCrud.findAll()
+                    .flatMap(Flux::just),
+         asList(user1, user2)
+                                 );
+
+    RestAssuredWebTestClient
+
+         .given()
+         .webTestClient(mockedWebClient)
+
+         .when()
+         .get(CRUD_FINDALL)
+
+         .then()
+         .log()
+         .everything()
+
+         .statusCode(OK.value())
+         .body("size()", is(2))
+         .body("$", hasSize(2))
+         .body("name", hasItems(user1.getName(), user2.getName()))
+         .body(matchesJsonSchemaInClasspath("contracts/findall.json"))
+    ;
+  }
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)

@@ -41,8 +41,8 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER
 @AutoConfigureWebTestClient
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
-//@TestPropertySource("classpath:application.yml")
-//@ActiveProfiles("tcomp")// PROFILE FOR TEST ALL TESTS[EXCEPT TRANSACTIONS] (test-container-compose)
+@TestPropertySource("classpath:application.yml")
+@ActiveProfiles("tcomp")// PROFILE FOR TEST ALL TESTS[EXCEPT TRANSACTIONS] (test-container-compose)
 @TcCompose // ALLOW TEST-CONTAINER RUN ALL TESTS, EXCEPT TRANSACTIONS
 public @interface ResourceTcCompose {
 }

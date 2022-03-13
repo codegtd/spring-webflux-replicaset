@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb:
+#      username: root
+#      password: root
+#      authentication-database: admin
+#      uri: mongodb://root:root@localhost:27017/api-test?authSource=admin&ssl=true

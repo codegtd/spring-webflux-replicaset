@@ -27,12 +27,12 @@ public class TcContainerConfig implements Extension {
     ║            TEST-CONTAINER-STATIC               ║
     ╠════════════════════════════════════════════════╣
     ║ A) STATIC:                                     ║
-    ║    -> One service/container for the TEST-CLASS ║
-    ║    -> SUPER FASTER                             ║
+    ║ -> One service/container for each TEST-CLASS   ║
+    ║ -> SUPER FASTER                                ║
     ║                                                ║
     ║ B) NON-STATIC:                                 ║
-    ║    -> One service/container for EACH TEST      ║
-    ║    -> SLOW                                     ║
+    ║ -> One service/container for 'EACH' TEST-METHOD║
+    ║ -> SLOW                                        ║
     ╚════════════════════════════════════════════════╝*/
   private static final MongoDBContainer CONTAINER = new MongoDBContainer(
        DockerImageName.parse(IMAGE));

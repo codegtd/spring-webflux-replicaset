@@ -40,8 +40,8 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
 @AutoConfigureWebTestClient
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @DirtiesContext(classMode = BEFORE_CLASS)
-//@TestPropertySource("classpath:application.yml")
-//@ActiveProfiles("tconttransc") // PROFILE FOR TEST TRANSACTIONS(test-container-container)
+@TestPropertySource("classpath:application.yml")
+@ActiveProfiles("tcont") // PROFILE FOR TEST TRANSACTIONS(test-container-container)
 @TcContainer // ALLOW TEST-CONTAINER TEST TRANSACTIONS
 public @interface ResourceTcContainerForTransactions {
 }

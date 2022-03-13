@@ -1,0 +1,23 @@
+# TEST-TC_COMPOSE
+# DEV-DOCKER_COMPOSE
+#spring:
+#  devtools:
+#    remote:
+#      secret: mysecret
+#  data:
+#    mongodb:
+#      database: api-test
+#      host: mongohost
+#      port: 27017
+#      username: root
+#      password: root
+#      authentication-database: admin
+#      uri: mongodb://root:root@mongohost/?authSource=admin&ssl=true
+
+spring:
+  data:
+    mongodb:
+      username: root
+      password: root
+      authentication-database: admin
+#      uri: mongodb://root:root@localhost:27017/api-test?authSource=admin&ssl=true

@@ -53,6 +53,7 @@ public class ResourceCrudTest {
 
   @Autowired
   IServiceCrud serviceCrud;
+
   private User user1;
   private User user2;
   private User userNoId;
@@ -125,30 +126,6 @@ public class ResourceCrudTest {
          .statusCode(CREATED.value())
          .body("id", equalTo(user1.getId()))
          .body("name", equalTo(user1.getName()))
-         .body(matchesJsonSchemaInClasspath("contracts/save.json"))
-    ;
-  }
-
-  @Test
-  @EnabledIf(expression = enabledTest, loadContext = true)
-  @DisplayName("saveNoID")
-  public void saveNoID() {
-
-    RestAssuredWebTestClient
-         .given()
-         .webTestClient(mockedWebClient)
-
-         .body(userNoId)
-
-         .when()
-         .post(CRUD_SAVE)
-
-         .then()
-         .log()
-         .everything()
-
-         .statusCode(CREATED.value())
-         .body("name", equalTo(userNoId.getName()))
          .body(matchesJsonSchemaInClasspath("contracts/save.json"))
     ;
   }
