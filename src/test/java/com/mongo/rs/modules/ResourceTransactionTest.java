@@ -1,6 +1,6 @@
 package com.mongo.rs.modules;
 
-import com.mongo.rs.core.annotations.ResourceTcContainerForTransactions;
+import com.mongo.rs.core.annotations.ResourceTestcontainerContainerForTransactions;
 import com.mongo.rs.core.testconfigs.TestCoreConfig;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.model.User;
@@ -25,8 +25,7 @@ import static com.mongo.rs.core.utils.TestUtils.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.*;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 
 /*
@@ -42,8 +41,8 @@ import static org.springframework.http.HttpStatus.OK;
 */
 @Import({TestCoreConfig.class})
 @Slf4j
-@DisplayName("2 ResourceTransactTest")
-@ResourceTcContainerForTransactions
+@DisplayName("2 ResourceReplicaSetTest")
+@ResourceTestcontainerContainerForTransactions
 public class ResourceTransactionTest {
   /*
 ╔════════════════════════════════════════════════════════════╗
@@ -107,8 +106,6 @@ public class ResourceTransactionTest {
 
     user2 = userNoID().create();
 
-    userNoId = userNoID().create();
-
     List<User> userList = asList(user1, user2);
     Flux<User> userFlux = dbUtils.saveProjectList(userList);
 
@@ -126,63 +123,73 @@ public class ResourceTransactionTest {
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
-  @DisplayName("saveReplicaset")
-  public void saveContainerReplicaset() {
+  @DisplayName("2.0 saveTransactionFail")
+  public void saveTransactionFail() {
+
+    userNoId = userNoID().create();
+    User extraUser = userNoID().create();
+    extraUser.setName("");
+    List<User> userList = asList(userNoId, extraUser);
 
     RestAssuredWebTestClient
          .given()
          .webTestClient(mockedWebClient)
 
-         .body(user1)
+         .body(userList)
 
          .when()
-         .post(CRUD_SAVE)
+         .post(CRUD_SAVE_TRANSACT)
+
+         .then()
+         .log()
+         .everything()
+
+         .statusCode(BAD_REQUEST.value())
+
+         .body(matchesJsonSchemaInClasspath("contracts/exception.json"))
+    ;
+
+    dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 2);
+  }
+
+  @Test
+  @EnabledIf(expression = enabledTest, loadContext = true)
+  @DisplayName("1.0 saveTransactionOK")
+  public void saveTransactionOK() {
+
+    userNoId = userNoID().create();
+    User extraUser = userNoID().create();
+    List<User> userList = asList(userNoId, extraUser);
+
+    RestAssuredWebTestClient
+         .given()
+         .webTestClient(mockedWebClient)
+
+         .body(userList)
+
+         .when()
+         .post(CRUD_SAVE_TRANSACT)
 
          .then()
          .log()
          .everything()
 
          .statusCode(CREATED.value())
-         .body("id", equalTo(user1.getId()))
-         .body("name", equalTo(user1.getName()))
-         .body(matchesJsonSchemaInClasspath("contracts/save.json"))
-    ;
-  }
-
-  @Test
-  @EnabledIf(expression = enabledTest, loadContext = true)
-  @DisplayName("FindReplicaset")
-  public void FindAllContainerReplicaset() {
-
-    dbUtils.checkFluxListElements(
-         serviceCrud.findAll()
-                    .flatMap(Flux::just),
-         asList(user1, user2)
-                                 );
-
-    RestAssuredWebTestClient
-
-         .given()
-         .webTestClient(mockedWebClient)
-
-         .when()
-         .get(CRUD_FINDALL)
-
-         .then()
-         .log()
-         .everything()
-
-         .statusCode(OK.value())
          .body("size()", is(2))
          .body("$", hasSize(2))
-         .body("name", hasItems(user1.getName(), user2.getName()))
-         .body(matchesJsonSchemaInClasspath("contracts/findall.json"))
+         .body("name", hasItems(
+              userNoId.getName(),
+              extraUser.getName()
+                               ))
+         .body(matchesJsonSchemaInClasspath("contracts/transaction.json"))
     ;
+
+    dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 4);
   }
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
-  @DisplayName("BHWorks")
+  @DisplayName("3.0 BHWorks")
   public void bHWorks() {
 
     blockHoundTestCheck();

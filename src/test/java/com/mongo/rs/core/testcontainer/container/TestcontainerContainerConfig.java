@@ -18,10 +18,10 @@ import static java.lang.System.setProperty;
   ║      B.1) TESTS MUST BE DONE WITH "MongoDBContainer"       ║
   ║      B.2) DO NOT USE TEST-CONTAINER-DOCKER-COMPOSE-MODULE  ║
   ╚════════════════════════════════════════════════════════════╝*/
-public class TcContainerConfig implements Extension {
+public class TestcontainerContainerConfig implements Extension {
 
   private final static String IMAGE = "mongo:4.4.4";
-  private final static String URI = "spring.data.mongodb.uri";
+  private final static String URI_TEST_APPLICATION_PROPERTY = "spring.data.mongodb.uri";
 
   /*╔════════════════════════════════════════════════╗
     ║            TEST-CONTAINER-STATIC               ║
@@ -54,7 +54,7 @@ public class TcContainerConfig implements Extension {
 
     CONTAINER.isHealthy();
     CONTAINER.start();
-    setProperty(URI, CONTAINER.getReplicaSetUrl());
+    setProperty(URI_TEST_APPLICATION_PROPERTY, CONTAINER.getReplicaSetUrl());
     globalContainerMessage(getTcContainer(), "container-start");
     globalContainerMessage(getTcContainer(), "container-state");
   }

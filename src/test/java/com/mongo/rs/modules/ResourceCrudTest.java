@@ -1,6 +1,6 @@
 package com.mongo.rs.modules;
 
-import com.mongo.rs.core.annotations.ResourceTcCompose;
+import com.mongo.rs.core.annotations.ResourceTestcontainerCompose;
 import com.mongo.rs.core.testconfigs.TestDbUtilsConfig;
 import com.mongo.rs.core.testcontainer.compose.TcComposeConfig;
 import com.mongo.rs.core.utils.TestDbUtils;
@@ -32,13 +32,13 @@ import static org.springframework.http.HttpStatus.OK;
 
 @Import({TestDbUtilsConfig.class})
 @DisplayName("1 ResourceCrudTest")
-@ResourceTcCompose
+@ResourceTestcontainerCompose
 public class ResourceCrudTest {
 
   // STATIC-@Container: one service for ALL tests -> SUPER FASTER
   // NON-STATIC-@Container: one service for EACH test
-  @Container
-  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
+//  @Container
+//  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
 
   final String enabledTest = "true";
 
@@ -107,7 +107,7 @@ public class ResourceCrudTest {
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
-  @DisplayName("saveWithID")
+  @DisplayName("3 saveWithID")
   public void saveWithID() {
 
     RestAssuredWebTestClient
@@ -132,7 +132,7 @@ public class ResourceCrudTest {
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
-  @DisplayName("FindAll")
+  @DisplayName("2 FindAll")
   public void FindAll() {
 
     dbUtils.checkFluxListElements(
@@ -163,7 +163,7 @@ public class ResourceCrudTest {
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
-  @DisplayName("BHWorks")
+  @DisplayName("1 BHWorks")
   public void bHWorks() {
 
     blockHoundTestCheck();

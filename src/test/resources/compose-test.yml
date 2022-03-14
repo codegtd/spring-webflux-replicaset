@@ -1,7 +1,7 @@
 version: "3.4"
 
 services:
-  api-test:
+  api-test-db:
     image: mongo:4.4.4
     ports:
       - 27017:27017

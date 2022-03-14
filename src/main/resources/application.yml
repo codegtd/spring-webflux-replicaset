@@ -1,13 +1,22 @@
+server:
+  port: ${PORT_API}
+
 spring:
-  devtools:
-    remote:
-      secret: mysecret
-  data:
-    mongodb:
-      database: api-test
-      host: localhost
-      port: 27017
-      username: root
-      password: root
-      authentication-database: admin
-      uri: mongodb://root:root@localhost:27017/api-test?authSource=admin&ssl=true
+  profiles:
+    active: gdev
+    group:
+      gdev: dev
+#      gprod: prod
+#spring:
+#  devtools:
+#    remote:
+#      secret: mysecret
+#  data:
+#    mongodb:
+#      database: api-test
+#      host: localhost
+#      port: 27017
+#      username: root
+#      password: root
+#      authentication-database: admin
+#      uri: mongodb://root:root@localhost:27017/api-test?authSource=admin&ssl=true

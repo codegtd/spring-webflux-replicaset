@@ -10,6 +10,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
 @Target({TYPE})
-@ExtendWith(TcContainerConfig.class)
-public @interface TcContainer {
+@ExtendWith(TestcontainerContainerConfig.class)
+public @interface TestcontainerContainer {
 }

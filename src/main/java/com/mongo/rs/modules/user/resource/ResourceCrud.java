@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 import static com.mongo.rs.core.routes.Routes.*;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -28,20 +30,7 @@ public class ResourceCrud {
   @ResponseStatus(CREATED)
   public Mono<User> save(@RequestBody User user) {
 
-    return
-         serviceCrud
-              .save(user)
-         //              .onErrorResume(error -> {
-         //                if (error instanceof OptimisticLockingFailureException) {
-         //                  return ServerResponse.status(BAD_REQUEST)
-         //                                       .build();
-         //                }
-         //                return ServerResponse.status(INTERNAL_SERVER_ERROR)
-         //                                     .build();
-         //              })
-         ;
-
-
+    return serviceCrud.save(user);
   }
 
   @GetMapping(CRUD_FINDALL)
@@ -51,5 +40,10 @@ public class ResourceCrud {
     return serviceCrud.findAll();
   }
 
+  @PostMapping(CRUD_SAVE_TRANSACT)
+  @ResponseStatus(CREATED)
+  public Flux<User> saveTransact(@RequestBody List<User> userList) {
 
+    return serviceCrud.saveTransact(userList);
+  }
 }

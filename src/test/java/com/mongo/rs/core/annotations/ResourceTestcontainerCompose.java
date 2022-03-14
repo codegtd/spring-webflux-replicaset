@@ -1,6 +1,6 @@
 package com.mongo.rs.core.annotations;
 
-import com.mongo.rs.core.testcontainer.compose.TcCompose;
+import com.mongo.rs.core.testcontainer.compose.TestcontainerCompose;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -42,7 +42,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.AFTER
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @DirtiesContext(classMode = AFTER_EACH_TEST_METHOD)
 @TestPropertySource("classpath:application.yml")
-@ActiveProfiles("tcomp")// PROFILE FOR TEST ALL TESTS[EXCEPT TRANSACTIONS] (test-container-compose)
-@TcCompose // ALLOW TEST-CONTAINER RUN ALL TESTS, EXCEPT TRANSACTIONS
-public @interface ResourceTcCompose {
+@ActiveProfiles("tcomp")// TEST-PROFILE FOR ALL TESTS[EXCEPT TRANSACTIONS] (test-container-compose)
+//@TestcontainerCompose // ALLOW TEST-CONTAINER RUN ALL TESTS, EXCEPT TRANSACTIONS
+public @interface ResourceTestcontainerCompose {
 }

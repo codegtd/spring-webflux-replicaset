@@ -1,6 +1,6 @@
 package com.mongo.rs.core.annotations;
 
-import com.mongo.rs.core.testcontainer.container.TcContainer;
+import com.mongo.rs.core.testcontainer.container.TestcontainerContainer;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -41,7 +41,7 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @DirtiesContext(classMode = BEFORE_CLASS)
 @TestPropertySource("classpath:application.yml")
-@ActiveProfiles("tcont") // PROFILE FOR TEST TRANSACTIONS(test-container-container)
-@TcContainer // ALLOW TEST-CONTAINER TEST TRANSACTIONS
-public @interface ResourceTcContainerForTransactions {
+@ActiveProfiles("tcont") // TEST-PROFILE FOR TRANSACTIONS(test-container-container)
+@TestcontainerContainer // ALLOW TEST-CONTAINER TEST TRANSACTIONS
+public @interface ResourceTestcontainerContainerForTransactions {
 }

@@ -16,7 +16,7 @@ public class TcComposeConfig {
 
   final static public int STARTUP_TIMEOUT = 15;
   final static public int SERVICE_PORT = 27017;
-  final static public String SERVICE = "api-test";
+  final static public String SERVICE = "api-test-db";
   final static private String COMPOSE_PATH = "src/test/resources/compose-test.yml";
 
   //format 01: using a variable to create the tcContainerCompose

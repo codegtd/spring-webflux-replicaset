@@ -1,0 +1,12 @@
+spring:
+  devtools:
+    remote:
+      secret: mysecret
+  data:
+    mongodb:
+      host: ${HOST_DB}
+      port: ${PORT_DB}
+      authentication-database: ${AUTH_MAN_DB}
+      database: ${MONGO_INITDB_DATABASE}
+      username: ${MONGO_INITDB_ROOT_USERNAME}
+      password: ${MONGO_INITDB_ROOT_PASSWORD}
