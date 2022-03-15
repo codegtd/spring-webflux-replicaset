@@ -2,5 +2,6 @@ spring:
   profiles:
 #    active: test-comp
     group:
-      tcomp: tc-compose
-      tcont: tc-container
+      testcontainer-compose: tc-compose
+      testcontainer-container-rs-transact: tc-container
+      dockercontainer-standalone: dc-standalone

@@ -7,8 +7,8 @@
   "default": {},
   "examples": [
     {
-      "id": "622e2aa88d48fe07ef652ebc",
-      "name": "Nestor Lebsack"
+      "id": "6231090cfdac7b49af2cf680",
+      "name": "Wilmer Sauer"
     }
   ],
   "required": [
@@ -23,7 +23,7 @@
       "description": "An explanation about the purpose of this instance.",
       "default": "",
       "examples": [
-        "622e2aa88d48fe07ef652ebc"
+        "6231090cfdac7b49af2cf680"
       ]
     },
     "name": {
@@ -33,7 +33,7 @@
       "description": "An explanation about the purpose of this instance.",
       "default": "",
       "examples": [
-        "Nestor Lebsack"
+        "Wilmer Sauer"
       ]
     }
   },

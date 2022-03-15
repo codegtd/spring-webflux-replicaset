@@ -3,9 +3,9 @@ server:
 
 spring:
   profiles:
-    active: gdev
+    active: std
     group:
-      gdev: dev
+      std: standalone
 #      gprod: prod
 #spring:
 #  devtools:

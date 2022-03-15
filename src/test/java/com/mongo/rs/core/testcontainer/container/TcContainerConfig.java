@@ -18,7 +18,7 @@ import static java.lang.System.setProperty;
   ║      B.1) TESTS MUST BE DONE WITH "MongoDBContainer"       ║
   ║      B.2) DO NOT USE TEST-CONTAINER-DOCKER-COMPOSE-MODULE  ║
   ╚════════════════════════════════════════════════════════════╝*/
-public class TestcontainerContainerConfig implements Extension {
+public class TcContainerConfig implements Extension {
 
   private final static String IMAGE = "mongo:4.4.4";
   private final static String URI_TEST_APPLICATION_PROPERTY = "spring.data.mongodb.uri";

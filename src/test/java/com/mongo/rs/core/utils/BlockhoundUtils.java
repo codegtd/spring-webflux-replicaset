@@ -1,9 +1,7 @@
 package com.mongo.rs.core.utils;
 
 import lombok.NoArgsConstructor;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Assertions;
-import org.springframework.test.annotation.DirtiesContext;
 import reactor.blockhound.BlockHound;
 import reactor.blockhound.BlockingOperationError;
 import reactor.blockhound.integration.BlockHoundIntegration;
@@ -14,8 +12,7 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-@DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
-@Ignore
+
 @NoArgsConstructor
 public class BlockhoundUtils {
 
@@ -108,5 +105,4 @@ public class BlockhoundUtils {
       Assertions.assertTrue(e.getCause() instanceof BlockingOperationError, "detected");
     }
   }
-
 }

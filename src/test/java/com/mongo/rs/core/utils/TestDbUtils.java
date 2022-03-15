@@ -30,7 +30,7 @@ public class TestDbUtils {
          .verifyComplete();
   }
 
-  public Flux<User> saveProjectList(List<User> projectList) {
+  public Flux<User> saveItemsList(List<User> projectList) {
 
     return userCrudRepo.deleteAll()
                        .thenMany(Flux.fromIterable(projectList))

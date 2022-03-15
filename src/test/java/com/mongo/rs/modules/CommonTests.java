@@ -1,8 +1,10 @@
 package com.mongo.rs.modules;
 
-import com.mongo.rs.core.annotations.ResourceTestcontainerCompose;
+import com.mongo.rs.core.annotations.ResourceConfig;
 import com.mongo.rs.core.testconfigs.TestDbUtilsConfig;
+import com.mongo.rs.core.testcontainer.compose.TcCompose;
 import com.mongo.rs.core.testcontainer.compose.TcComposeConfig;
+import com.mongo.rs.core.utils.BlockhoundUtils;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.model.User;
 import com.mongo.rs.modules.user.service.IServiceCrud;
@@ -10,6 +12,7 @@ import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.testcontainers.containers.DockerComposeContainer;
@@ -20,7 +23,7 @@ import java.util.List;
 
 import static com.mongo.rs.core.databuilders.UserBuilder.userNoID;
 import static com.mongo.rs.core.routes.Routes.*;
-import static com.mongo.rs.core.utils.BlockhoundUtils.blockHoundTestCheck;
+import static com.mongo.rs.core.utils.BlockhoundUtils.blockhoundInstallWithAllAllowedCalls;
 import static com.mongo.rs.core.utils.RestAssureSpecs.requestSpecsSetPath;
 import static com.mongo.rs.core.utils.RestAssureSpecs.responseSpecs;
 import static com.mongo.rs.core.utils.TestUtils.*;
@@ -30,13 +33,33 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+/*
+     ╔═══════════════════════════════╗
+     ║ USING CONTAINERS IN THE TESTS ║
+     ╠═══════════════════════════════╩════════════════╗
+     ║ CONFLICT: TEST-CONTAINERS X DOCKER-CONTAINERS  ║
+     ║           THEY DO NOT WORKS TOGETHER           ║
+     ╠════════════════════════════════════════════════╩═════════╗
+     ║A) TEST-CONTAINERS:                                       ║
+     ║   A.1) STOP+CLEAN DOCKER-CONTAINERS  (DOCKER-BAT-SCRIPT) ║
+     ║   A.2) SELECT THE TEST-PROFILE(testcontainer's)          ║
+     ║   A.3) RUN THE TESTS                                     ║
+     ║                                                          ║
+     ║B) DOCKER-CONTAINERS:                                     ║
+     ║   B.1) SELECT THE TEST-PROFILE(dockercontainer's)        ║
+     ║   B.2) COMMENT @Container Instance variable              ║
+     ║   B.3) START DOCKER-CONTAINER (DOCKER-BAT-SCRIPT-PROFILE)║
+     ║   B.4) RUN THE TESTS                                     ║
+     ╚══════════════════════════════════════════════════════════╝
+*/
 @Import({TestDbUtilsConfig.class})
-@DisplayName("1 ResourceCrudTest")
-@ResourceTestcontainerCompose
-public class ResourceCrudTest {
+@DisplayName("1 CommonTests-TcCompose")
+@ResourceConfig
+@ActiveProfiles("dockercontainer-standalone")
+//@ActiveProfiles("testcontainer-compose")
+//@TcCompose
+public class CommonTests {
 
-  // STATIC-@Container: one service for ALL tests -> SUPER FASTER
-  // NON-STATIC-@Container: one service for EACH test
 //  @Container
 //  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
 
@@ -56,11 +79,20 @@ public class ResourceCrudTest {
 
   private User user1;
   private User user2;
-  private User userNoId;
 
 
   @BeforeAll
   static void beforeAll(TestInfo testInfo) {
+
+    /*╔══════════════════════════╗
+      ║        BLOCKHOUND        ║
+      ╠══════════════════════════╣
+      ║ Possible 'False-Positive ║
+      ║    Out-date in GitHub    ║
+      ╚══════════════════════════╝*/
+    //    blockhoundInstallWithSpecificAllowedCalls();
+//    blockhoundInstallWithAllAllowedCalls();
+
 
     globalBeforeAll();
     globalTestMessage(testInfo.getDisplayName(), "class-start");
@@ -88,10 +120,10 @@ public class ResourceCrudTest {
 
     user2 = userNoID().create();
 
-    userNoId = userNoID().create();
+    User userNoId = userNoID().create();
 
     List<User> userList = asList(user1, user2);
-    Flux<User> userFlux = dbUtils.saveProjectList(userList);
+    Flux<User> userFlux = dbUtils.saveItemsList(userList);
 
     dbUtils.countAndExecuteFlux(userFlux, 2);
   }
@@ -110,11 +142,13 @@ public class ResourceCrudTest {
   @DisplayName("3 saveWithID")
   public void saveWithID() {
 
+    User userIsolated = userNoID().create();
+
     RestAssuredWebTestClient
          .given()
          .webTestClient(mockedWebClient)
 
-         .body(user1)
+         .body(userIsolated)
 
          .when()
          .post(CRUD_SAVE)
@@ -124,11 +158,13 @@ public class ResourceCrudTest {
          .everything()
 
          .statusCode(CREATED.value())
-         .body("id", equalTo(user1.getId()))
-         .body("name", equalTo(user1.getName()))
+         .body("name", equalTo(userIsolated.getName()))
          .body(matchesJsonSchemaInClasspath("contracts/save.json"))
     ;
+
+    dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 3);
   }
+
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
@@ -159,13 +195,15 @@ public class ResourceCrudTest {
          .body("name", hasItems(user1.getName(), user2.getName()))
          .body(matchesJsonSchemaInClasspath("contracts/findall.json"))
     ;
+
+    dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 2);
   }
 
-  @Test
-  @EnabledIf(expression = enabledTest, loadContext = true)
-  @DisplayName("1 BHWorks")
-  public void bHWorks() {
-
-    blockHoundTestCheck();
-  }
+//  @Test
+//  @EnabledIf(expression = enabledTest, loadContext = true)
+//  @DisplayName("1 BHWorks")
+//  public void bHWorks() {
+//
+//    BlockhoundUtils.blockHoundTestCheck();
+//  }
 }

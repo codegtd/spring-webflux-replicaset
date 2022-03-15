@@ -2,11 +2,13 @@ package com.mongo.rs;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import reactor.blockhound.BlockHound;
 
 @SpringBootApplication
 public class ApiDriver {
+
 //  static {
-//    BlockhoundUtils.blockhoundInstallWithAllAllowedCalls();
+//    BlockHound.install();
 //  }
 
   public static void main(String[] args) {

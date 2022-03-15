@@ -13,15 +13,16 @@ echo ===========================================================================
 echo                        3) DOCKER-COMPOSE: Cleaning
 echo ===========================================================================
 cd docker
-call clean.bat compose
+call clean.bat
 docker scan --version --json --group-issues
 
-echo ===========================================================================
-echo    4) DOCKER-COMPOSE: Uping the follow Compose-Service(s): %parameter1%
-echo ===========================================================================
 set parameter1=%1
-if %parameter1%==dev   (docker-compose -f dev-compose.yml    up --build --force-recreate)
-if %parameter1%==prod  (docker-compose -f prod-compose.yml   up --build --force-recreate)
+echo ===========================================================================
+echo       4) DOCKER-COMPOSE: Uping the Compose-Service(s): %parameter1%
+echo ===========================================================================
+if %parameter1%==standalone (docker-compose -f compose-standalone.yml up --build --force-recreate)
+if %parameter1%==rsnode1    (docker-compose -f compose-rs-node1.yml   up --build --force-recreate)
+if %parameter1%==rsnode3    (docker-compose -f compose-rs-node3.yml   up --build --force-recreate)
 
 echo ===========================================================================
 echo                     5) DOCKER-COMPOSE: ...Ending
