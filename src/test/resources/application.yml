@@ -4,4 +4,5 @@ spring:
     group:
       testcontainer-compose: tc-compose
       testcontainer-container-rs-transact: tc-container
-      dockercontainer-standalone: dc-standalone
+      dockercontainer-standalone: standalone
+      dockercontainer-rs-node1: standalone

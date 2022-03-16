@@ -18,9 +18,9 @@ public class TransactionManagerTestConfig {
     ║ B) TEST-APP -> @TestConfiguration              ║
     ║    - SRC/TEST/JAVA/com/webflux/api/core/config ║
     ╚════════════════════════════════════════════════╝*/
-  @Bean
-  ReactiveMongoTransactionManager transactionManager(ReactiveMongoDatabaseFactory factory) {
-
-    return new ReactiveMongoTransactionManager(factory);
-  }
+//  @Bean
+//  ReactiveMongoTransactionManager transactionManager(ReactiveMongoDatabaseFactory factory) {
+//
+//    return new ReactiveMongoTransactionManager(factory);
+//  }
 }

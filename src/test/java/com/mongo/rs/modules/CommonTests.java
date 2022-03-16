@@ -55,7 +55,8 @@ import static org.springframework.http.HttpStatus.OK;
 @Import({TestDbUtilsConfig.class})
 @DisplayName("1 CommonTests-TcCompose")
 @ResourceConfig
-@ActiveProfiles("dockercontainer-standalone")
+@ActiveProfiles("dockercontainer-rs-node1")
+//@ActiveProfiles("dockercontainer-standalone")
 //@ActiveProfiles("testcontainer-compose")
 //@TcCompose
 public class CommonTests {

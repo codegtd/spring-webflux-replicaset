@@ -63,7 +63,8 @@ import static org.springframework.http.HttpStatus.CREATED;
 @Import({TestCoreConfig.class})
 @DisplayName("2 RS-Transaction-TcContainer")
 @ResourceConfig
-@ActiveProfiles("dockercontainer-standalone")
+@ActiveProfiles("dockercontainer-rs-node1")
+//@ActiveProfiles("dockercontainer-standalone")
 //@ActiveProfiles("testcontainer-container-rs-transact")
 //@TcContainerReplicasetTransaction // TEST TRANSACTIONS
 public class TransactionTests {

@@ -3,9 +3,10 @@ server:
 
 spring:
   profiles:
-    active: std
+    active: rs1
     group:
       std: standalone
+      rs1: rs-node1
 #      gprod: prod
 #spring:
 #  devtools:
