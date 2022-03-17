@@ -6,9 +6,9 @@ x-common-variables:
   HOST_DB: mongo1
   PORT_DB: 30001
   MONGO_INITDB_DATABASE: api-db
-#  AUTH_MAN_DB: admin
-#  MONGO_INITDB_ROOT_USERNAME: root
-#  MONGO_INITDB_ROOT_PASSWORD: root
+  AUTH_MAN_DB: admin
+  MONGO_INITDB_ROOT_USERNAME: root
+  MONGO_INITDB_ROOT_PASSWORD: root
 
 networks:
   api-net:
@@ -26,6 +26,8 @@ services:
       test: test $$(echo "rs.initiate({_id:'my-replica-set',members:[{_id:0,host:\"mongo1:30001\"},{_id:1,host:\"mongo2:30002\"},{_id:2,host:\"mongo3:30003\"}]}).ok || rs.status().ok" | mongo --port 30001 --quiet) -eq 1
       interval: 10s
       start_period: 30s
+    environment:
+      *env-vars
 
   mongo2:
     image: mongo:4.4.4

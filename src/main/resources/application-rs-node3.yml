@@ -1,0 +1,17 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+      - org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration
+
+udemy:
+  mongodb:
+    replicaset:
+      database: ${RS_DB}
+      host: ${RS_HOST}
+      port: ${RS_PORT}
+      auth-db: ${RS_AUTH}
+      username: ${RS_USERNAME}
+      password: ${RS_PASSWORD}
+      name: ${RS_NAME}
+      primary: ${RS_PRIMARY}

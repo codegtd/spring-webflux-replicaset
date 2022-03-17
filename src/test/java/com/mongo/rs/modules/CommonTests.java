@@ -2,9 +2,6 @@ package com.mongo.rs.modules;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
 import com.mongo.rs.core.testconfigs.TestDbUtilsConfig;
-import com.mongo.rs.core.testcontainer.compose.TcCompose;
-import com.mongo.rs.core.testcontainer.compose.TcComposeConfig;
-import com.mongo.rs.core.utils.BlockhoundUtils;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.model.User;
 import com.mongo.rs.modules.user.service.IServiceCrud;
@@ -15,15 +12,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.testcontainers.containers.DockerComposeContainer;
-import org.testcontainers.junit.jupiter.Container;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
 
 import static com.mongo.rs.core.databuilders.UserBuilder.userNoID;
 import static com.mongo.rs.core.routes.Routes.*;
-import static com.mongo.rs.core.utils.BlockhoundUtils.blockhoundInstallWithAllAllowedCalls;
 import static com.mongo.rs.core.utils.RestAssureSpecs.requestSpecsSetPath;
 import static com.mongo.rs.core.utils.RestAssureSpecs.responseSpecs;
 import static com.mongo.rs.core.utils.TestUtils.*;
@@ -61,8 +55,8 @@ import static org.springframework.http.HttpStatus.OK;
 //@TcCompose
 public class CommonTests {
 
-//  @Container
-//  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
+  //  @Container
+  //  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
 
   final String enabledTest = "true";
 
@@ -92,7 +86,7 @@ public class CommonTests {
       ║    Out-date in GitHub    ║
       ╚══════════════════════════╝*/
     //    blockhoundInstallWithSpecificAllowedCalls();
-//    blockhoundInstallWithAllAllowedCalls();
+    //    blockhoundInstallWithAllAllowedCalls();
 
 
     globalBeforeAll();
@@ -200,11 +194,11 @@ public class CommonTests {
     dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 2);
   }
 
-//  @Test
-//  @EnabledIf(expression = enabledTest, loadContext = true)
-//  @DisplayName("1 BHWorks")
-//  public void bHWorks() {
-//
-//    BlockhoundUtils.blockHoundTestCheck();
-//  }
+  //  @Test
+  //  @EnabledIf(expression = enabledTest, loadContext = true)
+  //  @DisplayName("1 BHWorks")
+  //  public void bHWorks() {
+  //
+  //    BlockhoundUtils.blockHoundTestCheck();
+  //  }
 }
