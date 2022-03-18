@@ -5,7 +5,6 @@ import com.mongo.rs.modules.user.model.User;
 import com.mongo.rs.modules.user.repo.ICrud;
 import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -43,9 +42,9 @@ public class ServiceCrud implements IServiceCrud {
 
     return crud.saveAll(userList)
                .doOnNext(this::throwResponseStatusExceptionWhenEmptyName);
-//                   .doOnNext(item -> {
-//      throwResponseStatusExceptionWhenEmptyName(item)
-//    });
+    //                   .doOnNext(item -> {
+    //      throwResponseStatusExceptionWhenEmptyName(item)
+    //    });
   }
 
   private void throwResponseStatusExceptionWhenEmptyName(User user) {

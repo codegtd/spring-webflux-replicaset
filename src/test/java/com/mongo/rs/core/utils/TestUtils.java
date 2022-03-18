@@ -3,20 +3,10 @@ package com.mongo.rs.core.utils;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.MongoDBContainer;
-import reactor.blockhound.BlockingOperationError;
-import reactor.core.scheduler.Schedulers;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import static com.mongo.rs.core.utils.BlockhoundUtils.blockhoundInstallWithAllAllowedCalls;
-import static com.mongo.rs.core.utils.BlockhoundUtils.blockhoundInstallWithSpecificAllowedCalls;
 import static com.mongo.rs.core.utils.RestAssureSpecs.requestSpecs;
 import static com.mongo.rs.core.utils.RestAssureSpecs.responseSpecs;
 

@@ -2,7 +2,6 @@ package com.mongo.rs.modules;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
 import com.mongo.rs.core.testconfigs.TestCoreConfig;
-import com.mongo.rs.core.testcontainer.container.TcContainerReplicasetTransaction;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.model.User;
 import com.mongo.rs.modules.user.service.IServiceCrud;
@@ -19,9 +18,6 @@ import java.util.List;
 
 import static com.mongo.rs.core.databuilders.UserBuilder.userNoID;
 import static com.mongo.rs.core.routes.Routes.*;
-import static com.mongo.rs.core.testcontainer.container.TcContainerConfig.closeTcContainer;
-import static com.mongo.rs.core.utils.BlockhoundUtils.blockHoundTestCheck;
-import static com.mongo.rs.core.utils.BlockhoundUtils.blockhoundInstallWithAllAllowedCalls;
 import static com.mongo.rs.core.utils.RestAssureSpecs.requestSpecsSetPath;
 import static com.mongo.rs.core.utils.RestAssureSpecs.responseSpecs;
 import static com.mongo.rs.core.utils.TestUtils.*;
@@ -63,9 +59,9 @@ import static org.springframework.http.HttpStatus.CREATED;
 @Import({TestCoreConfig.class})
 @DisplayName("2 RS-Transaction-TcContainer")
 @ResourceConfig
-@ActiveProfiles("dockercontainer-rs-node1")
-//@ActiveProfiles("dockercontainer-standalone")
-//@ActiveProfiles("testcontainer-container-rs-transact")
+@ActiveProfiles("test-rs-node3")
+//@ActiveProfiles("test-std")
+//@ActiveProfiles("test-cont-tr")
 //@TcContainerReplicasetTransaction // TEST TRANSACTIONS
 public class TransactionTests {
   /*
@@ -107,8 +103,7 @@ public class TransactionTests {
       ║    Out-date in GitHub    ║
       ╚══════════════════════════╝*/
     //    blockhoundInstallWithSpecificAllowedCalls();
-//    blockhoundInstallWithAllAllowedCalls();
-
+    //    blockhoundInstallWithAllAllowedCalls();
 
 
     globalBeforeAll();
@@ -124,7 +119,7 @@ public class TransactionTests {
 
     globalAfterAll();
     globalTestMessage(testInfo.getDisplayName(), "class-end");
-//    closeTcContainer();
+    //    closeTcContainer();
   }
 
 
@@ -247,11 +242,11 @@ public class TransactionTests {
     dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 3);
   }
 
-//  @Test
-//  @EnabledIf(expression = enabledTest, loadContext = true)
-//  @DisplayName("3 BHWorks")
-//  public void bHWorks() {
-//
-//    blockHoundTestCheck();
-//  }
+  //  @Test
+  //  @EnabledIf(expression = enabledTest, loadContext = true)
+  //  @DisplayName("3 BHWorks")
+  //  public void bHWorks() {
+  //
+  //    blockHoundTestCheck();
+  //  }
 }

@@ -49,9 +49,9 @@ import static org.springframework.http.HttpStatus.OK;
 @Import({TestDbUtilsConfig.class})
 @DisplayName("1 CommonTests-TcCompose")
 @ResourceConfig
-@ActiveProfiles("dockercontainer-rs-node1")
-//@ActiveProfiles("dockercontainer-standalone")
-//@ActiveProfiles("testcontainer-compose")
+@ActiveProfiles("test-rs-node3")
+//@ActiveProfiles("test-std")
+//@ActiveProfiles("test-cmp")
 //@TcCompose
 public class CommonTests {
 
@@ -87,7 +87,6 @@ public class CommonTests {
       ╚══════════════════════════╝*/
     //    blockhoundInstallWithSpecificAllowedCalls();
     //    blockhoundInstallWithAllAllowedCalls();
-
 
     globalBeforeAll();
     globalTestMessage(testInfo.getDisplayName(), "class-start");

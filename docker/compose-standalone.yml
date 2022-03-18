@@ -6,7 +6,7 @@ x-common-variables:
   HOST_DB: mongo1
   PORT_DB: 27017
   AUTH_MAN_DB: admin
-  MONGO_INITDB_DATABASE: api-db
+  MONGO_INITDB_DATABASE: api-db-standalone
   MONGO_INITDB_ROOT_USERNAME: root
   MONGO_INITDB_ROOT_PASSWORD: root
 

@@ -3,22 +3,7 @@ server:
 
 spring:
   profiles:
-    active: rs3
+    active: rs-node3-gr
     group:
-      std: standalone
-      rs1: rs-node1
-      rs3: rs-node3
-#      gprod: prod
-#spring:
-#  devtools:
-#    remote:
-#      secret: mysecret
-#  data:
-#    mongodb:
-#      database: api-test
-#      host: localhost
-#      port: 27017
-#      username: root
-#      password: root
-#      authentication-database: admin
-#      uri: mongodb://root:root@localhost:27017/api-test?authSource=admin&ssl=true
+      std: standalone, log
+      rs-node3-gr: rs-node3, log
