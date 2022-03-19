@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
 import org.springframework.data.mongodb.ReactiveMongoTransactionManager;
@@ -24,10 +25,11 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @Setter
 @Getter
 // =================================================================================================
+@Profile("rs-node3-gr")
 @Slf4j
 @Configuration
 @EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user.repo"})
-public class DbConnection extends AbstractReactiveMongoConfiguration {
+public class DbConnectReplicaset extends AbstractReactiveMongoConfiguration {
 
   private String rootUri;
   private String db;
@@ -38,7 +40,11 @@ public class DbConnection extends AbstractReactiveMongoConfiguration {
 
   @Override
   public MongoClient reactiveMongoClient() {
-    //MONGO-3T:
+    /*
+         ╔═══════════════════════════════╗
+         ║    REPLICASET-MONGO-DB URL    ║
+         ╚═══════════════════════════════╝
+    */
     //"mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db?replicaSet=docker-rs&authSource=admin"
 
     final String appPropertiesDbConnection =

@@ -23,7 +23,6 @@ services:
     image: mongo:4.4.4
     restart: always
     command: mongod --replSet docker-rs --port 9042
-    #    command: ["--replSet", "${RS_NAME}", "--bind_ip_all", "--port", "9042"]
     ports:
       - "9042:9042"
     depends_on:
@@ -33,7 +32,7 @@ services:
     volumes:
       - ~/mongors/data1:/data/db
     healthcheck:
-      test: [ 'CMD', 'mongo', '-u', $RS_USERNAME, '-p', $RS_PASSWORD, '--port', '9042' ]
+      test: [ 'CMD', 'mongo', '-u', $RS_USERNAME, '-p', RS_PASSWORD, '--port', '9042' ]
       interval: 20s
       timeout: 10s
       start_period: 5s
@@ -53,7 +52,7 @@ services:
     volumes:
       - ~/mongors/data2:/data/db
     healthcheck:
-      test: [ 'CMD', 'mongo', '-u', $RS_USERNAME, '-p', $RS_PASSWORD, '--port', '9142' ]
+      test: [ 'CMD', 'mongo', '-u', $RS_USERNAME, '-p', RS_PASSWORD, '--port', '9142' ]
       interval: 20s
       timeout: 10s
       start_period: 5s
@@ -71,7 +70,7 @@ services:
     volumes:
       - ~/mongors/data3:/data/db
     healthcheck:
-      test: [ 'CMD', 'mongo', '-u', $RS_USERNAME, '-p', $RS_PASSWORD, '--port', '9242' ]
+      test: [ 'CMD', 'mongo', '-u', $RS_USERNAME, '-p', RS_PASSWORD, '--port', '9242' ]
       interval: 20s
       timeout: 10s
       start_period: 5s

@@ -2,7 +2,9 @@ spring:
   profiles:
     # active: test-comp
     group:
-      test-std: log, standalone # Docker-Compose: compose-standalone.yml
+      # ALLOW Transactions - REPLICASET
+      test-tc-cont: log, tc-container # Testcontainer-ContainerModule
       test-rs-node3: log, rs-node3 # Docker-Compose: compose-rs-node3.yml
-      test-cmp: log, tc-compose # Testcontainer-ComposeModule - DOES NOT ALLOW Transactions
-      test-cont-tr: log, tc-container # Testcontainer-ContainerModule - ALLOW Transactions
+      # NOT ALLOW Transactions - STAND-ALONE
+      test-std: log, standalone # Docker-Compose: compose-standalone.yml
+      test-tc-cmp: log, tc-compose # Testcontainer-ComposeModule

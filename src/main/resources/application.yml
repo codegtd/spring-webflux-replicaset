@@ -3,7 +3,7 @@ server:
 
 spring:
   profiles:
-    active: rs-node3-gr
+    active: standalone
     group:
       std: standalone, log
       rs-node3-gr: rs-node3, log

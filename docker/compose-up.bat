@@ -21,7 +21,7 @@ echo ===========================================================================
 echo       4) DOCKER-COMPOSE: Uping the Compose-Service(s): %parameter1%
 echo ===========================================================================
 if %parameter1%==standalone (docker-compose -f compose-standalone.yml up --build --force-recreate)
-if %parameter1%==rsnode3    (docker-compose -f compose-rs-node3.yml   up --build --force-recreate)
+if %parameter1%==rs-node3   (docker-compose -f compose-rs-node3.yml   up --build --force-recreate)
 
 echo ===========================================================================
 echo                     5) DOCKER-COMPOSE: ...Ending

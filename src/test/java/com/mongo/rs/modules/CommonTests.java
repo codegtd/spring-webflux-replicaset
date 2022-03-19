@@ -2,6 +2,7 @@ package com.mongo.rs.modules;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
 import com.mongo.rs.core.testconfigs.TestDbUtilsConfig;
+import com.mongo.rs.core.testcontainer.compose.TcCompose;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.model.User;
 import com.mongo.rs.modules.user.service.IServiceCrud;

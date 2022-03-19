@@ -2,5 +2,5 @@ spring:
   data:
     mongodb:
       authentication-database: admin
-      username: u-rs-nd3
-      password: p-rs-nd3
+      username: rs-node3
+      password: rs-node3
