@@ -1,4 +1,4 @@
-package com.mongo.rs.modules.user.model;
+package com.mongo.rs.modules.user;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

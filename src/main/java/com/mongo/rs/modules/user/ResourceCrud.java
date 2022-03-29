@@ -1,7 +1,5 @@
-package com.mongo.rs.modules.user.resource;
+package com.mongo.rs.modules.user;
 
-import com.mongo.rs.modules.user.model.User;
-import com.mongo.rs.modules.user.service.IServiceCrud;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
@@ -9,7 +7,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.mongo.rs.core.routes.Routes.*;
+import static com.mongo.rs.core.Routes.*;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -24,7 +22,7 @@ import static org.springframework.http.HttpStatus.OK;
 @RequiredArgsConstructor
 public class ResourceCrud {
 
-  private final IServiceCrud serviceCrud;
+  private final ServiceCrud serviceCrud;
 
   @PostMapping(CRUD_SAVE)
   @ResponseStatus(CREATED)

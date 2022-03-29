@@ -1,8 +1,8 @@
 package com.mongo.rs.core.utils;
 
-import com.mongo.rs.modules.user.model.User;
-import com.mongo.rs.modules.user.repo.ICrud;
-import com.mongo.rs.modules.user.repo.TemplColections;
+import com.mongo.rs.modules.user.User;
+import com.mongo.rs.modules.user.RepoCrud;
+import com.mongo.rs.modules.user.RepoTemplColections;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Flux;
@@ -15,10 +15,10 @@ import java.util.List;
 public class TestDbUtils {
 
   @Autowired
-  ICrud userCrudRepo;
+  RepoCrud userCrudRepo;
 
   @Autowired
-  TemplColections repoColections;
+  RepoTemplColections repoColections;
 
 
   public <E> void countAndExecuteFlux(Flux<E> flux, int totalElements) {

@@ -1,4 +1,4 @@
-package com.mongo.rs.core.utils;
+package com.mongo.rs.core;
 
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.env.PropertiesPropertySource;

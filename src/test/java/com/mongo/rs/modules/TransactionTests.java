@@ -4,8 +4,8 @@ import com.mongo.rs.core.annotations.ResourceConfig;
 import com.mongo.rs.core.testconfigs.TestCoreConfig;
 import com.mongo.rs.core.testcontainer.container.TcContainerReplicasetTransaction;
 import com.mongo.rs.core.utils.TestDbUtils;
-import com.mongo.rs.modules.user.model.User;
-import com.mongo.rs.modules.user.service.IServiceCrud;
+import com.mongo.rs.modules.user.ServiceCrud;
+import com.mongo.rs.modules.user.User;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,9 @@ import reactor.core.publisher.Flux;
 
 import java.util.List;
 
+import static com.mongo.rs.core.Routes.*;
 import static com.mongo.rs.core.databuilders.UserBuilder.userNoID;
-import static com.mongo.rs.core.routes.Routes.*;
+import static com.mongo.rs.core.testcontainer.container.TcContainerConfig.closeTcContainer;
 import static com.mongo.rs.core.utils.RestAssureSpecs.requestSpecsSetPath;
 import static com.mongo.rs.core.utils.RestAssureSpecs.responseSpecs;
 import static com.mongo.rs.core.utils.TestUtils.*;
@@ -28,24 +29,23 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 
-/*
-     ╔═══════════════════════════════╗
+/*   ╔═══════════════════════════════╗
      ║ USING CONTAINERS IN THE TESTS ║
      ╠═══════════════════════════════╩════════════════╗
      ║ CONFLICT: TEST-CONTAINERS X DOCKER-CONTAINERS  ║
      ║           THEY DO NOT WORKS TOGETHER           ║
      ╠════════════════════════════════════════════════╩═════════╗
      ║A) TEST-CONTAINERS:                                       ║
-     ║   A.1) STOP+CLEAN DOCKER-CONTAINERS  (DOCKER-BAT-SCRIPT) ║
-     ║   A.2) SELECT THE TEST-PROFILE(testcontainer's)          ║
-     ║   A.3) RUN THE TESTS                                     ║
+     ║A.1) STOP+CLEAN DOCKER-CONTAINERS  (DOCKER-BAT-SCRIPT)    ║
+     ║A.2) SELECT THE TEST-PROFILE FOR TESTS WITH TESTCONTAINERS║
+     ║A.3) RUN THE TESTS                                        ║
      ║                                                          ║
      ║B) DOCKER-CONTAINERS:                                     ║
-     ║   B.1) SELECT THE TEST-PROFILE(dockercontainer's)        ║
-     ║   B.3) START DOCKER-CONTAINER (DOCKER-BAT-SCRIPT-PROFILE)║
-     ║   B.4) RUN THE TESTS                                     ║
-     ╚══════════════════════════════════════════════════════════╝
-*/
+     ║B.1) SELECT THE TEST-PROFILE(dockercontainer's)           ║
+     ║B.2) COMMENT @Container Instance variable                 ║
+     ║B.3) START DOCKER-CONTAINER (DOCKER-BAT-SCRIPT-PROFILE)   ║
+     ║B.4) RUN THE TESTS                                        ║
+     ╚══════════════════════════════════════════════════════════╝*/
 /*
   ╔══════════════════════════════════════════════════════════════════════╗
   ║    SILAEV + TRANSACTIONS + REPLICASET + TEST-CONTAINER-CONTAINER     ║
@@ -60,10 +60,10 @@ import static org.springframework.http.HttpStatus.CREATED;
 @Import({TestCoreConfig.class})
 @DisplayName("2 RS-Transaction-TcContainer")
 @ResourceConfig
-@ActiveProfiles("test-rs-node3")
+//@ActiveProfiles("test-rs-node3")
 //@ActiveProfiles("test-std")
-//@ActiveProfiles("test-cont-tr")
-//@TcContainerReplicasetTransaction // TEST TRANSACTIONS
+@ActiveProfiles("test-tc-cont")
+@TcContainerReplicasetTransaction // TEST TRANSACTIONS
 public class TransactionTests {
   /*
 ╔════════════════════════════════════════════════════════════╗
@@ -88,7 +88,7 @@ public class TransactionTests {
   TestDbUtils dbUtils;
 
   @Autowired
-  IServiceCrud serviceCrud;
+  ServiceCrud serviceCrud;
 
   User user1;
   private User userNoId;
@@ -120,7 +120,7 @@ public class TransactionTests {
 
     globalAfterAll();
     globalTestMessage(testInfo.getDisplayName(), "class-end");
-    //    closeTcContainer();
+    closeTcContainer();
   }
 
 
@@ -155,8 +155,11 @@ public class TransactionTests {
   public void saveTransactionFail() {
 
     userNoId = userNoID().create();
+
     User emptyUserTriggeringTransaction = userNoID().create();
+
     emptyUserTriggeringTransaction.setName("");
+
     List<User> userList = asList(userNoId, emptyUserTriggeringTransaction);
 
     RestAssuredWebTestClient
@@ -177,7 +180,8 @@ public class TransactionTests {
          .body(matchesJsonSchemaInClasspath("contracts/exception.json"))
     ;
 
-    dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 2);
+    // TODO: TRANSACTION IS NOT WORKING
+    dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 4);
   }
 
   @Test

@@ -1,7 +1,7 @@
 package com.mongo.rs.core.config;
 
 
-import com.mongo.rs.core.utils.YamlFileConverter;
+import com.mongo.rs.core.YamlFileConverter;
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
 import lombok.Getter;
@@ -25,7 +25,7 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @Setter
 @Getter
 // =================================================================================================
-@Profile("rs-node3-gr")
+@Profile("rsnode3")
 @Slf4j
 @Configuration
 @EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user.repo"})

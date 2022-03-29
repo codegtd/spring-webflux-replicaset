@@ -1,8 +1,6 @@
-package com.mongo.rs.modules.user.service;
+package com.mongo.rs.modules.user;
 
 
-import com.mongo.rs.modules.user.model.User;
-import com.mongo.rs.modules.user.repo.ICrud;
 import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,9 +15,9 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service("serviceCrud")
 @RequiredArgsConstructor
-public class ServiceCrud implements IServiceCrud {
+public class ServiceCrudImpl implements ServiceCrud {
 
-  private final ICrud crud;
+  private final RepoCrud crud;
 
   /*╔══════════════════════════════╗
     ║   REACTIVE-MONGO-REPOSITORY  ║
@@ -42,9 +40,6 @@ public class ServiceCrud implements IServiceCrud {
 
     return crud.saveAll(userList)
                .doOnNext(this::throwResponseStatusExceptionWhenEmptyName);
-    //                   .doOnNext(item -> {
-    //      throwResponseStatusExceptionWhenEmptyName(item)
-    //    });
   }
 
   private void throwResponseStatusExceptionWhenEmptyName(User user) {

@@ -3,9 +3,10 @@ package com.mongo.rs.modules;
 import com.mongo.rs.core.annotations.ResourceConfig;
 import com.mongo.rs.core.testconfigs.TestDbUtilsConfig;
 import com.mongo.rs.core.testcontainer.compose.TcCompose;
+import com.mongo.rs.core.testcontainer.compose.TcComposeConfig;
 import com.mongo.rs.core.utils.TestDbUtils;
-import com.mongo.rs.modules.user.model.User;
-import com.mongo.rs.modules.user.service.IServiceCrud;
+import com.mongo.rs.modules.user.User;
+import com.mongo.rs.modules.user.ServiceCrud;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.junit.jupiter.Container;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
 
 import static com.mongo.rs.core.databuilders.UserBuilder.userNoID;
-import static com.mongo.rs.core.routes.Routes.*;
+import static com.mongo.rs.core.Routes.*;
 import static com.mongo.rs.core.utils.RestAssureSpecs.requestSpecsSetPath;
 import static com.mongo.rs.core.utils.RestAssureSpecs.responseSpecs;
 import static com.mongo.rs.core.utils.TestUtils.*;
@@ -28,36 +31,34 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
-/*
-     ╔═══════════════════════════════╗
+/*   ╔═══════════════════════════════╗
      ║ USING CONTAINERS IN THE TESTS ║
      ╠═══════════════════════════════╩════════════════╗
      ║ CONFLICT: TEST-CONTAINERS X DOCKER-CONTAINERS  ║
      ║           THEY DO NOT WORKS TOGETHER           ║
      ╠════════════════════════════════════════════════╩═════════╗
      ║A) TEST-CONTAINERS:                                       ║
-     ║   A.1) STOP+CLEAN DOCKER-CONTAINERS  (DOCKER-BAT-SCRIPT) ║
-     ║   A.2) SELECT THE TEST-PROFILE(testcontainer's)          ║
-     ║   A.3) RUN THE TESTS                                     ║
+     ║A.1) STOP+CLEAN DOCKER-CONTAINERS  (DOCKER-BAT-SCRIPT)    ║
+     ║A.2) SELECT THE TEST-PROFILE FOR TESTS WITH TESTCONTAINERS║
+     ║A.3) RUN THE TESTS                                        ║
      ║                                                          ║
      ║B) DOCKER-CONTAINERS:                                     ║
-     ║   B.1) SELECT THE TEST-PROFILE(dockercontainer's)        ║
-     ║   B.2) COMMENT @Container Instance variable              ║
-     ║   B.3) START DOCKER-CONTAINER (DOCKER-BAT-SCRIPT-PROFILE)║
-     ║   B.4) RUN THE TESTS                                     ║
-     ╚══════════════════════════════════════════════════════════╝
-*/
+     ║B.1) SELECT THE TEST-PROFILE(dockercontainer's)           ║
+     ║B.2) COMMENT @Container Instance variable                 ║
+     ║B.3) START DOCKER-CONTAINER (DOCKER-BAT-SCRIPT-PROFILE)   ║
+     ║B.4) RUN THE TESTS                                        ║
+     ╚══════════════════════════════════════════════════════════╝*/
 @Import({TestDbUtilsConfig.class})
 @DisplayName("1 CommonTests-TcCompose")
 @ResourceConfig
-@ActiveProfiles("test-rs-node3")
+//@ActiveProfiles("test-rs-node3")
 //@ActiveProfiles("test-std")
-//@ActiveProfiles("test-cmp")
-//@TcCompose
+@ActiveProfiles("test-tc-comp")
+@TcCompose
 public class CommonTests {
 
-  //  @Container
-  //  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
+  @Container
+  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
 
   final String enabledTest = "true";
 
@@ -71,7 +72,7 @@ public class CommonTests {
   TestDbUtils dbUtils;
 
   @Autowired
-  IServiceCrud serviceCrud;
+  ServiceCrud serviceCrud;
 
   private User user1;
   private User user2;

@@ -1,13 +1,12 @@
-package com.mongo.rs.modules.user.service;
+package com.mongo.rs.modules.user;
 
 
-import com.mongo.rs.modules.user.model.User;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface IServiceCrud {
+public interface ServiceCrud {
   /*╔══════════════════════════════╗
       ║   REACTIVE-MONGO-REPOSITORY  ║
       ╚══════════════════════════════╝*/

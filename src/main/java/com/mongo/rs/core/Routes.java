@@ -1,4 +1,4 @@
-package com.mongo.rs.core.routes;
+package com.mongo.rs.core;
 
 public final class Routes {
   public static final String ROOT = "/root";

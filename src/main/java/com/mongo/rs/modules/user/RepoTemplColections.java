@@ -1,4 +1,4 @@
-package com.mongo.rs.modules.user.repo;
+package com.mongo.rs.modules.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
@@ -8,7 +8,7 @@ import reactor.core.publisher.Mono;
 
 @Repository("repoColections")
 @RequiredArgsConstructor
-public class TemplColections {
+public class RepoTemplColections {
 
 
   private final ReactiveMongoTemplate reactiveMongoTemplate;

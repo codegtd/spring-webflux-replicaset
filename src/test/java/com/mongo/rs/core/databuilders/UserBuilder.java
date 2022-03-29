@@ -1,7 +1,7 @@
 package com.mongo.rs.core.databuilders;
 
 import com.github.javafaker.Faker;
-import com.mongo.rs.modules.user.model.User;
+import com.mongo.rs.modules.user.User;
 import lombok.Builder;
 import lombok.Getter;
 
