@@ -51,14 +51,14 @@ import static org.springframework.http.HttpStatus.OK;
 @Import({TestDbUtilsConfig.class})
 @DisplayName("1 CommonTests-TcCompose")
 @ResourceConfig
-//@ActiveProfiles("test-rs-node3")
+@ActiveProfiles("test-rs-node3")
 //@ActiveProfiles("test-std")
-@ActiveProfiles("test-tc-comp")
-@TcCompose
+//@ActiveProfiles("test-tc-comp")
+//@TcCompose
 public class CommonTests {
 
-  @Container
-  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
+//  @Container
+//  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
 
   final String enabledTest = "true";
 
@@ -119,7 +119,7 @@ public class CommonTests {
     User userNoId = userNoID().create();
 
     List<User> userList = asList(user1, user2);
-    Flux<User> userFlux = dbUtils.saveItemsList(userList);
+    Flux<User> userFlux = dbUtils.cleanDbAndSaveList(userList);
 
     dbUtils.countAndExecuteFlux(userFlux, 2);
   }

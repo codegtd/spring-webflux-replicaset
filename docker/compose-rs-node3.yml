@@ -31,6 +31,12 @@ services:
       - api_net
     volumes:
       - ~/mongors/data1:/data/db
+    healthcheck:
+      test: [ 'CMD', 'mongo', '-u', 'rs-node3', '-p', 'rs-node3', '--port', '9042' ]
+      interval: 20s
+      timeout: 10s
+      start_period: 5s
+      retries: 5
 
   mongo2:
     container_name: mongo2
@@ -45,6 +51,12 @@ services:
       - api_net
     volumes:
       - ~/mongors/data2:/data/db
+    healthcheck:
+      test: [ 'CMD', 'mongo', '-u', 'rs-node3', '-p', 'rs-node3', '--port', '9142' ]
+      interval: 20s
+      timeout: 10s
+      start_period: 5s
+      retries: 5
 
   mongo3:
     container_name: mongo3
@@ -57,6 +69,12 @@ services:
       - api_net
     volumes:
       - ~/mongors/data3:/data/db
+    healthcheck:
+      test: [ 'CMD', 'mongo', '-u', 'rs-node3', '-p', 'rs-node3', '--port', '9242' ]
+      interval: 20s
+      timeout: 10s
+      start_period: 5s
+      retries: 5
 
   api:
     container_name: api

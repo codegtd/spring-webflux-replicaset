@@ -22,26 +22,27 @@ import static org.springframework.http.HttpStatus.OK;
 @RequiredArgsConstructor
 public class ResourceCrud {
 
-  private final ServiceCrud serviceCrud;
+  private final ServiceCrud serviceCrudImpl;
 
   @PostMapping(CRUD_SAVE)
   @ResponseStatus(CREATED)
   public Mono<User> save(@RequestBody User user) {
 
-    return serviceCrud.save(user);
+    return serviceCrudImpl.save(user);
   }
 
   @GetMapping(CRUD_FINDALL)
   @ResponseStatus(OK)
   public Flux<User> findAll() {
 
-    return serviceCrud.findAll();
+    return serviceCrudImpl.findAll();
   }
 
+//  @Transactional
   @PostMapping(CRUD_SAVE_TRANSACT)
   @ResponseStatus(CREATED)
   public Flux<User> saveTransact(@RequestBody List<User> userList) {
 
-    return serviceCrud.saveTransact(userList);
+    return serviceCrudImpl.saveTransact(userList);
   }
 }

@@ -1,8 +1,8 @@
 package com.mongo.rs.core.utils;
 
-import com.mongo.rs.modules.user.User;
 import com.mongo.rs.modules.user.RepoCrud;
 import com.mongo.rs.modules.user.RepoTemplColections;
+import com.mongo.rs.modules.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Flux;
@@ -30,14 +30,15 @@ public class TestDbUtils {
          .verifyComplete();
   }
 
-  public Flux<User> saveItemsList(List<User> projectList) {
+  public Flux<User> cleanDbAndSaveList(List<User> list) {
 
     return userCrudRepo.deleteAll()
-                       .thenMany(Flux.fromIterable(projectList))
+                       .thenMany(Flux.fromIterable(list))
                        .flatMap(userCrudRepo::save)
                        .doOnNext(item -> userCrudRepo.findAll())
                        .doOnNext(item -> System.out.printf(
-                            ">=> Saved 'User' in DB:\n" +
+                            ">=> FindAll DB Elements >=>\n" +
+                                 ">=> Saved 'User' in DB:\n" +
                                  "    |> ID: %s\n" +
                                  "    |> Name: %s\n\n"
                             ,

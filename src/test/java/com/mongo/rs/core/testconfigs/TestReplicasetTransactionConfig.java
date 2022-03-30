@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
      TestDbUtilsConfig.class,
      TransactionManagerTestConfig.class
 })
-@TestConfiguration(value = "testCoreConfig")
-public class TestCoreConfig {
+@TestConfiguration
+public class TestReplicasetTransactionConfig {
 
 }

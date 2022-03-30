@@ -1,7 +1,7 @@
 package com.mongo.rs.modules;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
-import com.mongo.rs.core.testconfigs.TestCoreConfig;
+import com.mongo.rs.core.testconfigs.TestReplicasetTransactionConfig;
 import com.mongo.rs.core.testcontainer.container.TcContainerReplicasetTransaction;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.ServiceCrud;
@@ -57,13 +57,13 @@ import static org.springframework.http.HttpStatus.CREATED;
   ║  d) and setting this URI in 'Properties of the Test'                 ║
   ╚══════════════════════════════════════════════════════════════════════╝
 */
-@Import({TestCoreConfig.class})
+@Import({TestReplicasetTransactionConfig.class})
 @DisplayName("2 RS-Transaction-TcContainer")
 @ResourceConfig
-//@ActiveProfiles("test-rs-node3")
+@ActiveProfiles("test-rs-node3")
 //@ActiveProfiles("test-std")
-@ActiveProfiles("test-tc-cont")
-@TcContainerReplicasetTransaction // TEST TRANSACTIONS
+//@ActiveProfiles("test-tc-cont")
+//@TcContainerReplicasetTransaction // TEST TRANSACTIONS
 public class TransactionTests {
   /*
 ╔════════════════════════════════════════════════════════════╗
@@ -135,7 +135,7 @@ public class TransactionTests {
     User user2 = userNoID().create();
 
     List<User> userList = asList(user1, user2);
-    Flux<User> userFlux = dbUtils.saveItemsList(userList);
+    Flux<User> userFlux = dbUtils.cleanDbAndSaveList(userList);
 
     dbUtils.countAndExecuteFlux(userFlux, 2);
   }
@@ -151,21 +151,17 @@ public class TransactionTests {
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
-  @DisplayName("2 saveTransactionFail")
-  public void saveTransactionFail() {
+  @DisplayName("2 saveRollback")
+  public void saveRollback() {
 
     userNoId = userNoID().create();
-
-    User emptyUserTriggeringTransaction = userNoID().create();
-
-    emptyUserTriggeringTransaction.setName("");
-
-    List<User> userList = asList(userNoId, emptyUserTriggeringTransaction);
+    User lastUser = userNoID().create();
+    lastUser.setName("");
+    List<User> userList = asList(userNoId, lastUser);
 
     RestAssuredWebTestClient
          .given()
          .webTestClient(mockedWebClient)
-
          .body(userList)
 
          .when()
@@ -179,24 +175,22 @@ public class TransactionTests {
 
          .body(matchesJsonSchemaInClasspath("contracts/exception.json"))
     ;
-
-    // TODO: TRANSACTION IS NOT WORKING
-    dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 4);
+    
+    dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 2);
   }
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
-  @DisplayName("1 saveTransactionOK")
-  public void saveTransactionOK() {
+  @DisplayName("1 NoRollback")
+  public void saveNoRollback() {
 
     userNoId = userNoID().create();
-    User extraUser = userNoID().create();
-    List<User> userList = asList(userNoId, extraUser);
+    User lastUser = userNoID().create();
+    List<User> userList = asList(userNoId, lastUser);
 
     RestAssuredWebTestClient
          .given()
          .webTestClient(mockedWebClient)
-
          .body(userList)
 
          .when()
@@ -211,7 +205,7 @@ public class TransactionTests {
          .body("$", hasSize(2))
          .body("name", hasItems(
               userNoId.getName(),
-              extraUser.getName()
+              lastUser.getName()
                                ))
          .body(matchesJsonSchemaInClasspath("contracts/transaction.json"))
     ;
