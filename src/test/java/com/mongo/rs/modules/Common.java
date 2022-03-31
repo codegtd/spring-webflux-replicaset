@@ -1,12 +1,10 @@
 package com.mongo.rs.modules;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
-import com.mongo.rs.core.testconfigs.TestDbUtilsConfig;
-import com.mongo.rs.core.testcontainer.compose.TcCompose;
-import com.mongo.rs.core.testcontainer.compose.TcComposeConfig;
+import com.mongo.rs.core.config.DbUtilsConfig;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.User;
-import com.mongo.rs.modules.user.ServiceCrud;
+import com.mongo.rs.modules.user.UserServiceCrud;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +12,15 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.testcontainers.containers.DockerComposeContainer;
-import org.testcontainers.junit.jupiter.Container;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
 
 import static com.mongo.rs.core.databuilders.UserBuilder.userNoID;
-import static com.mongo.rs.core.Routes.*;
 import static com.mongo.rs.core.utils.RestAssureSpecs.requestSpecsSetPath;
 import static com.mongo.rs.core.utils.RestAssureSpecs.responseSpecs;
 import static com.mongo.rs.core.utils.TestUtils.*;
+import static com.mongo.rs.modules.user.UserConfigRoutes.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.*;
@@ -42,23 +38,26 @@ import static org.springframework.http.HttpStatus.OK;
      ║A.2) SELECT THE TEST-PROFILE FOR TESTS WITH TESTCONTAINERS║
      ║A.3) RUN THE TESTS                                        ║
      ║                                                          ║
-     ║B) DOCKER-CONTAINERS:                                     ║
+     ║B) DOCKER-CONTAINERS (STANDALONE + REPLICASET):           ║
      ║B.1) SELECT THE TEST-PROFILE(dockercontainer's)           ║
      ║B.2) COMMENT @Container Instance variable                 ║
      ║B.3) START DOCKER-CONTAINER (DOCKER-BAT-SCRIPT-PROFILE)   ║
      ║B.4) RUN THE TESTS                                        ║
      ╚══════════════════════════════════════════════════════════╝*/
-@Import({TestDbUtilsConfig.class})
+@Tags(value = {
+     @Tag("replicaset-transaction"),
+     @Tag("standalone")})
+@Import({DbUtilsConfig.class})
 @DisplayName("1 CommonTests-TcCompose")
 @ResourceConfig
-@ActiveProfiles("test-rs-node3")
-//@ActiveProfiles("test-std")
+//@ActiveProfiles("test-rs")
+@ActiveProfiles("test-std")
 //@ActiveProfiles("test-tc-comp")
 //@TcCompose
-public class CommonTests {
+public class Common {
 
-//  @Container
-//  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
+  //  @Container
+  //  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
 
   final String enabledTest = "true";
 
@@ -72,7 +71,7 @@ public class CommonTests {
   TestDbUtils dbUtils;
 
   @Autowired
-  ServiceCrud serviceCrud;
+  UserServiceCrud serviceCrud;
 
   private User user1;
   private User user2;
@@ -93,8 +92,8 @@ public class CommonTests {
     globalBeforeAll();
     globalTestMessage(testInfo.getDisplayName(), "class-start");
     RestAssuredWebTestClient.reset();
-    RestAssuredWebTestClient.requestSpecification =
-         requestSpecsSetPath("http://localhost:8080" + ROOT);
+    RestAssuredWebTestClient.requestSpecification = requestSpecsSetPath(
+         "http://localhost:8080" + ROOT);
     RestAssuredWebTestClient.responseSpecification = responseSpecs();
   }
 
@@ -140,23 +139,21 @@ public class CommonTests {
 
     User userIsolated = userNoID().create();
 
-    RestAssuredWebTestClient
-         .given()
-         .webTestClient(mockedWebClient)
+    RestAssuredWebTestClient.given()
+                            .webTestClient(mockedWebClient)
 
-         .body(userIsolated)
+                            .body(userIsolated)
 
-         .when()
-         .post(CRUD_SAVE)
+                            .when()
+                            .post(CRUD_SAVE)
 
-         .then()
-         .log()
-         .everything()
+                            .then()
+                            .log()
+                            .everything()
 
-         .statusCode(CREATED.value())
-         .body("name", equalTo(userIsolated.getName()))
-         .body(matchesJsonSchemaInClasspath("contracts/save.json"))
-    ;
+                            .statusCode(CREATED.value())
+                            .body("name", equalTo(userIsolated.getName()))
+                            .body(matchesJsonSchemaInClasspath("contracts/save.json"));
 
     dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 3);
   }
@@ -167,11 +164,8 @@ public class CommonTests {
   @DisplayName("2 FindAll")
   public void FindAll() {
 
-    dbUtils.checkFluxListElements(
-         serviceCrud.findAll()
-                    .flatMap(Flux::just),
-         asList(user1, user2)
-                                 );
+    dbUtils.checkFluxListElements(serviceCrud.findAll()
+                                             .flatMap(Flux::just), asList(user1, user2));
 
     RestAssuredWebTestClient
 
@@ -189,8 +183,7 @@ public class CommonTests {
          .body("size()", is(2))
          .body("$", hasSize(2))
          .body("name", hasItems(user1.getName(), user2.getName()))
-         .body(matchesJsonSchemaInClasspath("contracts/findall.json"))
-    ;
+         .body(matchesJsonSchemaInClasspath("contracts/findall.json"));
 
     dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 2);
   }

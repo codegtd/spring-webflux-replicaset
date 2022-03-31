@@ -8,14 +8,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
-import org.springframework.data.mongodb.ReactiveMongoTransactionManager;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
+import org.springframework.transaction.TransactionManager;
 
 // ========================== PropertySource + ConfigurationProperties =============================
 // Check - PropertySource: https://www.baeldung.com/configuration-properties-in-spring-boot
@@ -25,11 +24,13 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @Setter
 @Getter
 // =================================================================================================
-@Profile("rsnode3")
+
+@Profile("replicaset")
+@Import({TransactionManager.class})
 @Slf4j
 @Configuration
-@EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user.repo"})
-public class DbConnectReplicaset extends AbstractReactiveMongoConfiguration {
+@EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user"})
+public class DbReplicasetConfig extends AbstractReactiveMongoConfiguration {
 
   private String rootUri;
   private String db;
@@ -69,18 +70,5 @@ public class DbConnectReplicaset extends AbstractReactiveMongoConfiguration {
   //  @Bean
   //  public ReactiveMongoTemplate reactiveMongoTemplate() {
   //    return new ReactiveMongoTemplate(reactiveMongoClient(),getDatabaseName());
-  //  }
-  //
-  //
-  @Bean
-  ReactiveMongoTransactionManager transactionManager(ReactiveMongoDatabaseFactory factory) {
-
-    return new ReactiveMongoTransactionManager(factory);
-  }
-  //
-  //
-  //  @Bean
-  //  public ReactiveGridFsTemplate reactiveGridFsTemplate() throws Exception {
-  //    return new ReactiveGridFsTemplate(reactiveMongoDbFactory(),mongoConverter);
   //  }
 }

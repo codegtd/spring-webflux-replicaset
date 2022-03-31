@@ -6,7 +6,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-public interface ServiceCrud {
+public interface UserServiceCrud {
   /*╔══════════════════════════════╗
     ║   REACTIVE-MONGO-REPOSITORY  ║
     ╚══════════════════════════════╝*/

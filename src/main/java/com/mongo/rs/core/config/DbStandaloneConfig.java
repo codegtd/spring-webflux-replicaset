@@ -12,9 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
-import org.springframework.data.mongodb.ReactiveMongoTransactionManager;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
+import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
 // ========================== PropertySource + ConfigurationProperties =============================
@@ -25,11 +24,11 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @Setter
 @Getter
 // =================================================================================================
-@Profile("std")
+@Profile("standalone")
 @Slf4j
 @Configuration
-@EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user.repo"})
-public class DbConnectStandalone extends AbstractReactiveMongoConfiguration {
+@EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user"})
+public class DbStandaloneConfig extends AbstractReactiveMongoConfiguration {
   private String host;
   private String port;
   private String authenticationDatabase;
@@ -63,22 +62,8 @@ public class DbConnectStandalone extends AbstractReactiveMongoConfiguration {
     return database;
   }
 
-
-  //  @Bean
-  //  public ReactiveMongoTemplate reactiveMongoTemplate() {
-  //    return new ReactiveMongoTemplate(reactiveMongoClient(),getDatabaseName());
-  //  }
-  //
-  //
-  @Bean
-  ReactiveMongoTransactionManager transactionManager(ReactiveMongoDatabaseFactory factory) {
-
-    return new ReactiveMongoTransactionManager(factory);
-  }
-  //
-  //
-  //  @Bean
-  //  public ReactiveGridFsTemplate reactiveGridFsTemplate() throws Exception {
-  //    return new ReactiveGridFsTemplate(reactiveMongoDbFactory(),mongoConverter);
-  //  }
+//    @Bean
+//    public ReactiveMongoTemplate reactiveMongoTemplate() {
+//      return new ReactiveMongoTemplate(reactiveMongoClient(),getDatabaseName());
+//    }
 }

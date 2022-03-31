@@ -8,8 +8,7 @@ import reactor.core.publisher.Mono;
 
 @Repository("repoColections")
 @RequiredArgsConstructor
-public class RepoTemplColections {
-
+public class UserDAOTemplColections {
 
   private final ReactiveMongoTemplate reactiveMongoTemplate;
 

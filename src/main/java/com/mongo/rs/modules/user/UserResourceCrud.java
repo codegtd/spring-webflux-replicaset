@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.mongo.rs.core.Routes.*;
+import static com.mongo.rs.modules.user.UserConfigRoutes.*;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -20,9 +20,9 @@ import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping(ROOT)
 @RequiredArgsConstructor
-public class ResourceCrud {
+public class UserResourceCrud {
 
-  private final ServiceCrud serviceCrudImpl;
+  private final UserServiceCrud serviceCrudImpl;
 
   @PostMapping(CRUD_SAVE)
   @ResponseStatus(CREATED)

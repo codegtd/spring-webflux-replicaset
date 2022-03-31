@@ -1,12 +1,12 @@
 package com.mongo.rs.modules;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
-import com.mongo.rs.core.testconfigs.TestReplicasetTransactionConfig;
-import com.mongo.rs.core.testcontainer.container.TcContainerReplicasetTransaction;
+import com.mongo.rs.core.config.ReplicasetTransactionConfig;
 import com.mongo.rs.core.utils.TestDbUtils;
-import com.mongo.rs.modules.user.ServiceCrud;
 import com.mongo.rs.modules.user.User;
+import com.mongo.rs.modules.user.UserServiceCrud;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
+
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
@@ -17,12 +17,12 @@ import reactor.core.publisher.Flux;
 
 import java.util.List;
 
-import static com.mongo.rs.core.Routes.*;
 import static com.mongo.rs.core.databuilders.UserBuilder.userNoID;
 import static com.mongo.rs.core.testcontainer.container.TcContainerConfig.closeTcContainer;
 import static com.mongo.rs.core.utils.RestAssureSpecs.requestSpecsSetPath;
 import static com.mongo.rs.core.utils.RestAssureSpecs.responseSpecs;
 import static com.mongo.rs.core.utils.TestUtils.*;
+import static com.mongo.rs.modules.user.UserConfigRoutes.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.*;
@@ -40,7 +40,7 @@ import static org.springframework.http.HttpStatus.CREATED;
      ║A.2) SELECT THE TEST-PROFILE FOR TESTS WITH TESTCONTAINERS║
      ║A.3) RUN THE TESTS                                        ║
      ║                                                          ║
-     ║B) DOCKER-CONTAINERS:                                     ║
+     ║B) DOCKER-CONTAINERS (STANDALONE + REPLICASET):           ║
      ║B.1) SELECT THE TEST-PROFILE(dockercontainer's)           ║
      ║B.2) COMMENT @Container Instance variable                 ║
      ║B.3) START DOCKER-CONTAINER (DOCKER-BAT-SCRIPT-PROFILE)   ║
@@ -57,14 +57,14 @@ import static org.springframework.http.HttpStatus.CREATED;
   ║  d) and setting this URI in 'Properties of the Test'                 ║
   ╚══════════════════════════════════════════════════════════════════════╝
 */
-@Import({TestReplicasetTransactionConfig.class})
+@Import({ReplicasetTransactionConfig.class})
 @DisplayName("2 RS-Transaction-TcContainer")
 @ResourceConfig
-@ActiveProfiles("test-rs-node3")
-//@ActiveProfiles("test-std")
-//@ActiveProfiles("test-tc-cont")
+//@ActiveProfiles("test-rs")
+@ActiveProfiles("test-std")
+//@ActiveProfiles("test-tc-rs-tr")
 //@TcContainerReplicasetTransaction // TEST TRANSACTIONS
-public class TransactionTests {
+public class Transactions {
   /*
 ╔════════════════════════════════════════════════════════════╗
 ║              TEST-TRANSACTIONS + TEST-CONTAINERS           ║
@@ -88,7 +88,7 @@ public class TransactionTests {
   TestDbUtils dbUtils;
 
   @Autowired
-  ServiceCrud serviceCrud;
+  UserServiceCrud serviceCrud;
 
   User user1;
   private User userNoId;
@@ -151,6 +151,7 @@ public class TransactionTests {
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
+  @Tag("replicaset-transaction")
   @DisplayName("2 saveRollback")
   public void saveRollback() {
 
@@ -175,12 +176,13 @@ public class TransactionTests {
 
          .body(matchesJsonSchemaInClasspath("contracts/exception.json"))
     ;
-    
+
     dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 2);
   }
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
+  @Tag("replicaset-transaction")
   @DisplayName("1 NoRollback")
   public void saveNoRollback() {
 
@@ -215,7 +217,9 @@ public class TransactionTests {
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
-  @DisplayName("4 saveWithID")
+  @Tag("standalone")
+  @Tag("replicaset-transaction")
+  @DisplayName("3 saveWithID")
   public void saveWithID() {
 
     User userIsolated = userNoID().create();

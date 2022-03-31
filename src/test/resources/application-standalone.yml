@@ -1,6 +1,9 @@
 spring:
   data:
     mongodb:
+      port: 27017
+      host: mongo1
+      database: standalone-db
       username: root
       password: root
       authentication-database: admin

@@ -15,9 +15,9 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service("serviceCrudImpl")
 @RequiredArgsConstructor
-public class ServiceCrudImpl implements ServiceCrud {
+public class UserServiceCrudImpl implements UserServiceCrud {
 
-  private final RepoCrud repoCrud;
+  private final UserDAOCrud userDAOCrud;
 
   /*╔══════════════════════════════╗
     ║   REACTIVE-MONGO-REPOSITORY  ║
@@ -25,22 +25,22 @@ public class ServiceCrudImpl implements ServiceCrud {
   @Override
   public Mono<User> save(User project) {
 
-    return repoCrud.save(project);
+    return userDAOCrud.save(project);
   }
 
   @Override
   public Flux<User> findAll() {
 
-    return repoCrud.findAll();
+    return userDAOCrud.findAll();
   }
 
   @Transactional
   @Override
   public Flux<User> saveTransact(List<User> userList) {
 
-    return repoCrud.saveAll(userList)
-                   //               .doOnNext(this::throwResponseStatusExceptionWhenEmptyName)
-                   .doOnNext(item -> {
+    return userDAOCrud.saveAll(userList)
+                      //               .doOnNext(this::throwResponseStatusExceptionWhenEmptyName)
+                      .doOnNext(item -> {
                  throwResponseStatusExceptionWhenEmptyName(item);
                })
          ;
