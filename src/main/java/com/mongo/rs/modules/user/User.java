@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Getter
@@ -18,5 +19,7 @@ public class User implements Serializable {
 
   @Id
   private String id;
+
+//  @NotEmpty
   private String name;
 }

@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
-import org.springframework.transaction.TransactionManager;
 
 // ========================== PropertySource + ConfigurationProperties =============================
 // Check - PropertySource: https://www.baeldung.com/configuration-properties-in-spring-boot
@@ -25,12 +24,12 @@ import org.springframework.transaction.TransactionManager;
 @Getter
 // =================================================================================================
 
-@Profile("replicaset")
-@Import({TransactionManager.class})
+@Profile("prod-rs")
+@Import({DbTransactionManagerConfig.class})
 @Slf4j
 @Configuration
 @EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user"})
-public class DbReplicasetConfig extends AbstractReactiveMongoConfiguration {
+public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
 
   private String rootUri;
   private String db;
@@ -54,7 +53,7 @@ public class DbReplicasetConfig extends AbstractReactiveMongoConfiguration {
               "replicaSet=" + rsName +
               "&authSource=" + authDb;
 
-    System.out.println("Connection ---> appProperties ---> " + appPropertiesDbConnection);
+    System.out.println("Connection Replicaset ---> " + appPropertiesDbConnection);
 
     return MongoClients.create(appPropertiesDbConnection);
   }
@@ -65,10 +64,4 @@ public class DbReplicasetConfig extends AbstractReactiveMongoConfiguration {
 
     return db;
   }
-
-
-  //  @Bean
-  //  public ReactiveMongoTemplate reactiveMongoTemplate() {
-  //    return new ReactiveMongoTemplate(reactiveMongoClient(),getDatabaseName());
-  //  }
 }

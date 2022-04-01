@@ -1,15 +1,19 @@
 package com.mongo.rs.modules.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.mongo.rs.modules.user.UserConfigRoutes.*;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static io.netty.util.internal.StringUtil.isNullOrEmpty;
+import static org.springframework.http.HttpStatus.*;
 
 // ==> EXCEPTIONS IN CONTROLLER:
 // *** REASON: IN WEBFLUX, EXCEPTIONS MUST BE IN CONTROLLER - WHY?
@@ -17,6 +21,7 @@ import static org.springframework.http.HttpStatus.OK;
 //     - caso um erro aconteça em uma thread que não é a que operou a controller,
 //     - o ControllerAdvice não vai ser notificado "
 //     - https://medium.com/nstech/programa%C3%A7%C3%A3o-reativa-com-spring-boot-webflux-e-mongodb-chega-de-sofrer-f92fb64517c3
+//     - https://github.com/netshoes/blog-spring-reactive/blob/master/src/main/java/com/netshoes/products/gateways/http/ProductController.java
 @RestController
 @RequestMapping(ROOT)
 @RequiredArgsConstructor
@@ -28,7 +33,11 @@ public class UserResourceCrud {
   @ResponseStatus(CREATED)
   public Mono<User> save(@RequestBody User user) {
 
-    return serviceCrudImpl.save(user);
+    return
+         serviceCrudImpl
+              .save(user)
+              .doOnNext(this::throwSimpleExceptionWhenEmptyName)
+         ;
   }
 
   @GetMapping(CRUD_FINDALL)
@@ -38,11 +47,23 @@ public class UserResourceCrud {
     return serviceCrudImpl.findAll();
   }
 
-//  @Transactional
+  @Transactional
   @PostMapping(CRUD_SAVE_TRANSACT)
   @ResponseStatus(CREATED)
-  public Flux<User> saveTransact(@RequestBody List<User> userList) {
+  public Flux<User> saveTransac(@RequestBody List<User> userList) {
 
-    return serviceCrudImpl.saveTransact(userList);
+    return
+         serviceCrudImpl
+              .saveTransact(userList)
+              .doOnNext(this::throwSimpleExceptionWhenEmptyName)
+         ;
   }
+
+  private void throwSimpleExceptionWhenEmptyName(User user) {
+
+    if (isNullOrEmpty(user.getName())) {
+      throw new ResponseStatusException(BAD_REQUEST, "Fail: Empty Name");
+    }
+  }
+
 }

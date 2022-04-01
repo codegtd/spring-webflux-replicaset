@@ -2,6 +2,8 @@ package com.mongo.rs.modules;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
 import com.mongo.rs.core.config.DbUtilsConfig;
+import com.mongo.rs.core.testcontainer.compose.TcCompose;
+import com.mongo.rs.core.testcontainer.compose.TcComposeConfig;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.User;
 import com.mongo.rs.modules.user.UserServiceCrud;
@@ -12,6 +14,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.junit.jupiter.Container;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
@@ -50,14 +54,13 @@ import static org.springframework.http.HttpStatus.OK;
 @Import({DbUtilsConfig.class})
 @DisplayName("1 CommonTests-TcCompose")
 @ResourceConfig
-//@ActiveProfiles("test-rs")
-@ActiveProfiles("test-std")
-//@ActiveProfiles("test-tc-comp")
-//@TcCompose
-public class Common {
+//@ActiveProfiles("test-dev-std")
+@ActiveProfiles("test-dev-tc-comp")
+@TcCompose
+public class CommonTest {
 
-  //  @Container
-  //  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
+  @Container
+  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
 
   final String enabledTest = "true";
 

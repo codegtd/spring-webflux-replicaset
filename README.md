@@ -4,24 +4,9 @@
     1. RestControllers
 
 
-2. MongoDB Strategy:
-    1. Reactive SpringDataMongoDB
-        1. Crud
-        2. Repo
-        3. Template
-    2. Services:
-        1. Embed Objects
-        2. Referencing
-        3. _"Assemble"_ full objects
-    3. Example Sources:
-        1. [Spring Project](https://github.com/spring-projects/spring-data-examples)
-        2. Spring DataMongo
-
-
 3. Application.Yml:
     1. Importation of properties:
-        1. "@Value" annotation
-        2. PropertySource
+        1. PropertySource
     2. Yml filesystem-Format
     3. Custom Logging.pattern.console
 
@@ -47,42 +32,19 @@
 
 
 4. Testcontainers:
-    * Containers:
-        - Annotation (TcContainerConfig)
-            - EX.: ResourceTransactionExcTest
-        - ContextConfiguration - initializers
-            - EX.: ResourceTransactionTest
-    * Compose - Annotation
-
-
-5. CRUD Strategy:
-    1. OPTIMISTIC-LOCKING-UPDATE:
-        1. Uses the 'VERSION-ANNOTATION' in the Java-Entity
-        2. to prevent problems caused by 'CONCURRENT-UPDATES'
-        3. EXPLANATION:
-            1. The ENTITY-VERSION in the UPDATING-OBJECT
-            2. must be the same ENTITY-VERSION as the DB-OBJECT
+    * Containers
+      * automatic replicaset allow test transactions
+    * Compose
 
 
 6. Architectural Strategy:
-    * SOLID
-    * Screaming Architecture
+    * Screaming Architecture (core + modules)
     * CDC: Contract driven development
     * Testability:
         * TDD/CDC: Controllers
-        * Confirmation: Service
-        * Reactive Queries
-
 
 7. Spring Data  (findPostsByAuthor_Id)
     1. @Transactions
-    2. Queries
-        1. Derived:
-            1. Simple
-            2. Relationships
-        2. Parameter
-        3. Native
-        4. Criteria
     3. Examples:
         1. [SpringaData Project](https://github.com/spring-projects/spring-data-examples)
         2. [MongoDB](https://github.com/spring-projects/spring-data-examples/tree/main/mongodb)
@@ -91,25 +53,15 @@
 
 8. Project Organization:
     1. Crud (ReactiveCrudRepository)
-    2. Repo (ReactiveMongoRepository)
-    3. Template (ReactiveMongoTemplate):
-        1. Templ
-        2. Aggregations
-        3. TemplChildArrays
-            1. Element Arrays
-            2. Child Objects Lists
-        4. TemplCollections
-            1. Operations in multiple collections
-
-
-9. Bean Validation:
-    1. Annotations - javax.validation.constraints:
-        1. @NotEmpty
-        2. @Positive
 
 
 10. Exceptions:
-    1. Global
+    1. Exceptions must be in  Controller/Resource:
+        1. Reason:
+            1. Como stream pode ser manipulado por diferentes grupos de thread, caso um erro aconteça em uma thread que não é a que operou a controller,o ControllerAdvice não vai ser notificado "
+            2. As stream can be handled by different thread groups, if an error happens on a thread other than the one that operated the controller, ControllerAdvice will not be notified "
+        2. Source: medium.com/nstech/programa%C3%A7%C3%A3o-reativa-com-spring-boot-webflux-e-mongodb-chega-de
+           -sofrer-f92fb64517c3 // github.com/netshoes/blog-spring-reactive
     2. Custom
         1. Importation/validation of properties:
             1. @PropertySource
@@ -127,3 +79,6 @@
         2. JsonSchemaValidator
             1. Validate Responses
     3. Ordered tests (Junit 5.8.2)
+    4. Suites
+       1. source: https://howtodoinjava.com/junit5/junit5-test-suites-examples/
+    5. Tags

@@ -8,12 +8,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
 // ========================== PropertySource + ConfigurationProperties =============================
@@ -24,11 +22,11 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @Setter
 @Getter
 // =================================================================================================
-@Profile("standalone")
+@Profile("dev-std")
 @Slf4j
 @Configuration
 @EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user"})
-public class DbStandaloneConfig extends AbstractReactiveMongoConfiguration {
+public class DbDevStandaloneConfig extends AbstractReactiveMongoConfiguration {
   private String host;
   private String port;
   private String authenticationDatabase;
@@ -50,7 +48,7 @@ public class DbStandaloneConfig extends AbstractReactiveMongoConfiguration {
          "?authSource=" + authenticationDatabase;
 
 
-    System.out.println("Connection ---> appProperties ---> " + appPropertiesDbConnection);
+    System.out.println("Connection Standalone ---> " + appPropertiesDbConnection);
 
     return MongoClients.create(appPropertiesDbConnection);
   }
@@ -61,9 +59,4 @@ public class DbStandaloneConfig extends AbstractReactiveMongoConfiguration {
 
     return database;
   }
-
-//    @Bean
-//    public ReactiveMongoTemplate reactiveMongoTemplate() {
-//      return new ReactiveMongoTemplate(reactiveMongoClient(),getDatabaseName());
-//    }
 }
