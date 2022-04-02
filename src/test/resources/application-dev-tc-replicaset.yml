@@ -1,6 +1,0 @@
-spring:
-  data:
-    mongodb:
-#      username: root
-#      password: root
-#      authentication-database: admin

@@ -82,3 +82,6 @@
     4. Suites
        1. source: https://howtodoinjava.com/junit5/junit5-test-suites-examples/
     5. Tags
+    6. Get environment.getActiveProfiles() for detect ReplicasetProfile
+    7. EnabledIfSystemProperty
+       1. source: https://self-learning-java-tutorial.blogspot.com/2021/07/junit5-enabledifsystemproperty.html

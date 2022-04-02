@@ -2,20 +2,21 @@ package com.mongo.rs.modules;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
 import com.mongo.rs.core.config.ReplicasetConfig;
-import com.mongo.rs.core.testcontainer.container.TcContainerReplicasetTransaction;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.User;
 import com.mongo.rs.modules.user.UserServiceCrud;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
-
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.mongo.rs.core.databuilders.UserBuilder.userNoID;
@@ -61,9 +62,9 @@ import static org.springframework.http.HttpStatus.CREATED;
 @Import({ReplicasetConfig.class})
 @DisplayName("2 RS-Transaction-TcContainer")
 @ResourceConfig
-//@ActiveProfiles("test-dev-std")
-@ActiveProfiles("test-tc-rs")
-@TcContainerReplicasetTransaction // TEST TRANSACTIONS
+@ActiveProfiles("test-dev-std")
+//@ActiveProfiles("test-dev-tc-rs")
+//@TcContainerReplicasetTransaction // TEST TRANSACTIONS
 public class TransactionsTest {
   /*
 ╔════════════════════════════════════════════════════════════╗
@@ -79,8 +80,9 @@ public class TransactionsTest {
 ╚════════════════════════════════════════════════════════════╝
 */
 
+  static final String isReplicasetEnabledProperty = "rsProfile";
+  static final String replicasetProfile = "test-dev-tc-rs";
   final String enabledTest = "true";
-
   @Autowired
   WebTestClient mockedWebClient;
 
@@ -92,6 +94,9 @@ public class TransactionsTest {
 
   User user1;
   private User userNoId;
+
+  @Autowired
+  private Environment environment;
 
 
   @BeforeAll
@@ -106,13 +111,15 @@ public class TransactionsTest {
     //    blockhoundInstallWithSpecificAllowedCalls();
     //    blockhoundInstallWithAllAllowedCalls();
 
-
     globalBeforeAll();
     globalTestMessage(testInfo.getDisplayName(), "class-start");
     RestAssuredWebTestClient.reset();
     RestAssuredWebTestClient.requestSpecification =
          requestSpecsSetPath("http://localhost:8080" + ROOT);
     RestAssuredWebTestClient.responseSpecification = responseSpecs();
+
+    System.clearProperty("isReplicasetEnabledProperty");
+    System.setProperty(isReplicasetEnabledProperty, replicasetProfile);
   }
 
   @AfterAll
@@ -138,6 +145,7 @@ public class TransactionsTest {
     Flux<User> userFlux = dbUtils.cleanDbAndSaveList(userList);
 
     dbUtils.countAndExecuteFlux(userFlux, 2);
+
   }
 
 
@@ -151,6 +159,10 @@ public class TransactionsTest {
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
+  @EnabledIfSystemProperty(
+       named = isReplicasetEnabledProperty,
+       matches = "true",
+       disabledReason = "Transactions/Rollbacks only work with Replicasets")
   @Tag("replicaset-transaction")
   @DisplayName("2 saveRollback")
   public void saveRollback() {
@@ -182,6 +194,10 @@ public class TransactionsTest {
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
+  @EnabledIfSystemProperty(
+       named = isReplicasetEnabledProperty,
+       matches = "true",
+       disabledReason = "Transactions/Rollbacks only work with Replicasets")
   @Tag("replicaset-transaction")
   @DisplayName("1 NoRollback")
   public void saveNoRollback() {
@@ -217,8 +233,9 @@ public class TransactionsTest {
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
-  @Tag("standalone")
-  @Tag("replicaset-transaction")
+  @Tags(value = {
+       @Tag("replicaset-transaction"),
+       @Tag("standalone")})
   @DisplayName("3 saveWithID")
   public void saveWithID() {
 
@@ -245,11 +262,15 @@ public class TransactionsTest {
     dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 3);
   }
 
-  //  @Test
-  //  @EnabledIf(expression = enabledTest, loadContext = true)
-  //  @DisplayName("3 BHWorks")
-  //  public void bHWorks() {
-  //
-  //    blockHoundTestCheck();
-  //  }
+  private String isReplicasetProfileEnabled(String[] profiles, String profile) {
+
+    final String valueOf = String.valueOf(Arrays.stream(profiles)
+                                                .anyMatch(str -> str.equals(profile)));
+    return valueOf;
+    //    final String valueOf = String.valueOf(Arrays.stream(profiles)
+    //                                          .filter(str -> str.equals(profile)));
+    //    return valueOf;
+
+  }
+
 }

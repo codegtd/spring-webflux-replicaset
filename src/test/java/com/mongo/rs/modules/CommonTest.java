@@ -54,12 +54,12 @@ import static org.springframework.http.HttpStatus.OK;
 @Import({DbUtilsConfig.class})
 @DisplayName("1 CommonTests-TcCompose")
 @ResourceConfig
-//@ActiveProfiles("test-dev-std")
-@ActiveProfiles("test-dev-tc-comp")
-@TcCompose
+@ActiveProfiles("test-dev-std")
+//@ActiveProfiles("test-dev-tc-comp")
+//@TcCompose
 public class CommonTest {
 
-  @Container
+//  @Container
   private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
 
   final String enabledTest = "true";
@@ -190,12 +190,4 @@ public class CommonTest {
 
     dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 2);
   }
-
-  //  @Test
-  //  @EnabledIf(expression = enabledTest, loadContext = true)
-  //  @DisplayName("1 BHWorks")
-  //  public void bHWorks() {
-  //
-  //    BlockhoundUtils.blockHoundTestCheck();
-  //  }
 }

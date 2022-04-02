@@ -3,8 +3,9 @@ spring:
     # active: test-comp
     group:
       # ALLOW Transactions - REPLICASET
-      test-tc-rs: log, dev-tc-replicaset # Testcontainer-ContainerModule
+      # Testcontainer: ContainerModule + ComposeModule
+      test-dev-tc-rs: log, dev-tc-container
 
       # NOT ALLOW Transactions - STAND-ALONE
-      test-dev-std: log, dev-standalone # Docker-Compose: compose-dev-standalone.yml
+      test-dev-std: log, dev-standalone
       test-dev-tc-comp: log, dev-tc-compose # Testcontainer-ComposeModule
