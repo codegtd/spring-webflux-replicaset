@@ -52,14 +52,14 @@ import static org.springframework.http.HttpStatus.OK;
      @Tag("replicaset-transaction"),
      @Tag("standalone")})
 @Import({DbUtilsConfig.class})
-@DisplayName("1 CommonTests-TcCompose")
+@DisplayName("1 CommonTest")
 @ResourceConfig
-@ActiveProfiles("test-dev-std")
-//@ActiveProfiles("test-dev-tc-comp")
-//@TcCompose
+//@ActiveProfiles("test-dev-std")
+@ActiveProfiles("test-dev-tc-comp")
+@TcCompose
 public class CommonTest {
 
-//  @Container
+  @Container
   private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
 
   final String enabledTest = "true";

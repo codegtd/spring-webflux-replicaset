@@ -4,22 +4,24 @@
     1. RestControllers
 
 
-3. Application.Yml:
+2. Application.Yml:
     1. Importation of properties:
         1. PropertySource
     2. Yml filesystem-Format
     3. Custom Logging.pattern.console
 
 
-4. Application PROFILES:
+3. Application PROFILES:
     1. **Sufix:** Defining Application-sufix.Yml files
     2. **Annotations:** Selecting beans with specific Db properties
     3. **Groups:**
         1. Active group using _active-profile property_
-        2. Grouping profiles [check link](https://www.baeldung.com/spring-profiles#4-profile-groups)
+        2. Grouping profiles:
+           1. Source:
+              1. [baeldung](https://www.baeldung.com/spring-profiles#4-profile-groups)
 
 
-5. Docker:
+4. Docker:
     1. Compose
         1. _Specific file:_ **dev-compose.yml**
     2. Dockerfile
@@ -31,7 +33,7 @@
             1. ex.: compose-up.bat using clean.bat
 
 
-4. Testcontainers:
+5. Testcontainers:
     * Containers
       * automatic replicaset allow test transactions
     * Compose
@@ -55,13 +57,14 @@
     1. Crud (ReactiveCrudRepository)
 
 
-10. Exceptions:
+9. Exceptions:
     1. Exceptions must be in  Controller/Resource:
         1. Reason:
             1. Como stream pode ser manipulado por diferentes grupos de thread, caso um erro aconteça em uma thread que não é a que operou a controller,o ControllerAdvice não vai ser notificado "
             2. As stream can be handled by different thread groups, if an error happens on a thread other than the one that operated the controller, ControllerAdvice will not be notified "
-        2. Source: medium.com/nstech/programa%C3%A7%C3%A3o-reativa-com-spring-boot-webflux-e-mongodb-chega-de
-           -sofrer-f92fb64517c3 // github.com/netshoes/blog-spring-reactive
+        2. Sources:
+           1.  [Medium](https://medium.com/nstech/programa%C3%A7%C3%A3o-reativa-com-spring-boot-webflux-e-mongodb-chega-de-sofrer-f92fb64517c3)
+           2. [Github](https://github.com/netshoes/blog-spring-reactive)
     2. Custom
         1. Importation/validation of properties:
             1. @PropertySource
@@ -70,7 +73,7 @@
                     1. Do not need "@Value" annotation
 
 
-11. Tests - Junit 5:
+10. Tests - Junit 5:
     1. MultiThread/Parallel Test
         1. Aborted: Because server-costs in CI/CD
     2. RestAssured:
@@ -80,8 +83,16 @@
             1. Validate Responses
     3. Ordered tests (Junit 5.8.2)
     4. Suites
-       1. source: https://howtodoinjava.com/junit5/junit5-test-suites-examples/
+       1. Source: 
+          1. [junit5-test-suites-examples](https://howtodoinjava.com/junit5/junit5-test-suites-examples/)
     5. Tags
-    6. Get environment.getActiveProfiles() for detect ReplicasetProfile
+    6. System.setProperty:
+       1. Get environment.getActiveProfiles() for detect ReplicasetProfile
     7. EnabledIfSystemProperty
-       1. source: https://self-learning-java-tutorial.blogspot.com/2021/07/junit5-enabledifsystemproperty.html
+       1. Source:
+          1. [junit5-enabledifsystempropert](https://self-learning-java-tutorial.blogspot.com/2021/07/junit5-enabledifsystemproperty.html)
+    8. Spring Expression Language (SpEL) expressions:
+       1. EnabledIf + SpEL
+          1. Sources:
+             1. [Article: spring-5-enabledIf](https://www.baeldung.com/spring-5-enabledIf)
+             2. [junit-5-conditional-test-execution](https://www.baeldung.com/junit-5-conditional-test-execution)

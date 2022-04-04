@@ -1,6 +1,5 @@
 spring:
   profiles:
-    # active: test-comp
     group:
       # ALLOW Transactions - REPLICASET
       # Testcontainer: ContainerModule + ComposeModule

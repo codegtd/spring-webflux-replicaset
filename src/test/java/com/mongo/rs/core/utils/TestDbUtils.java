@@ -1,8 +1,8 @@
 package com.mongo.rs.core.utils;
 
+import com.mongo.rs.modules.user.User;
 import com.mongo.rs.modules.user.UserDAOCrud;
 import com.mongo.rs.modules.user.UserDAOTemplColections;
-import com.mongo.rs.modules.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Flux;
@@ -15,10 +15,10 @@ import java.util.List;
 public class TestDbUtils {
 
   @Autowired
-  UserDAOCrud userCrudRepo;
+  private UserDAOCrud userCrudRepo;
 
   @Autowired
-  UserDAOTemplColections repoColections;
+  private UserDAOTemplColections repoColections;
 
 
   public <E> void countAndExecuteFlux(Flux<E> flux, int totalElements) {
