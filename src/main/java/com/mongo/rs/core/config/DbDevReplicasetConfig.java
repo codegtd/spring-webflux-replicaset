@@ -24,12 +24,12 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @Getter
 // =================================================================================================
 
-@Profile("prod-rs")
+@Profile("dev-rs")
 @Import({DbTransactionManagerConfig.class})
 @Slf4j
 @Configuration
 @EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user"})
-public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
+public class DbDevReplicasetConfig extends AbstractReactiveMongoConfiguration {
 
   private String rootUri;
   private String db;
@@ -40,20 +40,19 @@ public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
 
   @Override
   public MongoClient reactiveMongoClient() {
-    /*╔════════════════════════════════════════════════╗
-      ║ REPLICASET-THREE-NODES-MONGO-DB PRODUCTION URL ║
-      ╠════════════════════════════════════════════════╩═════╗
-      ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db ║
-      ║           ?replicaSet=docker-rs&authSource=admin     ║
-      ╚══════════════════════════════════════════════════════╝*/
-
+/*╔═══════════════════════════════════════════════════╗
+  ║  REPLICASET-SINGLE-NODE-MONGO-DB DEVELOPMENT URL  ║
+  ╠═══════════════════════════════════════════════════╩═════════════════╗
+  ║ mongodb://myservice-mongodb:27017/                                  ║
+  ║ ?connect=direct&replicaSet=singleNodeReplSet&readPreference=primary ║
+  ╚═════════════════════════════════════════════════════════════════════╝*/
     final String appDbConnection =
          rootUri +
-              "/" + db +
-              "?replicaSet=" + rsName +
-              "&authSource=" + authDb;
+              "/?connect=direct" +
+              "&replicaSet=" + rsName +
+              "&readPreference=primary";
 
-    System.out.println("Connection Replicaset ---> " + appDbConnection);
+    System.out.println("Connect DB Replicaset-Single-Node ---> " + appDbConnection);
 
     return MongoClients.create(appDbConnection);
   }

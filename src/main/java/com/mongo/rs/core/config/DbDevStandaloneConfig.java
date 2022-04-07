@@ -36,21 +36,22 @@ public class DbDevStandaloneConfig extends AbstractReactiveMongoConfiguration {
 
   @Override
   public MongoClient reactiveMongoClient() {
-    /*
-         ╔═══════════════════════════════╗
-         ║    STANDALONE-MONGO-DB URL    ║
-         ╚═══════════════════════════════╝
-    */
-    //"mongodb://user:password@host:port/database?authSource=auth"
-    String appPropertiesDbConnection = "mongodb://" +
-         username + ":" + password + "@" +
-         host + ":" + port + "/" + database +
-         "?authSource=" + authenticationDatabase;
+    /*╔════════════════════════════════╗
+      ║    STANDALONE-MONGO-DB  URL    ║
+      ╠════════════════════════════════╩═══════════════════════════╗
+      ║ mongodb://user:password@host:port/database?authSource=auth ║
+      ╚════════════════════════════════════════════════════════════╝*/
+    String appDbConnection =
+         "mongodb://" +
+              username + ":" + password +
+              "@" + host + ":" + port +
+              "/" + database +
+              "?authSource=" + authenticationDatabase;
 
 
-    System.out.println("Connection Standalone ---> " + appPropertiesDbConnection);
+    System.out.println("Connection Standalone ---> " + appDbConnection);
 
-    return MongoClients.create(appPropertiesDbConnection);
+    return MongoClients.create(appDbConnection);
   }
 
 

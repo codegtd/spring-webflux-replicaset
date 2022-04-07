@@ -2,8 +2,6 @@ package com.mongo.rs.modules;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
 import com.mongo.rs.core.config.DbUtilsConfig;
-import com.mongo.rs.core.testcontainer.compose.TcCompose;
-import com.mongo.rs.core.testcontainer.compose.TcComposeConfig;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.User;
 import com.mongo.rs.modules.user.UserServiceCrud;
@@ -14,8 +12,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import org.testcontainers.containers.DockerComposeContainer;
-import org.testcontainers.junit.jupiter.Container;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
@@ -48,19 +44,12 @@ import static org.springframework.http.HttpStatus.OK;
      ║B.3) START DOCKER-CONTAINER (DOCKER-BAT-SCRIPT-PROFILE)   ║
      ║B.4) RUN THE TESTS                                        ║
      ╚══════════════════════════════════════════════════════════╝*/
-@Tags(value = {
-     @Tag("replicaset-transaction"),
-     @Tag("standalone")})
+@Tags(value = {@Tag("replicaset")})
 @Import({DbUtilsConfig.class})
-@DisplayName("1 CommonTest")
+@DisplayName("1 Common Replicaset")
 @ResourceConfig
-//@ActiveProfiles("test-dev-std")
-@ActiveProfiles("test-dev-tc-comp")
-@TcCompose
-public class CommonTest {
-
-  @Container
-  private static final DockerComposeContainer<?> compose = new TcComposeConfig().getContainer();
+@ActiveProfiles({"test-dev-rs"})
+public class CommonReplicasetTest {
 
   final String enabledTest = "true";
 

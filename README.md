@@ -17,15 +17,20 @@
     3. **Groups:**
         1. Active group using _active-profile property_
         2. Grouping profiles:
-           1. Source:
-              1. [baeldung](https://www.baeldung.com/spring-profiles#4-profile-groups)
+           1. Source:  [baeldung](https://www.baeldung.com/spring-profiles#4-profile-groups)
 
 
 4. Docker:
     1. Compose
-        1. _Specific file:_ **dev-compose.yml**
+        1. _Specific file:_ **docker-compose.yml**
+           1. Profiles:
+              1. compose-dev-Replicaset: single-node
+                 1. Source: [compose-replicaset-singlenode](https://stackoverflow.com/questions/60671005/docker-compose-for-mongodb-replicaset)
+              2. compose-dev-Standalone: standalone-db
+              3. compose-prod-replicaset: three nodes
+        2. Environment variables use
     2. Dockerfile
-        1. _Specific file:_ **Dockerfile-dev**
+        1. _Specific file:_ **Dockerfile**
     3. Batch Scripts:
         1. Parametric-scripts (env_variables)
             1. Parametric-scripts IDE execution
@@ -83,16 +88,14 @@
             1. Validate Responses
     3. Ordered tests (Junit 5.8.2)
     4. Suites
-       1. Source: 
-          1. [junit5-test-suites-examples](https://howtodoinjava.com/junit5/junit5-test-suites-examples/)
+       1. Source:  [junit5-test-suites-examples](https://howtodoinjava.com/junit5/junit5-test-suites-examples/)
     5. Tags
     6. System.setProperty:
        1. Get environment.getActiveProfiles() for detect ReplicasetProfile
     7. EnabledIfSystemProperty
-       1. Source:
-          1. [junit5-enabledifsystempropert](https://self-learning-java-tutorial.blogspot.com/2021/07/junit5-enabledifsystemproperty.html)
+       1. Source:  [junit5-enabledifsystempropert](https://self-learning-java-tutorial.blogspot.com/2021/07/junit5-enabledifsystemproperty.html)
     8. Spring Expression Language (SpEL) expressions:
        1. EnabledIf + SpEL
           1. Sources:
-             1. [Article: spring-5-enabledIf](https://www.baeldung.com/spring-5-enabledIf)
+             1. [spring-5-enabledIf](https://www.baeldung.com/spring-5-enabledIf)
              2. [junit-5-conditional-test-execution](https://www.baeldung.com/junit-5-conditional-test-execution)

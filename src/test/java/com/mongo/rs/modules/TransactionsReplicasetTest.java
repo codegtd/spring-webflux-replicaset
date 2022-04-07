@@ -2,7 +2,6 @@ package com.mongo.rs.modules;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
 import com.mongo.rs.core.config.ReplicasetConfig;
-import com.mongo.rs.core.testcontainer.container.TcContainerReplicaset;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.User;
 import com.mongo.rs.modules.user.UserServiceCrud;
@@ -58,13 +57,12 @@ import static org.springframework.http.HttpStatus.CREATED;
   ║  d) and setting this URI in 'Properties of the Test'                 ║
   ╚══════════════════════════════════════════════════════════════════════╝
 */
+@Tags(value = {@Tag("replicaset")})
 @Import({ReplicasetConfig.class})
-@DisplayName("2 TransactionsTest")
+@DisplayName("4 Replicaset Transactions")
 @ResourceConfig
-//@ActiveProfiles("test-dev-std")
-@ActiveProfiles("test-dev-tc-rs")
-@TcContainerReplicaset // TEST TRANSACTIONS
-public class TransactionsTest {
+@ActiveProfiles("test-dev-rs")
+public class TransactionsReplicasetTest {
   /*
 ╔════════════════════════════════════════════════════════════╗
 ║              TEST-TRANSACTIONS + TEST-CONTAINERS           ║
@@ -92,7 +90,6 @@ public class TransactionsTest {
 
   User user1;
   private User userNoId;
-
 
   @BeforeAll
   static void beforeAll(TestInfo testInfo) {
@@ -124,7 +121,6 @@ public class TransactionsTest {
     closeTcContainer();
   }
 
-
   @BeforeEach
   void beforeEach(TestInfo testInfo) {
 
@@ -142,7 +138,6 @@ public class TransactionsTest {
 
   }
 
-
   @AfterEach
   void tearDown(TestInfo testInfo) {
 
@@ -150,12 +145,8 @@ public class TransactionsTest {
                               .toString(), "method-end");
   }
 
-
   @Test
-  @EnabledIf(expression =
-       "#{systemProperties[runTest] == 'true' " +
-            "&& environment.acceptsProfiles('test-dev-tc-rs')}",
-       loadContext = true)
+  @EnabledIf(expression = enabledTest, loadContext = true)
   @Tag("replicaset-transaction")
   @DisplayName("2 saveRollback")
   public void saveRollback() {
@@ -186,10 +177,7 @@ public class TransactionsTest {
   }
 
   @Test
-  @EnabledIf(expression =
-       "#{systemProperties[runTest] == 'true' " +
-            "&& environment.acceptsProfiles('test-dev-tc-rs')}",
-       loadContext = true)
+  @EnabledIf(expression = enabledTest, loadContext = true)
   @Tag("replicaset-transaction")
   @DisplayName("1 NoRollback")
   public void saveNoRollback() {

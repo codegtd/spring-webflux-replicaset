@@ -1,10 +1,14 @@
 spring:
   profiles:
     group:
-      # ALLOW Transactions - REPLICASET
-      # Testcontainer: ContainerModule + ComposeModule
+      # REPLICASET (ALLOW Transactions):
+      # A) Testcontainer: ContainerModule + ComposeModule
       test-dev-tc-rs: log, dev-tc-container
+      # B) DockerCompose: ReplicasetSingleNode (application-dev-replicaset.yml)
+      test-dev-rs: log, dev-replicaset
 
-      # NOT ALLOW Transactions - STAND-ALONE
+      # STANDALONE (NOT ALLOW Transactions):
+      # A) DockerCompose: Stand-Alone (application-dev-standalone.yml)
       test-dev-std: log, dev-standalone
+      # B) Testcontainer: ComposeModule
       test-dev-tc-comp: log, dev-tc-compose # Testcontainer-ComposeModule
