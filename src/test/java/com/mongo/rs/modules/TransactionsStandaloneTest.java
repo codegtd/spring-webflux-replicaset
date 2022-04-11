@@ -60,7 +60,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @Import({ReplicasetConfig.class})
 @DisplayName("3 Standalone Transactions")
 @ResourceConfig
-@ActiveProfiles("test-dev-std")
+@ActiveProfiles("test-development-dockercompose-standalone-noreplicaset")
 public class TransactionsStandaloneTest {
   /*
 ╔════════════════════════════════════════════════════════════╗

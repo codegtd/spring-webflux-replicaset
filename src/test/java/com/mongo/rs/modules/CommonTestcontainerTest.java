@@ -52,7 +52,7 @@ import static org.springframework.http.HttpStatus.OK;
 @Import({DbUtilsConfig.class})
 @DisplayName("1 TC Common")
 @ResourceConfig
-@ActiveProfiles("test-dev-tc-comp")
+@ActiveProfiles("test-development-testcontainer-composemodule-noreplicaset")
 @TcCompose
 public class CommonTestcontainerTest {
 

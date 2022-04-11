@@ -9,7 +9,7 @@ import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
 @Suite
-@SuiteDisplayName("Tc-Compose: TestcontainerSuite")
+@SuiteDisplayName("TestContainer: TestSuite")
 @SelectClasses({
      CommonTestcontainerTest.class,
      TransactionsTestcontainerTest.class})
