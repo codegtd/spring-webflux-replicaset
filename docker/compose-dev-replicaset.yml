@@ -2,13 +2,10 @@ version: "3.4"
 
 x-common-variables:
   &env-vars
+  PORT_API: 8080
   RS_ROOT_URI: mongodb://mongo1-db:27017
   RS_DB: dev-rs-db
   RS_NAME: devSingleNodeRs
-  RS_AUTH: admin
-  RS_USERNAME: dev-rs
-  RS_PASSWORD: dev-rs
-  PORT_API: 8080
 
 networks:
   api-net:
@@ -54,6 +51,8 @@ services:
       - replicaset-setup
     networks:
       - api-net
+    env_file:
+      - ../docker/secrets/secrets_dev_replicaset.env
     environment:
       PORT_DEBUG: 5005
       <<: *env-vars

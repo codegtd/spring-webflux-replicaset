@@ -28,7 +28,13 @@
                  1. Source: [compose-replicaset-singlenode](https://stackoverflow.com/questions/60671005/docker-compose-for-mongodb-replicaset)
               2. compose-dev-Standalone: standalone-db
               3. compose-prod-replicaset: three nodes
-        2. Environment variables use
+        2. Environment:
+           1. compose variables
+           2. env_file (secrets)
+              1. [Tutorial](https://www.youtube.com/watch?v=1je3VxDF67o)
+        3. Secrets
+           1. [secrets-with-docker-compose](https://www.rockyourcode.com/using-docker-secrets-with-docker-compose/)
+           2. [secrets-during-development](https://blog.mikesir87.io/2017/05/using-docker-secrets-during-development/)
     2. Dockerfile
         1. _Specific file:_ **Dockerfile**
     3. Batch Scripts:

@@ -5,10 +5,6 @@ x-common-variables:
   PORT_API: 8080
   HOST_DB: mongo1
   PORT_DB: 27017
-  AUTH_DB: admin
-  MONGO_INITDB_DATABASE: dev-std-db
-  MONGO_INITDB_ROOT_USERNAME: root
-  MONGO_INITDB_ROOT_PASSWORD: root
 
 networks:
   api-net:
@@ -24,6 +20,8 @@ services:
       - api-net
     volumes:
       - ../docker/mongo-data-db:/data/db
+    env_file:
+      - ../docker/secrets/secrets_dev_standalone.env
     environment:
       *env-vars
 
@@ -44,6 +42,8 @@ services:
       - mongo1
     networks:
       - api-net
+    env_file:
+      - ../docker/secrets/secrets_dev_standalone.env
     environment:
       PORT_DEBUG: 5005
       <<: *env-vars

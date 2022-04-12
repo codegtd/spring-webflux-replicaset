@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### OTHERS ###
+/docker/secrets/
+/docker/mongo-data-db/
