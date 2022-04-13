@@ -46,12 +46,19 @@ public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
       ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db ║
       ║           ?replicaSet=docker-rs&authSource=admin     ║
       ╚══════════════════════════════════════════════════════╝*/
-
     final String appDbConnection =
-         rootUri +
+         "mongodb://" +
+              username + ":" + password +
+              "@" + rootUri +
               "/" + db +
               "?replicaSet=" + rsName +
               "&authSource=" + authDb;
+
+    //    final String appDbConnection =
+    //         rootUri +
+    //              "/" + db +
+    //              "?replicaSet=" + rsName +
+    //              "&authSource=" + authDb;
 
     System.out.println("Connection Replicaset ---> " + appDbConnection);
 

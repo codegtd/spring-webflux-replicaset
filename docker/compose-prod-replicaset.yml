@@ -1,16 +1,23 @@
 version: "3.4"
 
-secrets:
-  RS_USER:
-    external: true
-  RS_PASSWORD:
-    external: true
+#secrets:
+#  db_username:
+#    file: ../docker/secrets/prod_rs_username
+#  db_password:
+#    file: ../docker/secrets/prod_rs_password
+#  db_admin:
+#    file: ../docker/secrets/prod_rs_admin
 
 x-common-variables:
   &env-vars
   PORT_API: 8080
   PORT_DEBUG: 5005
-  RS_ROOT_URI: mongodb://mongo1:9042,mongo2:9142,mongo3:9242
+  RS_AUTH: admin
+  RS_USERNAME: admin
+  RS_PASSWORD: admin
+#  RS_ROOT_URI=mongodb://mongo1:9042,mongo2:9142,mongo3:9242
+#  RS_DB=prod-db
+#  RS_NAME=docker-rs
 
 volumes:
   api_vol:
@@ -32,14 +39,16 @@ services:
       - ~/mongors/data1:/data/db
     depends_on:
       - mongo2
-    secrets:
-      - RS_USER
-      - RS_PASSWORD
+#    secrets:
+#      - db_username
+#      - db_password
+#      - db_admin
     env_file:
-      - ../docker/secrets/rs_db_parameters.env
-    environment:
-      RS_USERNAME_FILE: ../docker/secrets/prod_replicaset_username
-      RS_PASSWORD_FILE: ../docker/secrets/prod_replicaset_password
+      - ./envs/env_db_parameters.env
+#    environment:
+#      RS_USERNAME_FILE: /run/secrets/db_username
+#      RS_PASSWORD_FILE: /run/secrets/db_password
+#      RS_AUTH_FILE: /run/secrets/db_admin
     healthcheck:
       test: mongo --user=$$RS_USERNAME --password=$$RS_PASSWORD --port=9042
       interval: 20s
@@ -90,13 +99,15 @@ services:
       - api_net
     depends_on:
       - mongo1
-    secrets:
-      - RS_USER
-      - RS_PASSWORD
+#    secrets:
+#      - db_username
+#      - db_password
+#      - db_admin
     env_file:
-      - ../docker/secrets/rs_db_parameters.env
+      - ./envs/env_db_parameters.env
     environment:
-      RS_USERNAME_FILE: ../docker/secrets/prod_replicaset_username
-      RS_PASSWORD_FILE: ../docker/secrets/prod_replicaset_password
+#      RS_USERNAME_FILE: /run/secrets/db_username
+#      RS_PASSWORD_FILE: /run/secrets/db_password
+#      RS_AUTH_FILE: /run/secrets/db_admin
       <<: *env-vars
       DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m

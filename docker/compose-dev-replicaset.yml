@@ -52,7 +52,7 @@ services:
     networks:
       - api-net
     env_file:
-      - ../docker/secrets/secrets_dev_replicaset.env
+      - ../docker/envs/env_dev_replicaset.env
     environment:
       PORT_DEBUG: 5005
       <<: *env-vars

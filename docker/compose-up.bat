@@ -4,17 +4,19 @@ echo                        1) DOCKER-COMPOSE: Starts...
 echo ===========================================================================
 
 echo ===========================================================================
-echo                         2) DOCKER-COMPOSE: Maven
+echo                     2) DOCKER-COMPOSE: Maven Procedures
 echo ===========================================================================
 cd ..
 call mvn clean package -DskipTests
 
 echo ===========================================================================
-echo                        3) DOCKER-COMPOSE: Cleaning
+echo               3) DOCKER-COMPOSE: Cleaning previous services
 echo ===========================================================================
+cd
 cd docker
 call compose-clean.bat
 docker scan --version --json --group-issues
+
 
 set parameter1=%1
 echo ===========================================================================

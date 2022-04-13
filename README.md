@@ -35,6 +35,7 @@
         3. Secrets
            1. [secrets-with-docker-compose](https://www.rockyourcode.com/using-docker-secrets-with-docker-compose/)
            2. [secrets-during-development](https://blog.mikesir87.io/2017/05/using-docker-secrets-during-development/)
+           3. [docker-secrets](https://dzone.com/articles/introduction-to-docker-secrets)
     2. Dockerfile
         1. _Specific file:_ **Dockerfile**
     3. Batch Scripts:

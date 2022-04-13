@@ -21,7 +21,7 @@ services:
     volumes:
       - ../docker/mongo-data-db:/data/db
     env_file:
-      - ../docker/secrets/secrets_dev_standalone.env
+      - ../docker/envs/env_dev_standalone.env
     environment:
       *env-vars
 
@@ -43,7 +43,7 @@ services:
     networks:
       - api-net
     env_file:
-      - ../docker/secrets/secrets_dev_standalone.env
+      - ../docker/envs/env_dev_standalone.env
     environment:
       PORT_DEBUG: 5005
       <<: *env-vars

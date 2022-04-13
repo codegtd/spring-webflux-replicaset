@@ -2,15 +2,14 @@
 echo ===========================================================================
 echo                           CLEAN-UP: starting
 echo ===========================================================================
-
 cd
 docker system df
 
 echo ===========================================================================
-echo           CLEAN-UP: compose cleaning-up %parameter1% %parameter2%
+echo           CLEAN-UP: compose orphans %parameter1% %parameter2%
 echo ===========================================================================
-docker-compose -f compose-dev-replicaset.yml down --remove-orphans
-docker-compose -f compose-dev-standalone.yml down --remove-orphans
+docker-compose -f compose-dev-replicaset.yml  down --remove-orphans
+docker-compose -f compose-dev-standalone.yml  down --remove-orphans
 docker-compose -f compose-prod-replicaset.yml down --remove-orphans
 ::------------------------------------------------------------------------------
 docker container prune --force
