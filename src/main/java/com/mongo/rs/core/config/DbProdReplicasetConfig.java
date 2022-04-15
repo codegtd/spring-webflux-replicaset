@@ -32,43 +32,63 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
 
   private String rootUri;
-  private String db;
-  private String rsName;
+  private String database;
+  private String replicasetName;
   private String authDb;
   private String username;
   private String password;
 
   @Override
   public MongoClient reactiveMongoClient() {
-    /*╔════════════════════════════════════════════════╗
-      ║ REPLICASET-THREE-NODES-MONGO-DB PRODUCTION URL ║
-      ╠════════════════════════════════════════════════╩═════╗
-      ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db ║
-      ║           ?replicaSet=docker-rs&authSource=admin     ║
-      ╚══════════════════════════════════════════════════════╝*/
-    final String appDbConnection =
+    /*╔══════════════════════════════════════════════════════════════════════╗
+      ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (FULL:NO USER + PASSWORD) ║
+      ╠══════════════════════════════════════════════════════════════════════╩╗
+      ║ mongodb://username:password                                           ║
+      ║           @mongo1:9042,mongo2:9142,mongo3:9242/api-db                 ║
+      ║           ?replicaSet=docker-rs&authSource=admin                      ║
+      ╚═══════════════════════════════════════════════════════════════════════╝*/
+    final String appDbConnectionFull =
          "mongodb://" +
               username + ":" + password +
-              "@" + rootUri +
-              "/" + db +
-              "?replicaSet=" + rsName +
+              "@" + rootUri + // replicasetPrimary + ":" + replicasetPort
+              "/" + database +
+              "?replicaSet=" + replicasetName +
               "&authSource=" + authDb;
+    System.out.println("Connection Replicaset Full ---> " + appDbConnectionFull);
 
-    //    final String appDbConnection =
-    //         rootUri +
-    //              "/" + db +
-    //              "?replicaSet=" + rsName +
-    //              "&authSource=" + authDb;
+    /*╔═════════════════════════════════════════════════════════════════╗
+      ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (NO USER + PASSWORD) ║
+      ╠═════════════════════════════════════════════════════════════════╩═╗
+      ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db              ║
+      ║           ?replicaSet=docker-rs&authSource=admin                  ║
+      ╚═══════════════════════════════════════════════════════════════════╝*/
+    // "mongodb://" +
+    //      replicasetUsername + ":" + replicasetPassword +
+    //      "@" + replicasetPrimary + ":" + replicasetPort +
+    //      "/" + database +
+    //      "?replicaSet=" + replicasetName +
+    //      "&authSource=" + replicasetAuthenticationDb
 
-    System.out.println("Connection Replicaset ---> " + appDbConnection);
+    /*╔═════════════════════════════════════════════════════════════════╗
+      ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (NO USER + PASSWORD) ║
+      ╠═════════════════════════════════════════════════════════════════╩═╗
+      ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db              ║
+      ║           ?replicaSet=docker-rs&authSource=admin                  ║
+      ╚═══════════════════════════════════════════════════════════════════╝*/
+    //        final String appDbConnectionSimple =
+    //             rootUri +
+    //                  "/" + db +
+    //                  "?replicaSet=" + rsName +
+    //                  "&authSource=" + authDb;
+    //    System.out.println("Connection Replicaset Simple ---> " + appDbConnectionSimple);
 
-    return MongoClients.create(appDbConnection);
+    return MongoClients.create(appDbConnectionFull);
   }
 
 
   @Override
   protected String getDatabaseName() {
 
-    return db;
+    return database;
   }
 }

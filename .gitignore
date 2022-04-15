@@ -36,3 +36,4 @@ build/
 /docker/mongo-data-db/
 /docker/secrets/
 /docker/envs/
+/docker/ignore/

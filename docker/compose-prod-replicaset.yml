@@ -12,12 +12,12 @@ x-common-variables:
   &env-vars
   PORT_API: 8080
   PORT_DEBUG: 5005
+  RS_ROOT_URI: mongo1:9042
+#  RS_ROOT_URI: mongo1:9042,mongo2:9142,mongo3:9242
   RS_AUTH: admin
   RS_USERNAME: admin
   RS_PASSWORD: admin
-#  RS_ROOT_URI=mongodb://mongo1:9042,mongo2:9142,mongo3:9242
-#  RS_DB=prod-db
-#  RS_NAME=docker-rs
+
 
 volumes:
   api_vol:
@@ -82,6 +82,24 @@ services:
     volumes:
       - ~/mongors/data3:/data/db
 
+  replicaset-setup:
+    container_name: replicaset-setup
+    image: mongo:4.4.4
+    restart: on-failure
+    entrypoint: [ "/scripts/setup.sh" ]
+#    command: bash -c "
+#      sleep 5 &&
+#      chmod +x /scripts/setup.sh &&
+#      scripts/setup.sh"
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    networks:
+      - api_net
+    volumes:
+      - ./rs-script/setup.sh:/scripts/setup.sh
+
   api:
     container_name: api
     image: pauloportfolio/api
@@ -98,7 +116,8 @@ services:
     networks:
       - api_net
     depends_on:
-      - mongo1
+      - replicaset-setup
+#      - mongo1
 #    secrets:
 #      - db_username
 #      - db_password
