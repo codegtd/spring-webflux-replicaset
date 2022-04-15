@@ -16,7 +16,7 @@ x-common-variables:
 #  RS_ROOT_URI: mongo1:9042,mongo2:9142,mongo3:9242
   RS_AUTH: admin
   RS_USERNAME: admin
-  RS_PASSWORD: admin
+  RS_PASSWORD: xxxx
 
 
 volumes:
@@ -25,6 +25,8 @@ volumes:
 networks:
   api_net:
 
+#https://stackoverflow.com/questions/38524150/mongodb-replica-set-with-simple-password-authentication
+#I finally found the answer. MongoDB replica set needs both user account and keyfile. Keyfile seems for authentication between servers in the replica set, not for logging in.
 services:
   mongo1:
     container_name: mongo1
@@ -46,15 +48,11 @@ services:
     env_file:
       - ./envs/env_db_parameters.env
 #    environment:
+#      MONGO_INITDB_ROOT_USERNAME: user
+#      MONGO_INITDB_ROOT_PASSWORD: xxxx
 #      RS_USERNAME_FILE: /run/secrets/db_username
 #      RS_PASSWORD_FILE: /run/secrets/db_password
 #      RS_AUTH_FILE: /run/secrets/db_admin
-    healthcheck:
-      test: mongo --user=$$RS_USERNAME --password=$$RS_PASSWORD --port=9042
-      interval: 20s
-      timeout: 10s
-      start_period: 5s
-      retries: 5
 
   mongo2:
     container_name: mongo2
@@ -86,11 +84,11 @@ services:
     container_name: replicaset-setup
     image: mongo:4.4.4
     restart: on-failure
-    entrypoint: [ "/scripts/setup.sh" ]
-#    command: bash -c "
-#      sleep 5 &&
-#      chmod +x /scripts/setup.sh &&
-#      scripts/setup.sh"
+#    entrypoint: [ "bash", "-c", "sleep 20 && /scripts/setup.sh" ]
+    command: bash -c "
+      sleep 20 &&
+      chmod +x /scripts/setup.sh &&
+      scripts/setup.sh"
     depends_on:
       - mongo1
       - mongo2

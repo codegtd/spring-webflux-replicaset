@@ -2,7 +2,7 @@
 echo "================================================================================================"
 echo                    "SCRIPT: MONGO-DB REPLICASET - CONFIGURATION: Started..."
 echo "================================================================================================"
-sleep 5;
+
 mongo --port 9042 <<EOF
 var config = {
     "_id": "docker-rs",
@@ -28,11 +28,7 @@ var config = {
 rs.initiate(config, { force: true });
 rs.status();
 use admin;
-db.createUser({
-    user: "xxxx",
-    pwd: "admin",
-    roles: [{role: "root", db: "admin"},"root"]
-  });
+db.createUser({user: "admin",pwd: "admin",roles: [ { role: "root", db: "admin" }, "root" ]});
 exit
 EOF
 "127.0.0.1 localhost mongo1 mongo2 mongo3" >>/etc/hosts;

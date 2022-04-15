@@ -57,7 +57,7 @@ public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
     System.out.println("Connection Replicaset Full ---> " + appDbConnectionFull);
 
     /*╔═════════════════════════════════════════════════════════════════╗
-      ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (NO USER + PASSWORD) ║
+      ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (UDEMY COURSE)       ║
       ╠═════════════════════════════════════════════════════════════════╩═╗
       ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db              ║
       ║           ?replicaSet=docker-rs&authSource=admin                  ║
