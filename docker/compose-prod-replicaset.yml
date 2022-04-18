@@ -1,23 +1,18 @@
 version: "3.4"
 
-#secrets:
-#  db_username:
-#    file: ../docker/secrets/prod_rs_username
-#  db_password:
-#    file: ../docker/secrets/prod_rs_password
-#  db_admin:
-#    file: ../docker/secrets/prod_rs_admin
+secrets:
+  rs_admin:
+    file: ./secrets/rs_admin.txt
+  rs_user:
+    file: ./secrets/rs_user.txt
+  rs_pass:
+    file: ./secrets/rs_pass.txt
 
 x-common-variables:
   &env-vars
   PORT_API: 8080
   PORT_DEBUG: 5005
-  RS_ROOT_URI: mongo1:9042
-#  RS_ROOT_URI: mongo1:9042,mongo2:9142,mongo3:9242
-  RS_AUTH: admin
-  RS_USERNAME: admin
-  RS_PASSWORD: xxxx
-
+  RS_ROOT_URI: mongo1:9042,mongo2:9142,mongo3:9242
 
 volumes:
   api_vol:
@@ -25,8 +20,6 @@ volumes:
 networks:
   api_net:
 
-#https://stackoverflow.com/questions/38524150/mongodb-replica-set-with-simple-password-authentication
-#I finally found the answer. MongoDB replica set needs both user account and keyfile. Keyfile seems for authentication between servers in the replica set, not for logging in.
 services:
   mongo1:
     container_name: mongo1
@@ -41,18 +34,8 @@ services:
       - ~/mongors/data1:/data/db
     depends_on:
       - mongo2
-#    secrets:
-#      - db_username
-#      - db_password
-#      - db_admin
     env_file:
       - ./envs/env_db_parameters.env
-#    environment:
-#      MONGO_INITDB_ROOT_USERNAME: user
-#      MONGO_INITDB_ROOT_PASSWORD: xxxx
-#      RS_USERNAME_FILE: /run/secrets/db_username
-#      RS_PASSWORD_FILE: /run/secrets/db_password
-#      RS_AUTH_FILE: /run/secrets/db_admin
 
   mongo2:
     container_name: mongo2
@@ -84,7 +67,6 @@ services:
     container_name: replicaset-setup
     image: mongo:4.4.4
     restart: on-failure
-#    entrypoint: [ "bash", "-c", "sleep 20 && /scripts/setup.sh" ]
     command: bash -c "
       sleep 20 &&
       chmod +x /scripts/setup.sh &&
@@ -115,16 +97,24 @@ services:
       - api_net
     depends_on:
       - replicaset-setup
-#      - mongo1
-#    secrets:
-#      - db_username
-#      - db_password
-#      - db_admin
+    secrets:
+      - rs_user
+      - rs_pass
+      - rs_admin
     env_file:
       - ./envs/env_db_parameters.env
     environment:
-#      RS_USERNAME_FILE: /run/secrets/db_username
-#      RS_PASSWORD_FILE: /run/secrets/db_password
-#      RS_AUTH_FILE: /run/secrets/db_admin
+#      RS_AUTH_FILE: /run/secrets/rs_admin
+#      RS_USERNAME_FILE: /run/secrets/rs_user
+#      RS_PASSWORD_FILE: /run/secrets/rs_pass
       <<: *env-vars
       DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+#x-common-variables:
+#  &env-vars
+#  PORT_API: 8080
+#  PORT_DEBUG: 5005
+#  RS_ROOT_URI: mongo1:9042,mongo2:9142,mongo3:9242
+#  RS_ROOT_URI: mongo1:9042
+#  RS_AUTH: admin
+#  RS_USERNAME: admin
+#  RS_PASSWORD: admin

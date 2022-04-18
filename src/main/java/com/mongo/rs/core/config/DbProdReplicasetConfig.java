@@ -47,14 +47,14 @@ public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
       ║           @mongo1:9042,mongo2:9142,mongo3:9242/api-db                 ║
       ║           ?replicaSet=docker-rs&authSource=admin                      ║
       ╚═══════════════════════════════════════════════════════════════════════╝*/
-    final String appDbConnectionFull =
-         "mongodb://" +
-              username + ":" + password +
-              "@" + rootUri + // replicasetPrimary + ":" + replicasetPort
-              "/" + database +
-              "?replicaSet=" + replicasetName +
-              "&authSource=" + authDb;
-    System.out.println("Connection Replicaset Full ---> " + appDbConnectionFull);
+    //    final String appDbConnectionFull =
+    //         "mongodb://" +
+    //              username + ":" + password +
+    //              "@" + rootUri + // replicasetPrimary + ":" + replicasetPort
+    //              "/" + database +
+    //              "?replicaSet=" + replicasetName +
+    //              "&authSource=" + authDb;
+    //    System.out.println("Connection Replicaset Full ---> " + appDbConnectionFull);
 
     /*╔═════════════════════════════════════════════════════════════════╗
       ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (UDEMY COURSE)       ║
@@ -75,14 +75,14 @@ public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
       ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db              ║
       ║           ?replicaSet=docker-rs&authSource=admin                  ║
       ╚═══════════════════════════════════════════════════════════════════╝*/
-    //        final String appDbConnectionSimple =
-    //             rootUri +
-    //                  "/" + db +
-    //                  "?replicaSet=" + rsName +
-    //                  "&authSource=" + authDb;
-    //    System.out.println("Connection Replicaset Simple ---> " + appDbConnectionSimple);
+    final String appDbConnectionSimple =
+         "mongodb://" + rootUri +
+              "/" + database +
+              "?replicaSet=" + replicasetName +
+              "&authSource=" + authDb;
+    System.out.println("Connection Replicaset Simple ---> " + appDbConnectionSimple + username + " - " + password);
 
-    return MongoClients.create(appDbConnectionFull);
+    return MongoClients.create(appDbConnectionSimple);
   }
 
 

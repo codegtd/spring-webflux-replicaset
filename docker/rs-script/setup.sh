@@ -39,21 +39,23 @@ var cfg = {
         }
     ]
 };
+
 rs.initiate(cfg, { force: true });
 rs.reconfig(cfg, { force: true });
 rs.slaveOk();
 db.getMongo().setReadPref('nearest');
 db.getMongo().setSlaveOk();
 rs.status();
-use admin;
-db.createUser({
-    user: "admin",
-    pwd: "xxxx",
-    roles: [{role: "root", db: "admin"},"root"]
-  });
-db.auth("admin","xxxx");
 EOF
+#db.auth("admin","admin");
 #ls;
+#use admin;
+#db.createUser({
+#  user: "admin",
+#  pwd: "admin",
+#  roles: [{role: "root", db: "admin"},"root"]
+#});
+
 echo "-----------------------------------------------------------------------------------------------"
 echo                    "SCRIPT: MONGO-DB REPLICASET - CONFIGURATION: Done"
 echo "-----------------------------------------------------------------------------------------------"
