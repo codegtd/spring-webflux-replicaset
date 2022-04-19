@@ -61,7 +61,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @Import({ReplicasetConfig.class})
 @DisplayName("4 Replicaset Transactions")
 @ResourceConfig
-@ActiveProfiles("test-development-dockercompose-singlenode-replicaset")
+@ActiveProfiles("test-dev-rs")
 public class TransactionsReplicasetTest {
   /*
 ╔════════════════════════════════════════════════════════════╗

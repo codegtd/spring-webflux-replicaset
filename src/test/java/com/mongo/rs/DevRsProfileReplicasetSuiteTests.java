@@ -13,5 +13,5 @@ import org.junit.platform.suite.api.SuiteDisplayName;
      CommonReplicasetTest.class,
      TransactionsReplicasetTest.class})
 @IncludeTags({"replicaset"})
-public class ReplicasetSuiteTests {
+public class DevRsProfileReplicasetSuiteTests {
 }

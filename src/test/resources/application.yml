@@ -3,10 +3,15 @@
 spring:
   profiles:
     group:
-#       A) TRANSACTION-PROFILE(ALLOW General-MongoDB-Operation + Transactions):
-      test-development-testcontainer-containermodule-replicaset: log, dev-tc-container
-      test-development-dockercompose-singlenode-replicaset: log, dev-replicaset
+      # A) TRANSACTION-PROFILE(ALLOW General-MongoDB-Operation + Transactions):
+      # A.1) Testcontainer: Replicaset native in Testcontainer-moduleContainer
+      test-testcontainer-containermodule-rs: log, dev-tc-container
+      # A.2) Profile-Dev-Rs: Replicaset SingleNode Development-Profile
+      test-dev-rs: log, dev-replicaset
 
-#       B) GENERAL-PROFILE(ALLOW only General-MongoDB-Operation):
-      test-development-dockercompose-standalone-noreplicaset: log, dev-standalone
-      test-development-testcontainer-composemodule-noreplicaset: log, dev-tc-compose
+
+      # B) GENERAL-PROFILE(ALLOW only General-MongoDB-Operation):
+      # B.1) Profile-Dev-Std: Mongo-Standalone - No-Replicaset
+      test-dev-std: log, dev-standalone
+      # B.1) Testcontainer: No-Replicaset in Testcontainer-moduleCompose
+      test-testcontainer-composemodule-nors: log, dev-tc-compose

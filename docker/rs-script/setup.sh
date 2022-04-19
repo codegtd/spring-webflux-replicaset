@@ -2,14 +2,11 @@
 echo "-----------------------------------------------------------------------------------------------"
 echo                    "SCRIPT: MONGO-DB REPLICASET - CONFIGURATION: Started..."
 echo "-----------------------------------------------------------------------------------------------"
-#MONGODB1=`ping -c 1 mongo1 | head -1  | cut -d "(" -f 2 | cut -d ")" -f 1`
-#MONGODB2=`ping -c 1 mongo2 | head -1  | cut -d "(" -f 2 | cut -d ")" -f 1`
-#MONGODB3=`ping -c 1 mongo3 | head -1  | cut -d "(" -f 2 | cut -d ")" -f 1`
 
 MONGODB1=mongo1
 MONGODB2=mongo2
 MONGODB3=mongo3
-MONGOPORT=9042
+MONGO_PORT=9042
 MONGO_RS=docker-rs
 
 echo "-----------------------------------------------------------------------------------------------"
@@ -17,14 +14,14 @@ echo      "SCRIPT: MONGO-DB REPLICASET - CONFIGURING REPLICASET:" ${MONGODB1}
 echo                           SETUP.sh time now: `date +"%T" `
 echo "-----------------------------------------------------------------------------------------------"
 #echo SETUP.sh time now: `date +"%T" `
-mongo --host ${MONGODB1}:${MONGOPORT} <<EOF
+mongo --host ${MONGODB1}:${MONGO_PORT} <<EOF
 var cfg = {
     "_id": "${MONGO_RS}",
     "version": 1,
     "members": [
         {
             "_id": 0,
-            "host": "${MONGODB1}:${MONGOPORT}",
+            "host": "${MONGODB1}:${MONGO_PORT}",
             "priority": 3
         },
         {
@@ -39,23 +36,21 @@ var cfg = {
         }
     ]
 };
-
 rs.initiate(cfg, { force: true });
 rs.reconfig(cfg, { force: true });
 rs.slaveOk();
 db.getMongo().setReadPref('nearest');
 db.getMongo().setSlaveOk();
 rs.status();
-EOF
-#db.auth("admin","admin");
 #ls;
-#use admin;
-#db.createUser({
-#  user: "admin",
-#  pwd: "admin",
-#  roles: [{role: "root", db: "admin"},"root"]
-#});
-
+use admin;
+db.createUser({
+  user: "admin",
+  pwd: "admin",
+  roles: [{role: "root", db: "admin"},"root"]
+});
+EOF
 echo "-----------------------------------------------------------------------------------------------"
 echo                    "SCRIPT: MONGO-DB REPLICASET - CONFIGURATION: Done"
 echo "-----------------------------------------------------------------------------------------------"
+#db.auth("admin","admin");

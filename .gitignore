@@ -33,7 +33,8 @@ build/
 .vscode/
 
 ### OTHERS ###
-/docker/mongo-data-db/
+/docker/mongo-data-db-rs/
 /docker/secrets/
 /docker/envs/
 /docker/ignore/
+/docker/mongo-data-db-std/

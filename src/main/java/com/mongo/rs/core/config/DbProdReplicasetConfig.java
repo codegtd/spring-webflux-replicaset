@@ -15,15 +15,10 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
-// ========================== PropertySource + ConfigurationProperties =============================
-// Check - PropertySource: https://www.baeldung.com/configuration-properties-in-spring-boot
-// Getter+Setter are CRUCIAL for PropertySource + ConfigurationProperties works properly
 @PropertySource(value = "classpath:application.yml", factory = YamlFileConverter.class)
 @ConfigurationProperties(prefix = "db.mongodb.replicaset")
 @Setter
 @Getter
-// =================================================================================================
-
 @Profile("prod-rs")
 @Import({DbTransactionManagerConfig.class})
 @Slf4j
@@ -42,26 +37,23 @@ public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
   public MongoClient reactiveMongoClient() {
     /*╔══════════════════════════════════════════════════════════════════════╗
       ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (FULL:NO USER + PASSWORD) ║
-      ╠══════════════════════════════════════════════════════════════════════╩╗
-      ║ mongodb://username:password                                           ║
-      ║           @mongo1:9042,mongo2:9142,mongo3:9242/api-db                 ║
-      ║           ?replicaSet=docker-rs&authSource=admin                      ║
-      ╚═══════════════════════════════════════════════════════════════════════╝*/
-    //    final String appDbConnectionFull =
-    //         "mongodb://" +
-    //              username + ":" + password +
-    //              "@" + rootUri + // replicasetPrimary + ":" + replicasetPort
-    //              "/" + database +
-    //              "?replicaSet=" + replicasetName +
-    //              "&authSource=" + authDb;
-    //    System.out.println("Connection Replicaset Full ---> " + appDbConnectionFull);
+      ╠══════════════════════════════════════════════════════════════════════╣
+      ║ mongodb://username:password                                          ║
+      ║           @mongo1:9042,mongo2:9142,mongo3:9242/api-db                ║
+      ║           ?replicaSet=docker-rs&authSource=admin                     ║
+      ╚══════════════════════════════════════════════════════════════════════╝*/
+    //   final String appDbConnectionFull =
+    //        "mongodb://" +
+    //             username + ":" + password +
+    //             "@" + rootUri + // replicasetPrimary + ":" + replicasetPort
+    //             "/" + database +
+    //             "?replicaSet=" + replicasetName +
+    //             "&authSource=" + authDb;
+    //   System.out.println("Connection Replicaset Full ---> " + appDbConnectionFull);
 
-    /*╔═════════════════════════════════════════════════════════════════╗
-      ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (UDEMY COURSE)       ║
-      ╠═════════════════════════════════════════════════════════════════╩═╗
-      ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db              ║
-      ║           ?replicaSet=docker-rs&authSource=admin                  ║
-      ╚═══════════════════════════════════════════════════════════════════╝*/
+    /*╔══════════════════════════════════════════════════════════════════════╗
+      ║      REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (UDEMY COURSE)       ║
+      ╚══════════════════════════════════════════════════════════════════════╝*/
     // "mongodb://" +
     //      replicasetUsername + ":" + replicasetPassword +
     //      "@" + replicasetPrimary + ":" + replicasetPort +
@@ -71,16 +63,19 @@ public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
 
     /*╔═════════════════════════════════════════════════════════════════╗
       ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (NO USER + PASSWORD) ║
-      ╠═════════════════════════════════════════════════════════════════╩═╗
-      ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db              ║
-      ║           ?replicaSet=docker-rs&authSource=admin                  ║
-      ╚═══════════════════════════════════════════════════════════════════╝*/
-    final String appDbConnectionSimple =
+      ╠═════════════════════════════════════════════════════════════════╣
+      ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db            ║
+      ║           ?replicaSet=docker-rs&authSource=admin                ║
+      ╚═════════════════════════════════════════════════════════════════╝*/
+    final String
+         appDbConnectionSimple =
          "mongodb://" + rootUri +
               "/" + database +
               "?replicaSet=" + replicasetName +
               "&authSource=" + authDb;
-    System.out.println("Connection Replicaset Simple ---> " + appDbConnectionSimple + username + " - " + password);
+
+    System.out.println(
+         "Connection Replicaset Simple ---> " + appDbConnectionSimple + " - " + username + " - " + password);
 
     return MongoClients.create(appDbConnectionSimple);
   }

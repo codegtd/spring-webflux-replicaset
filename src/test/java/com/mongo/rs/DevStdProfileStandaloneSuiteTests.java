@@ -13,5 +13,5 @@ import org.junit.platform.suite.api.SuiteDisplayName;
      CommonStandaloneTest.class,
      TransactionsStandaloneTest.class})
 @IncludeTags({"standalone"})
-public class StandaloneSuiteTests {
+public class DevStdProfileStandaloneSuiteTests {
 }

@@ -48,7 +48,7 @@ import static org.springframework.http.HttpStatus.OK;
 @Import({DbUtilsConfig.class})
 @DisplayName("1 Common Standalone")
 @ResourceConfig
-@ActiveProfiles({"test-development-dockercompose-standalone-noreplicaset"})
+@ActiveProfiles({"test-dev-std"})
 public class CommonStandaloneTest {
 
   final String enabledTest = "true";

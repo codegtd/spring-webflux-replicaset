@@ -1,18 +1,20 @@
 version: "3.4"
 
-secrets:
-  rs_admin:
-    file: ./secrets/rs_admin.txt
-  rs_user:
-    file: ./secrets/rs_user.txt
-  rs_pass:
-    file: ./secrets/rs_pass.txt
+#secrets:
+#  rs_admin:
+#    file: ./secrets/rs_admin.txt
+#  rs_user:
+#    file: ./secrets/rs_user.txt
+#  rs_pass:
+#    file: ./secrets/rs_pass.txt
 
 x-common-variables:
   &env-vars
   PORT_API: 8080
-  PORT_DEBUG: 5005
   RS_ROOT_URI: mongo1:9042,mongo2:9142,mongo3:9242
+  RS_AUTH: admin
+  RS_USERNAME: admin
+  RS_PASSWORD: admin
 
 volumes:
   api_vol:
@@ -34,8 +36,14 @@ services:
       - ~/mongors/data1:/data/db
     depends_on:
       - mongo2
-    env_file:
-      - ./envs/env_db_parameters.env
+#    healthcheck:
+#      test: [ 'CMD', 'mongo', '-u', 'prod-rs', '-p', 'prod-rs', '--port', '9042' ]
+###    test: mongo --user=$$RS_USERNAME --password=$$RS_PASSWORD --port=9042
+#      test: echo 'db.runCommand("ping").ok' | mongo mongo1:9042/test --quiet
+#      interval: 20s
+#      timeout: 10s
+#      start_period: 5s
+#      retries: 5
 
   mongo2:
     container_name: mongo2
@@ -97,18 +105,20 @@ services:
       - api_net
     depends_on:
       - replicaset-setup
-    secrets:
-      - rs_user
-      - rs_pass
-      - rs_admin
+#    secrets:
+#      - rs_user
+#      - rs_pass
+#      - rs_admin
     env_file:
-      - ./envs/env_db_parameters.env
+      - ./envs/env_prod_replicaset.env
     environment:
+      PORT_DEBUG: 5005
+      <<: *env-vars
+      DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
 #      RS_AUTH_FILE: /run/secrets/rs_admin
 #      RS_USERNAME_FILE: /run/secrets/rs_user
 #      RS_PASSWORD_FILE: /run/secrets/rs_pass
-      <<: *env-vars
-      DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+
 #x-common-variables:
 #  &env-vars
 #  PORT_API: 8080

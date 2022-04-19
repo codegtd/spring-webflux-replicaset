@@ -14,14 +14,10 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
-// ========================== PropertySource + ConfigurationProperties =============================
-// Check - PropertySource: https://www.baeldung.com/configuration-properties-in-spring-boot
-// Getter+Setter are CRUCIAL for PropertySource + ConfigurationProperties works properly
 @PropertySource(value = "classpath:application.yml", factory = YamlFileConverter.class)
 @ConfigurationProperties(prefix = "spring.data.mongodb")
 @Setter
 @Getter
-// =================================================================================================
 @Profile("dev-std")
 @Slf4j
 @Configuration

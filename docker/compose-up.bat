@@ -17,7 +17,6 @@ cd docker
 call compose-clean.bat
 docker scan --version --json --group-issues
 
-
 set parameter1=%1
 echo ===========================================================================
 echo       4) DOCKER-COMPOSE: Uping the Compose-Service(s): %parameter1%

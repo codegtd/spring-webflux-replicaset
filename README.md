@@ -6,7 +6,7 @@
 
 2. Application.Yml:
     1. Importation of properties:
-        1. PropertySource
+        1. [PropertySource](https://www.baeldung.com/configuration-properties-in-spring-boot)
     2. Yml filesystem-Format
     3. Custom Logging.pattern.console
 

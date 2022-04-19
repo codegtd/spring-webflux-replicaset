@@ -48,7 +48,7 @@ import static org.springframework.http.HttpStatus.OK;
 @Import({DbUtilsConfig.class})
 @DisplayName("1 Common Replicaset")
 @ResourceConfig
-@ActiveProfiles("test-development-dockercompose-singlenode-replicaset")
+@ActiveProfiles("test-dev-rs")
 public class CommonReplicasetTest {
 
   final String enabledTest = "true";

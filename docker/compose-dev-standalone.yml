@@ -19,9 +19,7 @@ services:
     networks:
       - api-net
     volumes:
-      - ../docker/mongo-data-db:/data/db
-    env_file:
-      - ../docker/envs/env_dev_standalone.env
+      - ../docker/mongo-data-db-std:/data/db
     environment:
       *env-vars
 
@@ -37,13 +35,13 @@ services:
       - "8080:8080"
       - "5005:5005"
     volumes:
-      - ../docker/mongo-data-db:/data/db
+      - ../docker/mongo-data-db-std:/data/db
     depends_on:
       - mongo1
     networks:
       - api-net
     env_file:
-      - ../docker/envs/env_dev_standalone.env
+      - ./envs/env_dev_standalone.env
     environment:
       PORT_DEBUG: 5005
       <<: *env-vars
