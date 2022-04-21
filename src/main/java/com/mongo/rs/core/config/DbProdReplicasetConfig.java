@@ -42,14 +42,13 @@ public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
       ║           @mongo1:9042,mongo2:9142,mongo3:9242/api-db                ║
       ║           ?replicaSet=docker-rs&authSource=admin                     ║
       ╚══════════════════════════════════════════════════════════════════════╝*/
-    //   final String appDbConnectionFull =
-    //        "mongodb://" +
-    //             username + ":" + password +
-    //             "@" + rootUri + // replicasetPrimary + ":" + replicasetPort
-    //             "/" + database +
-    //             "?replicaSet=" + replicasetName +
-    //             "&authSource=" + authDb;
-    //   System.out.println("Connection Replicaset Full ---> " + appDbConnectionFull);
+//    final String appDbConnection =
+//         "mongodb://" +
+//              username + ":" + password +
+//              "@" + rootUri + // replicasetPrimary + ":" + replicasetPort
+//              "/" + database +
+//              "?replicaSet=" + replicasetName +
+//              "&authSource=" + authDb;
 
     /*╔══════════════════════════════════════════════════════════════════════╗
       ║      REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (UDEMY COURSE)       ║
@@ -68,16 +67,16 @@ public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
       ║           ?replicaSet=docker-rs&authSource=admin                ║
       ╚═════════════════════════════════════════════════════════════════╝*/
     final String
-         appDbConnectionSimple =
+         appDbConnection =
          "mongodb://" + rootUri +
               "/" + database +
               "?replicaSet=" + replicasetName +
               "&authSource=" + authDb;
 
     System.out.println(
-         "Connection Replicaset Simple ---> " + appDbConnectionSimple + " - " + username + " - " + password);
+         "Connection Replicaset ---> " + appDbConnection + " - " + username + " - " + password);
 
-    return MongoClients.create(appDbConnectionSimple);
+    return MongoClients.create(appDbConnection);
   }
 
 

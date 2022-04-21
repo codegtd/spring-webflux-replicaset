@@ -42,15 +42,15 @@ rs.slaveOk();
 db.getMongo().setReadPref('nearest');
 db.getMongo().setSlaveOk();
 rs.status();
-#ls;
-use admin;
-db.createUser({
-  user: "admin",
-  pwd: "admin",
-  roles: [{role: "root", db: "admin"},"root"]
-});
 EOF
 echo "-----------------------------------------------------------------------------------------------"
 echo                    "SCRIPT: MONGO-DB REPLICASET - CONFIGURATION: Done"
 echo "-----------------------------------------------------------------------------------------------"
+#ls;
+#use admin;
+#db.createUser({
+#  user: "admin",
+#  pwd: "admin",
+#  roles: [{role: "root", db: "admin"},"root"]
+#});
 #db.auth("admin","admin");
