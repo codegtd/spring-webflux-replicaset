@@ -22,35 +22,25 @@ var cfg = {
         {
             "_id": 0,
             "host": "${MONGODB1}:${MONGO_PORT}",
-            "priority": 3
+            "priority": 2
         },
         {
             "_id": 1,
             "host": "${MONGODB2}:9142",
-            "priority": 2
+            "priority": 0
         },
         {
             "_id": 2,
             "host": "${MONGODB3}:9242",
-            "priority": 1
+            "priority": 0
         }
     ]
 };
 rs.initiate(cfg, { force: true });
-rs.reconfig(cfg, { force: true });
-rs.slaveOk();
-db.getMongo().setReadPref('nearest');
-db.getMongo().setSlaveOk();
+rs.secondaryOk();
+db.getMongo().setReadPref('primary');
 rs.status();
 EOF
 echo "-----------------------------------------------------------------------------------------------"
 echo                    "SCRIPT: MONGO-DB REPLICASET - CONFIGURATION: Done"
 echo "-----------------------------------------------------------------------------------------------"
-#ls;
-#use admin;
-#db.createUser({
-#  user: "admin",
-#  pwd: "admin",
-#  roles: [{role: "root", db: "admin"},"root"]
-#});
-#db.auth("admin","admin");
