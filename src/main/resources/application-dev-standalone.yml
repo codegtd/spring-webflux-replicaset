@@ -7,6 +7,6 @@ spring:
       host: ${HOST_DB}
       port: ${PORT_DB}
       authentication-database: ${AUTH_DB}
-      database: ${MONGO_INITDB_DATABASE}
-      username: ${MONGO_INITDB_ROOT_USERNAME}
-      password: ${MONGO_INITDB_ROOT_PASSWORD}
+      database: ${STD_DB}
+      username: ${STD_USER}
+      password: ${PASS_FILE}

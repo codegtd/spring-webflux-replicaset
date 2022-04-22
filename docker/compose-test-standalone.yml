@@ -1,0 +1,50 @@
+version: "3.9"
+
+networks:
+  api-net:
+
+services:
+  mongo1:
+    container_name: mongo1
+    image: mongo:4.4.4
+    restart: always
+    ports:
+      - "27017:27017"
+    networks:
+      - api-net
+    volumes:
+      - ./db-test:/data/db
+
+
+  api:
+    container_name: api
+    image: pauloportfolio/api
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+      args:
+        JAR_FILE: target/*.jar
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./db-test:/data/db
+    depends_on:
+      - mongo1
+    networks:
+      - api-net
+    secrets:
+      - db_password
+    environment:
+      HOST_DB: mongo1
+      PORT_DB: 27017
+      AUTH_DB: admin
+      STD_DB: devtestdb
+      STD_USER: root
+      PASS_FILE: run/secrets/db_password
+      PORT_API: 8080
+      DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+    command: ls -la /run/secrets
+
+secrets:
+  db_password:
+    file: ./db_password.txt
