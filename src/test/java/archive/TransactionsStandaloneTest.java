@@ -1,4 +1,4 @@
-package com.mongo.rs.modules;
+package archive;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
 import com.mongo.rs.core.config.ReplicasetConfig;

@@ -6,11 +6,11 @@ cd
 docker system df
 
 echo ===========================================================================
-echo           CLEAN-UP: compose orphans %parameter1% %parameter2%
+echo           CLEAN-UP: compose orphans %parameter1%
 echo ===========================================================================
-docker-compose -f compose-dev-replicaset.yml  down --remove-orphans
-docker-compose -f compose-dev-standalone.yml  down --remove-orphans
-docker-compose -f compose-test-standalone.yml  down --remove-orphans
+docker-compose -f compose-dev-replicaset.yml down --remove-orphans
+docker-compose -f compose-dev-standalone.yml down --remove-orphans
+docker-compose -f compose-test-standalone.yml down --remove-orphans
 docker-compose -f compose-prod-replicaset-auth.yml down --remove-orphans
 docker-compose -f compose-prod-replicaset-noauth.yml down --remove-orphans
 ::------------------------------------------------------------------------------

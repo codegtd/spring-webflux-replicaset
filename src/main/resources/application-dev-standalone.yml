@@ -9,4 +9,4 @@ spring:
       authentication-database: ${AUTH_DB}
       database: ${STD_DB}
       username: ${STD_USER}
-      password: ${PASS_FILE}
+      password: ${STD_PASS}

@@ -1,7 +1,5 @@
-package com.mongo.rs;
+package archive;
 
-import com.mongo.rs.modules.CommonStandaloneTest;
-import com.mongo.rs.modules.TransactionsStandaloneTest;
 import org.junit.platform.suite.api.IncludeTags;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;

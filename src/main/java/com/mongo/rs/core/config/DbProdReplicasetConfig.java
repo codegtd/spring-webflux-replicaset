@@ -42,7 +42,7 @@ public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
       ║           @mongo1:9042,mongo2:9142,mongo3:9242/api-db                ║
       ║           ?replicaSet=docker-rs&authSource=admin                     ║
       ╚══════════════════════════════════════════════════════════════════════╝*/
-    final String appDbConnection =
+    final String connection =
          "mongodb://" +
               username + ":" + password +
               "@" + rootUri + // replicasetPrimary + ":" + replicasetPort
@@ -66,17 +66,17 @@ public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
       ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db            ║
       ║           ?replicaSet=docker-rs&authSource=admin                ║
       ╚═════════════════════════════════════════════════════════════════╝*/
-    // final String
-    //      appDbConnection =
-    //      "mongodb://" + rootUri +
-    //           "/" + database +
-    //           "?replicaSet=" + replicasetName +
-    //           "&authSource=" + authDb;
+//     final String
+//          connection =
+//          "mongodb://" + rootUri +
+//               "/" + database +
+//               "?replicaSet=" + replicasetName +
+//               "&authSource=" + authDb;
 
     System.out.println(
-         "Connection Replicaset ---> " + appDbConnection + " - " + username + " - " + password);
+         "Connection Replicaset ---> " + connection + " - " + username + " - " + password);
 
-    return MongoClients.create(appDbConnection);
+    return MongoClients.create(connection);
   }
 
 

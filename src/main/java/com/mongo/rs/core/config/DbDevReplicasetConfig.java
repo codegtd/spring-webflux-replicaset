@@ -41,15 +41,15 @@ public class DbDevReplicasetConfig extends AbstractReactiveMongoConfiguration {
   ║ mongodb://myservice-mongodb:27017/                                  ║
   ║ ?connect=direct&replicaSet=singleNodeReplSet&readPreference=primary ║
   ╚═════════════════════════════════════════════════════════════════════╝*/
-    final String appDbConnection =
+    final String connection =
          rootUri +
               "/?connect=direct" +
               "&replicaSet=" + rsName +
               "&readPreference=primary";
 
-    System.out.println("Connect DB Replicaset-Single-Node ---> " + appDbConnection);
+    System.out.println("Connect DB Replicaset-Single-Node ---> " + connection);
 
-    return MongoClients.create(appDbConnection);
+    return MongoClients.create(connection);
   }
 
 

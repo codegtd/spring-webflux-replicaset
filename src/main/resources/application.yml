@@ -5,6 +5,5 @@ spring:
   profiles:
     active: prod-rs
     group:
-      dev-std: dev-standalone, log
       dev-rs: dev-replicaset, log
       prod-rs: prod-replicaset, log

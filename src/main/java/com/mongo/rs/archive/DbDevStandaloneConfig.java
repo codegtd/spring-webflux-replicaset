@@ -1,4 +1,4 @@
-package com.mongo.rs.core.config;
+package com.mongo.rs.archive;
 
 
 import com.mongo.rs.core.YamlFileConverter;
