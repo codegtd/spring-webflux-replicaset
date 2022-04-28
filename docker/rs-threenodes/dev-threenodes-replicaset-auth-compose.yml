@@ -78,8 +78,8 @@ services:
       start_period: 5s
       retries: 5
 
-  replicaset-setup:
-    container_name: replicaset-setup
+  rs-setup:
+    container_name: rs-setup
     image: mongo:4.4.4
     restart: on-failure
     command: bash -c "
@@ -91,14 +91,14 @@ services:
     networks:
       - api_net
     volumes:
-      - ./replicaset-prod/rs-setup.sh:/scripts/rs-setup.sh
+      - ./dev-threenodes-replicaset-auth-setup.sh:/scripts/rs-setup.sh
 
   api:
     container_name: api
     image: pauloportfolio/api
     build:
-      context: ../
-      dockerfile: docker/Dockerfile
+      context: ../..
+      dockerfile: ../docker/Dockerfile
       args:
         JAR_FILE: target/*.jar
     ports:
@@ -109,10 +109,9 @@ services:
     networks:
       - api_net
     depends_on:
-      - replicaset-setup
+      - rs-setup
     env_file:
-      - replicaset-prod/envs/general_rs.env
-      - replicaset-prod/envs/auth_initdb_root.env
+      - /dev-threenodes-replicaset-auth.env
     environment:
       <<: *env-vars
       DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m

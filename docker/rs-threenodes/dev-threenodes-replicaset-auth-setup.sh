@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "-----------------------------------------------------------------------------------------------"
-echo                    "SCRIPT: MONGO-DB REPLICASET - CONFIGURATION: Started..."
+echo       "SCRIPT: MONGO-DB REPLICASET - THREE NODES NO-AUTH - CONFIGURATION: Started..."
 echo "-----------------------------------------------------------------------------------------------"
 
 MONGODB1=mongo1
@@ -10,7 +10,7 @@ MONGO_PORT=9042
 MONGO_RS=docker-rs
 
 echo "-----------------------------------------------------------------------------------------------"
-echo      "SCRIPT: MONGO-DB REPLICASET - CONFIGURING REPLICASET:" ${MONGODB1}
+echo      "SCRIPT: MONGO-DB REPLICASET - THREE NODES NO-AUTH - CONFIGURING REPLICASET:" ${MONGODB1}
 echo                           SETUP.sh time now: `date +"%T" `
 echo "-----------------------------------------------------------------------------------------------"
 #echo SETUP.sh time now: `date +"%T" `
@@ -27,7 +27,7 @@ var cfg = {
         {
             "_id": 1,
             "host": "${MONGODB2}:9142",
-            "priority": 0
+            "priority": 1
         },
         {
             "_id": 2,
@@ -39,8 +39,7 @@ var cfg = {
 rs.initiate(cfg, { force: true });
 rs.secondaryOk();
 db.getMongo().setReadPref('primary');
-rs.status();
 EOF
 echo "-----------------------------------------------------------------------------------------------"
-echo                    "SCRIPT: MONGO-DB REPLICASET - CONFIGURATION: Done"
+echo            "SCRIPT: MONGO-DB REPLICASET - THREE NODES NO-AUTH - CONFIGURATION: Done"
 echo "-----------------------------------------------------------------------------------------------"

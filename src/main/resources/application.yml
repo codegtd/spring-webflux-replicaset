@@ -3,7 +3,8 @@ server:
 
 spring:
   profiles:
-    active: prod-rs
+    active: dev-rs
     group:
-      dev-rs: dev-replicaset, log
-      prod-rs: prod-replicaset, log
+      dev-rs: dev-singlenode-replicaset-noauth-props, log
+      prod-rs: dev-threenodes-replicaset-noauth-props, log
+#      prod-rsa: dev-threenodes-replicaset-auth-props, log

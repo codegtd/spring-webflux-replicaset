@@ -19,35 +19,37 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @ConfigurationProperties(prefix = "db.mongodb.replicaset")
 @Setter
 @Getter
-@Profile("dev-rs")
+@Profile("prod-rs")
 @Import({DbTransactionManagerConfig.class})
 @Slf4j
 @Configuration
 @EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user"})
-public class DbDevReplicasetConfig extends AbstractReactiveMongoConfiguration {
+public class DevThreeNodesReplicasetNoAuthConfig extends AbstractReactiveMongoConfiguration {
 
   private String rootUri;
-  private String db;
-  private String rsName;
+  private String database;
+  private String replicasetName;
   private String authDb;
   private String username;
   private String password;
 
   @Override
   public MongoClient reactiveMongoClient() {
-/*╔═══════════════════════════════════════════════════╗
-  ║  REPLICASET-SINGLE-NODE-MONGO-DB DEVELOPMENT URL  ║
-  ╠═══════════════════════════════════════════════════╩═════════════════╗
-  ║ mongodb://myservice-mongodb:27017/                                  ║
-  ║ ?connect=direct&replicaSet=singleNodeReplSet&readPreference=primary ║
-  ╚═════════════════════════════════════════════════════════════════════╝*/
-    final String connection =
-         rootUri +
-              "/?connect=direct" +
-              "&replicaSet=" + rsName +
-              "&readPreference=primary";
+    /*╔═════════════════════════════════════════════════════════════════╗
+      ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (NO USER + PASSWORD) ║
+      ╠═════════════════════════════════════════════════════════════════╣
+      ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db            ║
+      ║           ?replicaSet=docker-rs&authSource=admin                ║
+      ╚═════════════════════════════════════════════════════════════════╝*/
+    final String
+         connection =
+         "mongodb://" + rootUri +
+              "/" + database +
+              "?replicaSet=" + replicasetName +
+              "&authSource=" + authDb;
 
-    System.out.println("Connect DB Replicaset-Single-Node ---> " + connection);
+    System.out.println(
+         "DevThreeNodesReplicasetNoAuth ---> " + connection);
 
     return MongoClients.create(connection);
   }
@@ -56,6 +58,6 @@ public class DbDevReplicasetConfig extends AbstractReactiveMongoConfiguration {
   @Override
   protected String getDatabaseName() {
 
-    return db;
+    return database;
   }
 }

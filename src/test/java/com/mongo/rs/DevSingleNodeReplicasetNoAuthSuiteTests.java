@@ -8,10 +8,10 @@ import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
 @Suite
-@SuiteDisplayName("DockerCompose: ReplicasetSuite")
+@SuiteDisplayName("DevSingleNodeReplicasetNoAuthSuite")
 @SelectClasses({
      CommonReplicasetTest.class,
      TransactionsReplicasetTest.class})
 @IncludeTags({"replicaset"})
-public class DevRsProfileReplicasetSuiteTests {
+public class DevSingleNodeReplicasetNoAuthSuiteTests {
 }

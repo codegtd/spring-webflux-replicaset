@@ -15,16 +15,16 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
-@PropertySource(value = "classpath:application.yml", factory = YamlFileConverter.class)
-@ConfigurationProperties(prefix = "db.mongodb.replicaset")
-@Setter
-@Getter
-@Profile("prod-rs")
-@Import({DbTransactionManagerConfig.class})
-@Slf4j
-@Configuration
-@EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user"})
-public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
+//@PropertySource(value = "classpath:application.yml", factory = YamlFileConverter.class)
+//@ConfigurationProperties(prefix = "db.mongodb.replicaset")
+//@Setter
+//@Getter
+//@Profile("prod-rsa")
+//@Import({DbTransactionManagerConfig.class})
+//@Slf4j
+//@Configuration
+//@EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user"})
+public class DevThreeNodesReplicasetAuthConfig extends AbstractReactiveMongoConfiguration {
 
   private String rootUri;
   private String database;
@@ -50,6 +50,7 @@ public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
               "?replicaSet=" + replicasetName +
               "&authSource=" + authDb;
 
+
     /*╔══════════════════════════════════════════════════════════════════════╗
       ║      REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (UDEMY COURSE)       ║
       ╚══════════════════════════════════════════════════════════════════════╝*/
@@ -60,21 +61,8 @@ public class DbProdReplicasetConfig extends AbstractReactiveMongoConfiguration {
     //      "?replicaSet=" + replicasetName +
     //      "&authSource=" + replicasetAuthenticationDb
 
-    /*╔═════════════════════════════════════════════════════════════════╗
-      ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (NO USER + PASSWORD) ║
-      ╠═════════════════════════════════════════════════════════════════╣
-      ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db            ║
-      ║           ?replicaSet=docker-rs&authSource=admin                ║
-      ╚═════════════════════════════════════════════════════════════════╝*/
-//     final String
-//          connection =
-//          "mongodb://" + rootUri +
-//               "/" + database +
-//               "?replicaSet=" + replicasetName +
-//               "&authSource=" + authDb;
-
     System.out.println(
-         "Connection Replicaset ---> " + connection + " - " + username + " - " + password);
+         "DevThreeNodesReplicasetAuth ---> " + connection);
 
     return MongoClients.create(connection);
   }
