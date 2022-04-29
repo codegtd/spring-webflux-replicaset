@@ -23,10 +23,15 @@ echo ===========================================================================
 echo       4) DOCKER-COMPOSE: Uping the Compose-Service(s): %parameter1%
 echo ===========================================================================
 cd
-cd ..\docker
-if %parameter1%==devrs  (docker-compose -f dev-singlenode-replicaset-noauth-compose.yml --verbose up --build --force-recreate)
-if %parameter1%==prodrsn (docker-compose -f dev-threenodes-replicaset-noauth-compose.yml up --build --force-recreate)
-if %parameter1%==prodrsa (docker-compose -f compose-prod-replicaset-auth.yml up --build --force-recreate)
+cd ..
+
+cd rs-singlenode
+if %parameter1%==devsingle (docker-compose -f dev-singlenode-replicaset-noauth-compose.yml --verbose up --build --force-recreate)
+cd ..
+
+cd rs-threenodes
+if %parameter1%==devthree (docker-compose -f dev-threenodes-replicaset-noauth-compose.yml up --build --force-recreate)
+cd ..
 
 echo ===========================================================================
 echo                     5) DOCKER-COMPOSE: ...Ending

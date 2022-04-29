@@ -19,7 +19,7 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @ConfigurationProperties(prefix = "db.mongodb.replicaset")
 @Setter
 @Getter
-@Profile("dev-rs")
+@Profile("dev-single-node-rs")
 @Import({DbTransactionManagerConfig.class})
 @Slf4j
 @Configuration

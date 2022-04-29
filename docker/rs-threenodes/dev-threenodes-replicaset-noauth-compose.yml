@@ -78,12 +78,12 @@ services:
       start_period: 5s
       retries: 5
 
-  api:
-    container_name: api
-    image: pauloportfolio/api
+  api3nodes:
+    container_name: api3nodes
+    image: pauloportfolio/api3nodes
     build:
       context: ../..
-      dockerfile: ../docker/Dockerfile
+      dockerfile: ./docker/rs-threenodes/Dockerfile
       args:
         JAR_FILE: target/*.jar
     ports:
@@ -96,7 +96,7 @@ services:
     depends_on:
       - mongo1
     env_file:
-      - /dev-threenodes-replicaset-noauth.env
+      - dev-threenodes-replicaset-noauth.env
     environment:
       <<: *env-vars
       DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m

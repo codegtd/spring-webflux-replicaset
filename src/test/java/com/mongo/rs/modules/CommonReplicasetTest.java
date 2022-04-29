@@ -46,9 +46,9 @@ import static org.springframework.http.HttpStatus.OK;
      ╚══════════════════════════════════════════════════════════╝*/
 @Tags(value = {@Tag("replicaset")})
 @Import({DbUtilsConfig.class})
-@DisplayName("1 Common Replicaset")
+@DisplayName("Common Replicaset")
 @ResourceConfig
-@ActiveProfiles("test-dev-rs")
+@ActiveProfiles("test-dev-singlenode-replicaset-noauth-compose")
 public class CommonReplicasetTest {
 
   final String enabledTest = "true";

@@ -60,7 +60,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 */
 @Tags(value = {@Tag("testcontainer")})
 @Import({ReplicasetConfig.class})
-@DisplayName("2 TC Transactions")
+@DisplayName("TC Transactions")
 @ResourceConfig
 @ActiveProfiles({"test-testcontainer-containermodule-rs"})
 @TcContainerReplicaset // TEST TRANSACTIONS

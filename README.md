@@ -44,13 +44,19 @@
         2. Reusing bat-scripts:
             1. ex.: compose-up.bat using clean.bat
     4. Replicaset
-       1. SingleNode - ProfileDevelopment
+       1. singlenode
+          1. NoAuthentication
+          2. Authenticated
        2. Three nodes:
-          1. No-authentication - ProfileDevelopment
-          2. Three nodes - Authenticated - Production:
-             1. [ProfileProduction](https://sntnupl.com/mongodb-replicaset-for-development-using-docker)
-             2. [yowko](https://github.com/yowko/docker-compose-mongodb-replica-set-with-auth/blob/master/docker-compose.yaml)
-             3. [prashix](https://prashix.medium.com/setup-mongodb-replicaset-with-authentication-enabled-using-docker-compose-5edd2ad46a90)
+          1. NoAuthentication
+          2. Authenticated
+          3. **NOTE**: This replica set is for *Local Development* purposes ONLY. Running multiple nodes within a 
+             single machine is an anti-pattern, and MUST BE AVOIDED in Production.
+             1. No-authentication - ProfileDevelopment
+       3. Three nodes - Authenticated:
+          1. [ProfileProduction](https://sntnupl.com/mongodb-replicaset-for-development-using-docker)
+          2. [yowko](https://github.com/yowko/docker-compose-mongodb-replica-set-with-auth/blob/master/docker-compose.yaml)
+          3. [prashix](https://prashix.medium.com/setup-mongodb-replicaset-with-authentication-enabled-using-docker-compose-5edd2ad46a90)
        4. StandAlone - ProfileDevelopment
 
 

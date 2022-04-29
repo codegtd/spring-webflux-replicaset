@@ -7,11 +7,17 @@ spring:
       # A.1) Testcontainer: Replicaset native in Testcontainer-moduleContainer
       test-testcontainer-containermodule-rs: log, dev-tc-container
       # A.2) Profile-Dev-Rs: Replicaset SingleNode Development-Profile
-      test-dev-rs: log, dev-replicaset
+      test-dev-singlenode-replicaset-noauth-compose: log, dev-replicaset
 
 
       # B) GENERAL-PROFILE(ALLOW only General-MongoDB-Operation):
-      # B.1) Profile-Dev-Std: Mongo-Standalone - No-Replicaset
-      test-dev-std: log, dev-standalone
       # B.1) Testcontainer: No-Replicaset in Testcontainer-moduleCompose
       test-testcontainer-composemodule-nors: log, dev-tc-compose
+
+      # STANDALONE WAS  ABORTED - REASON:
+      # 1) Mongo needs Queues of Updates+Deletes+Creates in multiple collections
+      # Otherwise, Mongo should use 'references'(relatioship) which decrease performance
+      # 2) Queues must have transactions to assure all operations are 'atomic'
+      # THEREFORE: Standalone without Replicaset DOES NOT ALLOW Transactions+Queues
+      # B.1) Profile-Dev-Std: Mongo-Standalone - No-Replicaset
+      # test-dev-std: log, dev-standalone

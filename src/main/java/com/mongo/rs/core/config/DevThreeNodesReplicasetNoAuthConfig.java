@@ -19,7 +19,7 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @ConfigurationProperties(prefix = "db.mongodb.replicaset")
 @Setter
 @Getter
-@Profile("prod-rs")
+@Profile("prod-three-nodes-rs")
 @Import({DbTransactionManagerConfig.class})
 @Slf4j
 @Configuration
@@ -48,8 +48,7 @@ public class DevThreeNodesReplicasetNoAuthConfig extends AbstractReactiveMongoCo
               "?replicaSet=" + replicasetName +
               "&authSource=" + authDb;
 
-    System.out.println(
-         "DevThreeNodesReplicasetNoAuth ---> " + connection);
+    System.out.println("DevThreeNodesReplicasetNoAuth ---> " + connection);
 
     return MongoClients.create(connection);
   }

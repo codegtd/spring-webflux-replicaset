@@ -3,8 +3,15 @@ server:
 
 spring:
   profiles:
-    active: dev-rs
+# ACTIVE PROFILES:
+# 1) Are unique, meaning YOU CAN NOT HAVE TWO PROFILES RUNNING
+# 2) EVERYTIME THAT CHANGE IT HERE:
+#    - MUST BE CHANGED IN:
+#      - DevTransactionManagerConfig
+#      - DevSingleNodeReplicasetNoAuthConfig
+#      - DevThreeNodesReplicasetNoAuthConfig
+# 3) Change the Active-Profile according the BOOTSTRAP-SCRIPTS-RUN-CONFIGURATION-INTELLIJ
+    active: dev-single-node-rs
     group:
-      dev-rs: dev-singlenode-replicaset-noauth-props, log
-      prod-rs: dev-threenodes-replicaset-noauth-props, log
-#      prod-rsa: dev-threenodes-replicaset-auth-props, log
+      dev-single-node-rs: dev-singlenode-rs-noauth-props, log
+      prod-three-nodes-rs: dev-threenodes-rs-noauth-props, log

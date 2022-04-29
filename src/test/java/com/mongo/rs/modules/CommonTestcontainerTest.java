@@ -50,7 +50,7 @@ import static org.springframework.http.HttpStatus.OK;
      ╚══════════════════════════════════════════════════════════╝*/
 @Tags(value = {@Tag("testcontainer")})
 @Import({DbUtilsConfig.class})
-@DisplayName("1 TC Common")
+@DisplayName("TC Common")
 @ResourceConfig
 @ActiveProfiles("test-testcontainer-composemodule-nors")
 @TcCompose
