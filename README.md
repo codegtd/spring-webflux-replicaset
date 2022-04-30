@@ -57,6 +57,10 @@
           1. [ProfileProduction](https://sntnupl.com/mongodb-replicaset-for-development-using-docker)
           2. [yowko](https://github.com/yowko/docker-compose-mongodb-replica-set-with-auth/blob/master/docker-compose.yaml)
           3. [prashix](https://prashix.medium.com/setup-mongodb-replicaset-with-authentication-enabled-using-docker-compose-5edd2ad46a90)
+          4. [keyfile](https://www.educba.com/mongodb-keyfile/)
+          5. [mongo-authentication](https://mkyong.com/mongodb/mongodb-authentication-example/)
+          6. [MongoD CLI ](https://www.mongodb.com/docs/manual/reference/configuration-file-settings-command-line
+             -options-mapping/#std-label-conf-file-command-line-mapping)
        4. StandAlone - ProfileDevelopment
 
 

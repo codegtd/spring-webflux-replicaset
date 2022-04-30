@@ -33,6 +33,10 @@ cd rs-threenodes
 if %parameter1%==devthree (docker-compose -f dev-threenodes-replicaset-noauth-compose.yml up --build --force-recreate)
 cd ..
 
+cd rs-threenodes-auth
+if %parameter1%==devthreeauth (docker-compose -f dev-threenodes-replicaset-auth-compose.yml up --build --force-recreate)
+cd ..
+
 echo ===========================================================================
 echo                     5) DOCKER-COMPOSE: ...Ending
 echo ===========================================================================

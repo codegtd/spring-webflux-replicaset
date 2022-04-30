@@ -11,7 +11,8 @@ spring:
 #      - DevSingleNodeReplicasetNoAuthConfig
 #      - DevThreeNodesReplicasetNoAuthConfig
 # 3) Change the Active-Profile according the BOOTSTRAP-SCRIPTS-RUN-CONFIGURATION-INTELLIJ
-    active: dev-single-node-rs
+    active: prod-three-nodes-rs-auth
     group:
       dev-single-node-rs: dev-singlenode-rs-noauth-props, log
       prod-three-nodes-rs: dev-threenodes-rs-noauth-props, log
+      prod-three-nodes-rs-auth: dev-threenodes-rs-auth-props, log
