@@ -29,12 +29,13 @@ cd rs-singlenode
 if %parameter1%==devsingle (docker-compose -f dev-singlenode-replicaset-noauth-compose.yml --verbose up --build --force-recreate)
 cd ..
 
-cd rs-threenodes
-if %parameter1%==devthree (docker-compose -f dev-threenodes-replicaset-noauth-compose.yml up --build --force-recreate)
+cd rs-singlenode-auth
+if %parameter1%==devsingleauth (docker-compose -f prod-singlenode-replicaset-auth-compose.yml up --build
+--force-recreate)
 cd ..
 
-cd rs-threenodes-auth
-if %parameter1%==devthreeauth (docker-compose -f dev-threenodes-replicaset-auth-compose.yml up --build --force-recreate)
+cd rs-threenodes
+if %parameter1%==devthree (docker-compose -f dev-threenodes-replicaset-noauth-compose.yml up --build --force-recreate)
 cd ..
 
 echo ===========================================================================

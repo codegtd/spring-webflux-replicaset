@@ -1,0 +1,75 @@
+version: "3.4"
+
+x-common-variables:
+  &env-vars
+  PORT_API: 8080
+
+volumes:
+  mongo-keys:
+  mongo-db0:
+
+networks:
+  api-net:
+
+services:
+
+  mongo-keys:
+    image: mongo:4.4.4
+    command: 'bash -c "openssl rand -base64 741 > /mongo-conf/mongodb-keyfile; chmod 600 /mongo-conf/mongodb-keyfile; chown 999 /mongo-conf/mongodb-keyfile"'
+    networks:
+      - api-net
+    volumes:
+      - mongo-keys:/mongo-conf
+
+  mongo1:
+    container_name: mongo1-db
+    image: mongo:4.4.4
+    command: 'mongod --auth --keyFile /opt/keyfile/mongodb-keyfile --replSet devSingleNodeAuthRs'
+    ports:
+      - "27017:27017"
+    networks:
+      - api-net
+    depends_on:
+      - mongo-keys
+    volumes:
+      - mongo-keys:/opt/keyfile
+      - mongo-db0:/data/db
+    env_file:
+      - env/prod-singlenode-replicaset-auth.env
+
+  rs-setup-single:
+    container_name: rs-setup-single
+    image: mongo:4.4.4
+    command: bash -c "
+      sleep 5 &&
+      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.initiate()\" &&
+      sleep 5 &&
+      sleep infinity"
+    networks:
+      - api-net
+    depends_on:
+      - mongo1
+
+  apisinglenodeauth:
+    container_name: apisinglenodeauth
+    image: pauloportfolio/apisinglenodeauth
+    build:
+      context: ../..
+      dockerfile: /docker/rs-singlenode-auth/Dockerfile
+      args:
+        JAR_FILE: target/*.jar
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    networks:
+      - api-net
+    depends_on:
+      - rs-setup-single
+    env_file:
+      - env/prod-singlenode-replicaset-auth.env
+    environment:
+      PORT_DEBUG: 5005
+      <<: *env-vars
+      DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+#    volumes:
+#      - ../docker/rs-threenodes-auth/mongo-data-db-rs:/data/db

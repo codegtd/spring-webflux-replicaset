@@ -10,6 +10,6 @@ db:
       database: ${MONGO_INITDB_DATABASE}
       username: ${MONGO_INITDB_ROOT_USERNAME}
       password: ${MONGO_INITDB_ROOT_PASSWORD}
-      replicaset_name: ${MONGO_REPLICA_SET_NAME}
-      root_uri: ${MONGO_URL}
-      auth_db: ${RS_AUTH}
+      replicaset_name: ${REPLICASET_NAME}
+      root_uri: ${REPLICASET_URL}
+      auth_db: ${REPLICASET_AUTH}

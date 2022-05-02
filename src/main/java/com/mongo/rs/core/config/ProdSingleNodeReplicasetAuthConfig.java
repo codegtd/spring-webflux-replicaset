@@ -19,12 +19,12 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @ConfigurationProperties(prefix = "db.mongodb.replicaset")
 @Setter
 @Getter
-@Profile("prod-three-nodes-rs-auth")
+@Profile("prod-single-node-rs-auth")
 @Import({DbTransactionManagerConfig.class})
 @Slf4j
 @Configuration
 @EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user"})
-public class DevThreeNodesReplicasetAuthConfig extends AbstractReactiveMongoConfiguration {
+public class ProdSingleNodeReplicasetAuthConfig extends AbstractReactiveMongoConfiguration {
 
   private String rootUri;
   private String database;

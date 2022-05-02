@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.ReactiveMongoTransactionManager;
 
 //@Profile("dev-single-node-rs")
 //@Profile("prod-three-nodes-rs")
-@Profile("prod-three-nodes-rs-auth")
+@Profile("prod-single-node-rs-auth")
 @Slf4j
 @Configuration
 public class DbTransactionManagerConfig {

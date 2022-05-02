@@ -13,12 +13,12 @@ cd rs-singlenode
 docker-compose -f dev-singlenode-replicaset-noauth-compose.yml down --remove-orphans
 
 cd ..
-cd rs-threenodes
-docker-compose -f dev-threenodes-replicaset-noauth-compose.yml down --remove-orphans
+cd rs-singlenode-auth
+docker-compose -f dev-singlenode-replicaset-auth-compose.yml down --remove-orphans
 
 cd ..
-cd rs-threenodes-auth
-docker-compose -f dev-threenodes-replicaset-auth-compose.yml down --remove-orphans
+cd rs-threenodes
+docker-compose -f dev-threenodes-replicaset-noauth-compose.yml down --remove-orphans
 ::------------------------------------------------------------------------------
 docker container prune --force
 docker system prune --volumes --force

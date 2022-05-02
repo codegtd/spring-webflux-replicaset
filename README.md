@@ -32,7 +32,8 @@
            1. compose variables
            2. env_file (secrets)
               1. [Tutorial](https://www.youtube.com/watch?v=1je3VxDF67o)
-        3. Secrets
+        3. Running SH-Scripts
+        4. Secrets
            1. [secrets-with-docker-compose](https://www.rockyourcode.com/using-docker-secrets-with-docker-compose/)
            2. [secrets-during-development](https://blog.mikesir87.io/2017/05/using-docker-secrets-during-development/)
            3. [docker-secrets](https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose)
@@ -47,21 +48,24 @@
        1. singlenode
           1. NoAuthentication
           2. Authenticated
+       3. Singlenode - Authenticated:
+           1. [3Nodes - Base for single node](https://www.youtube.com/watch?v=-XzMfd4XQak)
+              1. [GitHub](https://github.com/willitscale/learning-docker)
        2. Three nodes:
           1. NoAuthentication
           2. Authenticated
           3. **NOTE**: This replica set is for *Local Development* purposes ONLY. Running multiple nodes within a 
              single machine is an anti-pattern, and MUST BE AVOIDED in Production.
              1. No-authentication - ProfileDevelopment
-       3. Three nodes - Authenticated:
+       4. Three nodes - Authenticated:
           1. [ProfileProduction](https://sntnupl.com/mongodb-replicaset-for-development-using-docker)
           2. [yowko](https://github.com/yowko/docker-compose-mongodb-replica-set-with-auth/blob/master/docker-compose.yaml)
           3. [prashix](https://prashix.medium.com/setup-mongodb-replicaset-with-authentication-enabled-using-docker-compose-5edd2ad46a90)
           4. [keyfile](https://www.educba.com/mongodb-keyfile/)
           5. [mongo-authentication](https://mkyong.com/mongodb/mongodb-authentication-example/)
-          6. [MongoD CLI ](https://www.mongodb.com/docs/manual/reference/configuration-file-settings-command-line
-             -options-mapping/#std-label-conf-file-command-line-mapping)
-       4. StandAlone - ProfileDevelopment
+          6. [MongoCli](https://www.mongodb.com/docs/manual/reference/configuration-file-settings-command-line
+             -options-mapping/#std-label-conf-file-command-line-mapping/)
+       5. StandAlone - ProfileDevelopment
 
 
 5. Testcontainers:

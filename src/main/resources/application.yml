@@ -4,15 +4,20 @@ server:
 spring:
   profiles:
 # ACTIVE PROFILES:
-# 1) Are unique, meaning YOU CAN NOT HAVE TWO PROFILES RUNNING
+# 1) Are UNIQUE
+#    - Meaning: IT IS ALLOWED "ONLY ONE PROFILE" in all @Configurations
+#    - For example:
+#      - TEST
+#      - DEV
+#      - PROD
 # 2) EVERYTIME THAT CHANGE IT HERE:
 #    - MUST BE CHANGED IN:
 #      - DevTransactionManagerConfig
 #      - DevSingleNodeReplicasetNoAuthConfig
 #      - DevThreeNodesReplicasetNoAuthConfig
 # 3) Change the Active-Profile according the BOOTSTRAP-SCRIPTS-RUN-CONFIGURATION-INTELLIJ
-    active: prod-three-nodes-rs-auth
+    active: prod-single-node-rs-auth
     group:
       dev-single-node-rs: dev-singlenode-rs-noauth-props, log
-      prod-three-nodes-rs: dev-threenodes-rs-noauth-props, log
-      prod-three-nodes-rs-auth: dev-threenodes-rs-auth-props, log
+      prod-single-node-rs-auth: prod-single-node-rs-auth-props, log
+      dev-three-nodes-rs: dev-threenodes-rs-noauth-props, log
