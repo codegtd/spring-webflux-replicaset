@@ -46,11 +46,10 @@ import static org.springframework.http.HttpStatus.OK;
      ╚══════════════════════════════════════════════════════════╝*/
 @Tags(value = {@Tag("replicaset")})
 @Import({DbUtilsConfig.class})
-@DisplayName("Common Replicaset")
+@DisplayName("Common Replicaset Auth")
 @ResourceConfig
-@ActiveProfiles("test-dev-singlenode-replicaset-noauth-compose")
-public class CommonReplicasetTest {
-
+@ActiveProfiles({"test-singlenode-rs-auth-compose"})
+public class CommonReplicasetAuthTest {
   final String enabledTest = "true";
 
   // MOCKED-SERVER: WEB-TEST-CLIENT(non-blocking client)'

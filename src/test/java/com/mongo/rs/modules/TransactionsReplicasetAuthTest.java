@@ -59,10 +59,10 @@ import static org.springframework.http.HttpStatus.CREATED;
 */
 @Tags(value = {@Tag("replicaset")})
 @Import({ReplicasetConfig.class})
-@DisplayName("Replicaset Transactions")
+@DisplayName("Replicaset Transactions Auth")
 @ResourceConfig
-@ActiveProfiles("test-dev-singlenode-replicaset-noauth-compose")
-public class TransactionsReplicasetTest {
+@ActiveProfiles({"test-singlenode-rs-auth-compose"})
+public class TransactionsReplicasetAuthTest {
   /*
 ╔════════════════════════════════════════════════════════════╗
 ║              TEST-TRANSACTIONS + TEST-CONTAINERS           ║

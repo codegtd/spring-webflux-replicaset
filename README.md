@@ -46,26 +46,37 @@
             1. ex.: compose-up.bat using clean.bat
     4. Replicaset
        1. singlenode
-          1. NoAuthentication
-          2. Authenticated
-       3. Singlenode - Authenticated:
-           1. [3Nodes - Base for single node](https://www.youtube.com/watch?v=-XzMfd4XQak)
-              1. [GitHub](https://github.com/willitscale/learning-docker)
+          1. **NOTE**: 
+              - singlenode require:
+                  * Only ONE VM in the cloud
+                      + IT CAN DECREASE THE COST "CONSIDERABLY"
+          2. Types:
+             1. NoAuthentication
+             2. Authenticated
+                1. dynamic mongodb-keyfile 
+                2. [3Nodes - Base for single node authentication](https://www.youtube.com/watch?v=-XzMfd4XQak)
+                   1. [GitHub](https://github.com/willitscale/learning-docker)
        2. Three nodes:
-          1. NoAuthentication
-          2. Authenticated
-          3. **NOTE**: This replica set is for *Local Development* purposes ONLY. Running multiple nodes within a 
-             single machine is an anti-pattern, and MUST BE AVOIDED in Production.
-             1. No-authentication - ProfileDevelopment
-       4. Three nodes - Authenticated:
-          1. [ProfileProduction](https://sntnupl.com/mongodb-replicaset-for-development-using-docker)
-          2. [yowko](https://github.com/yowko/docker-compose-mongodb-replica-set-with-auth/blob/master/docker-compose.yaml)
-          3. [prashix](https://prashix.medium.com/setup-mongodb-replicaset-with-authentication-enabled-using-docker-compose-5edd2ad46a90)
-          4. [keyfile](https://www.educba.com/mongodb-keyfile/)
-          5. [mongo-authentication](https://mkyong.com/mongodb/mongodb-authentication-example/)
-          6. [MongoCli](https://www.mongodb.com/docs/manual/reference/configuration-file-settings-command-line
-             -options-mapping/#std-label-conf-file-command-line-mapping/)
-       5. StandAlone - ProfileDevelopment
+          1. **NOTE**: 
+             1. This replica set is for *Local Development* purposes ONLY. 
+                1. Run multiple nodes within a single machine is an anti-pattern, and MUST BE AVOIDED in Production.
+             2. Multiple nodes requires:
+                1. Multiple Vm's in the cloud
+                   1. IT CAN INCREASE THE COST "CONSIDERABLY"
+          2. Types:
+             1. NoAuthentication
+             2. Three nodes - Authenticated:
+                1. [ProfileProduction](https://sntnupl.com/mongodb-replicaset-for-development-using-docker)
+                2. [yowko](https://github.com/yowko/docker-compose-mongodb-replica-set-with-auth/blob/master/docker-compose.yaml)
+                3. [prashix](https://prashix.medium.com/setup-mongodb-replicaset-with-authentication-enabled-using-docker-compose-5edd2ad46a90)
+                4. [keyfile](https://www.educba.com/mongodb-keyfile/)
+                5. [mongo-authentication](https://mkyong.com/mongodb/mongodb-authentication-example/)
+                6. [MongoCli](https://www.mongodb.com/docs/manual/reference/configuration-file-settings-command-line
+                   -options-mapping/#std-label-conf-file-command-line-mapping/)
+       3. StandAlone - ProfileDevelopment
+          1. Only archive because:
+             1. it does not allow transactions, therefore:
+                1. it does not run queues(CREATE+DELETE+UPDATE)
 
 
 5. Testcontainers:

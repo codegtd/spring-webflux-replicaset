@@ -1,3 +1,4 @@
+# SAME PROPERTIES AS: ./DOCKER/RS-SINGLENODE/ENV-FILE
 db:
   mongodb:
     replicaset:

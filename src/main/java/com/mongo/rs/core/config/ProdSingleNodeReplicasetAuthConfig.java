@@ -45,7 +45,9 @@ public class ProdSingleNodeReplicasetAuthConfig extends AbstractReactiveMongoCon
     final String connection =
          "mongodb://" +
               username + ":" + password +
-              "@" + rootUri + // replicasetPrimary + ":" + replicasetPort
+              // ROOTURI: replicasetPrimary + ":" + replicasetPort
+              "@" + rootUri +
+              // DATABASE: OMIT/SUPRESS database when it should be created late/after
               "/" + database +
               "?replicaSet=" + replicasetName +
               "&authSource=" + authDb;

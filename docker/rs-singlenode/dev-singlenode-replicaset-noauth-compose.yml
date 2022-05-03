@@ -18,8 +18,8 @@ services:
     networks:
       - api-net
 
-  rs-setup-single:
-    container_name: rs-setup-single
+  dev-single-node-rs:
+    container_name: dev-single-node-rs
     image: mongo:4.4.4
     command: bash -c "
       sleep 5 &&
@@ -46,7 +46,7 @@ services:
     volumes:
       - ../docker/rs-singlenode/mongo-data-db-rs:/data/db
     depends_on:
-      - rs-setup-single
+      - dev-single-node-rs
     networks:
       - api-net
     env_file:

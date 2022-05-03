@@ -78,8 +78,8 @@ services:
       start_period: 5s
       retries: 5
 
-  api3nodes:
-    container_name: api3nodes
+  dev-three-nodes-rs:
+    container_name: dev-three-nodes-rs
     image: pauloportfolio/api3nodes
     build:
       context: ../..

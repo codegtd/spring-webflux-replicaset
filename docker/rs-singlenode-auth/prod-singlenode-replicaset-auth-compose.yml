@@ -35,7 +35,7 @@ services:
       - mongo-keys:/opt/keyfile
       - mongo-db0:/data/db
     env_file:
-      - env/prod-singlenode-replicaset-auth.env
+      - prod-singlenode-replicaset-auth.env
 
   rs-setup-single:
     container_name: rs-setup-single
@@ -44,6 +44,8 @@ services:
       sleep 5 &&
       mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.initiate()\" &&
       sleep 5 &&
+      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.status()\" &&
+      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.conf()\" &&
       sleep infinity"
     networks:
       - api-net
@@ -66,10 +68,8 @@ services:
     depends_on:
       - rs-setup-single
     env_file:
-      - env/prod-singlenode-replicaset-auth.env
+      - prod-singlenode-replicaset-auth.env
     environment:
       PORT_DEBUG: 5005
       <<: *env-vars
       DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
-#    volumes:
-#      - ../docker/rs-threenodes-auth/mongo-data-db-rs:/data/db
