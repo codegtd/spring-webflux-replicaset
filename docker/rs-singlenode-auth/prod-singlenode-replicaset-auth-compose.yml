@@ -1,5 +1,5 @@
 version: "3.4"
-
+#https://medium.com/@leonfeng/set-up-a-secured-mongodb-container-e895807054bd
 x-common-variables:
   &env-vars
   PORT_API: 8080
@@ -13,9 +13,10 @@ networks:
 
 services:
 
-  mongo-keys:
+  mongo-dynamic-key:
     image: mongo:4.4.4
-    command: 'bash -c "openssl rand -base64 741 > /mongo-conf/mongodb-keyfile; chmod 600 /mongo-conf/mongodb-keyfile; chown 999 /mongo-conf/mongodb-keyfile"'
+    command: 'bash -c "openssl rand -base64 741 > /mongo-conf/mongodb-keyfile; 
+             chmod 600 /mongo-conf/mongodb-keyfile; chown 999 /mongo-conf/mongodb-keyfile"'
     networks:
       - api-net
     volumes:
@@ -30,23 +31,28 @@ services:
     networks:
       - api-net
     depends_on:
-      - mongo-keys
+      - mongo-dynamic-key
     volumes:
       - mongo-keys:/opt/keyfile
       - mongo-db0:/data/db
     env_file:
-      - prod-singlenode-replicaset-auth.env
+      - env-rs-root-auth.env
 
   rs-setup-single:
     container_name: rs-setup-single
     image: mongo:4.4.4
-    command: bash -c "
-      sleep 5 &&
-      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.initiate()\" &&
-      sleep 5 &&
-      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.status()\" &&
-      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.conf()\" &&
-      sleep infinity"
+    command: bash -c "chmod +x /scripts/script-bootstrap-rs.sh; /scripts/script-bootstrap-rs.sh"
+    volumes:
+      - ./script-bootstrap-rs.sh:/scripts/script-bootstrap-rs.sh
+    #    HARD-CODING STYLE - WORKS PERFECTLY AS WELL-
+    #    command: bash -c "
+    #      sleep 5 &&
+    #      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.initiate()\" &&
+    #      sleep 5 &&
+    #      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.status()\" &&
+    #      sleep 5 &&
+    #      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.conf()\" &&
+    #      sleep infinity"
     networks:
       - api-net
     depends_on:
@@ -68,7 +74,8 @@ services:
     depends_on:
       - rs-setup-single
     env_file:
-      - prod-singlenode-replicaset-auth.env
+      - env-rs-general.env
+      - env-rs-root-auth.env
     environment:
       PORT_DEBUG: 5005
       <<: *env-vars

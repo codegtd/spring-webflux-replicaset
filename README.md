@@ -30,7 +30,7 @@
               3. compose-prod-replicaset: three nodes
         2. Environment:
            1. compose variables
-           2. env_file (secrets)
+           2. Modular env_files
               1. [Tutorial](https://www.youtube.com/watch?v=1je3VxDF67o)
         3. Running SH-Scripts
         4. Secrets
@@ -44,7 +44,12 @@
             1. Parametric-scripts IDE execution
         2. Reusing bat-scripts:
             1. ex.: compose-up.bat using clean.bat
-    4. Replicaset
+    4. SH Scripts:
+       1. Running
+       2. Environment variables
+          1. [Loading](https://zwbetz.com/set-environment-variables-in-your-bash-shell-from-a-env-file/)
+          2. [Delete](https://www.baeldung.com/linux/delete-shell-env-variable)
+    5. Replicaset
        1. singlenode
           1. **NOTE**: 
               - singlenode require:
@@ -53,7 +58,7 @@
           2. Types:
              1. NoAuthentication
              2. Authenticated
-                1. dynamic mongodb-keyfile 
+                1. dynamic mongodb-keyfile (generate as a service in compose) 
                 2. [3Nodes - Base for single node authentication](https://www.youtube.com/watch?v=-XzMfd4XQak)
                    1. [GitHub](https://github.com/willitscale/learning-docker)
        2. Three nodes:

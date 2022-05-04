@@ -7,10 +7,11 @@ echo "==========================================================================
 echo "$MONGO_INITDB_DATABASE"
 echo "$MONGO_INITDB_ROOT_USERNAME"
 echo "${MONGO_INITDB_ROOT_PASSWORD}"
+SLEEPTIME=5s
 echo "================================================================================================"
 echo            "BOOTSTRAP-SCRIPT: Create User Admin - Started.2.."
 echo "================================================================================================"
-sleep 10s
+sleep ${SLEEPTIME}
 
 echo "================================================================================================"
 echo            "BOOTSTRAP-SCRIPT: Create User Admin - Started.3.."
