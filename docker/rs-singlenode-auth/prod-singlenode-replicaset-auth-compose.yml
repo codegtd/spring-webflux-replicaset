@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.5"
 #https://medium.com/@leonfeng/set-up-a-secured-mongodb-container-e895807054bd
 x-common-variables:
   &env-vars
@@ -35,15 +35,21 @@ services:
     volumes:
       - mongo-keys:/opt/keyfile
       - mongo-db0:/data/db
-    env_file:
-      - env-rs-root-auth.env
+#    env_file:
+#      - env-rs-root-auth.env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/myusername
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mypassword
+    secrets:
+      - myusername
+      - mypassword
 
-  rs-setup-single:
-    container_name: rs-setup-single
+  rs-setup:
+    container_name: rs-setup
     image: mongo:4.4.4
-    command: bash -c "chmod +x /scripts/script-bootstrap-rs.sh; /scripts/script-bootstrap-rs.sh"
+    command: bash -c "chmod +x /scripts/rs-setup.sh; /scripts/rs-setup.sh;"
     volumes:
-      - ./script-bootstrap-rs.sh:/scripts/script-bootstrap-rs.sh
+      - ./rs-setup.sh:/scripts/rs-setup.sh
     #    HARD-CODING STYLE - WORKS PERFECTLY AS WELL-
     #    command: bash -c "
     #      sleep 5 &&
@@ -72,11 +78,22 @@ services:
     networks:
       - api-net
     depends_on:
-      - rs-setup-single
+      - rs-setup
     env_file:
       - env-rs-general.env
-      - env-rs-root-auth.env
+#      - env-rs-root-auth.env
     environment:
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/myusername
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mypassword
       PORT_DEBUG: 5005
       <<: *env-vars
       DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+    secrets:
+      - myusername
+      - mypassword
+
+secrets:
+  mypassword:
+    file: pass.txt
+  myusername:
+    file: user.txt

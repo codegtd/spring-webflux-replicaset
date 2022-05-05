@@ -40,6 +40,4 @@ cd ..
 echo ===========================================================================
 echo                     5) DOCKER-COMPOSE: ...Ending
 echo ===========================================================================
-docker-compose ls
-docker container ls
 ::if %parameter1%==devstd (docker-compose -f compose-dev-standalone.yml --verbose up --build --force-recreate)
