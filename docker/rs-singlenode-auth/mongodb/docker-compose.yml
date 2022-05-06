@@ -1,0 +1,35 @@
+version: "3.5"
+#https://medium.com/@leonfeng/set-up-a-secured-mongodb-container-e895807054bd
+#https://earthly.dev/blog/docker-secrets/
+
+services:
+  mongodb:
+    image: mongo:4.4.4
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: admin
+      MONGO_DATABASE: parrot
+#      MONGO_INITDB_ROOT_USERNAME: root_username
+#      MONGO_INITDB_ROOT_PASSWORD: root_password
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/root_username
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/root_password
+#      MONGO_USERNAME_FILE: /run/secrets/db_username
+#      MONGO_PASSWORD_FILE: /run/secrets/db_password
+      MONGO_USERNAME: username
+      MONGO_PASSWORD: password
+    secrets:
+      - root_username
+      - root_password
+      - db_username
+      - db_password
+
+secrets:
+  root_username:
+    file: root_username.txt
+  root_password:
+    file: root_password.txt
+  db_username:
+    file: username
+  db_password:
+    file: password

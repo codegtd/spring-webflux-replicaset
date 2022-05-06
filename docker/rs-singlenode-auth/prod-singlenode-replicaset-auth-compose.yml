@@ -1,5 +1,6 @@
 version: "3.5"
 #https://medium.com/@leonfeng/set-up-a-secured-mongodb-container-e895807054bd
+#https://earthly.dev/blog/docker-secrets/
 x-common-variables:
   &env-vars
   PORT_API: 8080
@@ -13,7 +14,7 @@ networks:
 
 services:
 
-  mongo-dynamic-key:
+  mongo-key:
     image: mongo:4.4.4
     command: 'bash -c "openssl rand -base64 741 > /mongo-conf/mongodb-keyfile; 
              chmod 600 /mongo-conf/mongodb-keyfile; chown 999 /mongo-conf/mongodb-keyfile"'
@@ -31,7 +32,7 @@ services:
     networks:
       - api-net
     depends_on:
-      - mongo-dynamic-key
+      - mongo-key
     volumes:
       - mongo-keys:/opt/keyfile
       - mongo-db0:/data/db
