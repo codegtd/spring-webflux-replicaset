@@ -37,13 +37,16 @@ services:
       - mongo-keys:/opt/keyfile
       - mongo-db0:/data/db
 #    env_file:
-#      - env-rs-root-auth.env
+#      - envs/env-rs-root-auth.env
+#      - envs/env-rs-root-password-auth.env
     environment:
-      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/myusername
-      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mypassword
+      MONGO_INITDB_DATABASE_FILE: /run/secrets/root_db
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/root_username
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/root_password
     secrets:
-      - myusername
-      - mypassword
+      - root_db
+      - root_username
+      - root_password
 
   rs-setup:
     container_name: rs-setup
@@ -51,7 +54,11 @@ services:
     command: bash -c "chmod +x /scripts/rs-setup.sh; /scripts/rs-setup.sh;"
     volumes:
       - ./rs-setup.sh:/scripts/rs-setup.sh
-    #    HARD-CODING STYLE - WORKS PERFECTLY AS WELL-
+    networks:
+      - api-net
+    depends_on:
+      - mongo1
+    #    HARD-CODING STYLE: WORKS PERFECTLY AS WELL-
     #    command: bash -c "
     #      sleep 5 &&
     #      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.initiate()\" &&
@@ -60,17 +67,13 @@ services:
     #      sleep 5 &&
     #      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.conf()\" &&
     #      sleep infinity"
-    networks:
-      - api-net
-    depends_on:
-      - mongo1
 
   apisinglenodeauth:
     container_name: apisinglenodeauth
     image: pauloportfolio/apisinglenodeauth
     build:
       context: ../..
-      dockerfile: /docker/rs-singlenode-auth/Dockerfile
+      dockerfile: ./docker/rs-singlenode-auth/Dockerfile
       args:
         JAR_FILE: target/*.jar
     ports:
@@ -81,20 +84,23 @@ services:
     depends_on:
       - rs-setup
     env_file:
-      - env-rs-general.env
-#      - env-rs-root-auth.env
+      - envs/env-rs-general.env
+      - envs/env-rs-root-auth.env
+#      - envs/env-rs-root-password-auth.env
     environment:
-      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/myusername
-      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mypassword
+#      MONGO_INITDB_DATABASE_FILE: /run/secrets/root_db_admin
+#      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/root_username
+      MONGO_INITDB_ROOT_PASSWORD: '$(cat /run/secrets/root_password)'
       PORT_DEBUG: 5005
       <<: *env-vars
       DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
     secrets:
-      - myusername
-      - mypassword
+      - root_password
 
 secrets:
-  mypassword:
-    file: pass.txt
-  myusername:
-    file: user.txt
+  root_db:
+    file: root-db-secrets/root_admin_db.txt
+  root_username:
+    file: root-db-secrets/root_username.txt
+  root_password:
+    file: root-db-secrets/root_password.txt
