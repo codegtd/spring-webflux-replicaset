@@ -37,6 +37,8 @@
            1. [secrets-with-docker-compose](https://www.rockyourcode.com/using-docker-secrets-with-docker-compose/)
            2. [secrets-during-development](https://blog.mikesir87.io/2017/05/using-docker-secrets-during-development/)
            3. [docker-secrets](https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose)
+           3. [earthly.dev](https://earthly.dev/blog/docker-secrets/)
+           3. [secured-mongodb-container](https://medium.com/@leonfeng/set-up-a-secured-mongodb-container-e895807054bd)
     2. Dockerfile
         1. _Specific file:_ **Dockerfile**
     3. Batch Scripts:

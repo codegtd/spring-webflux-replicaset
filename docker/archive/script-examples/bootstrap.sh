@@ -17,7 +17,7 @@ echo "==========================================================================
 echo            "BOOTSTRAP-SCRIPT: Create User Admin - Started.3.."
 echo "================================================================================================"
 
-mongo --authenticationDatabase admin "$MONGO_INITDB_DATABASE" <<EOF
+mongo --authenticationDatabase root_admin "$MONGO_INITDB_DATABASE" <<EOF
     db.createUser({
         user: '$MONGO_INITDB_USERNAME',
         pwd: '$MONGO_INITDB_PASSWORD',

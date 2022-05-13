@@ -2,7 +2,7 @@ version: "3.4"
 
 x-common-variables:
   &env-vars
-  MONGO_AUTH_DB: admin
+  MONGO_AUTH_DB: root_admin_db.txt
   MONGO_INITDB_ROOT_USERNAME: root
   MONGO_INITDB_ROOT_PASSWORD: root
 
