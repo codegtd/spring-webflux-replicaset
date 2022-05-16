@@ -36,9 +36,6 @@ services:
     volumes:
       - mongo-keys:/opt/keyfile
       - mongo-db0:/data/db
-#    env_file:
-#      - envs/env-rs-root-auth.env
-#      - envs/env-rs-root-password-auth.env
     environment:
       MONGO_INITDB_DATABASE_FILE: /run/secrets/root_db
       MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/root_username
@@ -86,11 +83,8 @@ services:
     env_file:
       - envs/env-rs-general.env
       - envs/env-rs-root-auth.env
-#      - envs/env-rs-root-password-auth.env
     environment:
-#      MONGO_INITDB_DATABASE_FILE: /run/secrets/root_db_admin
-#      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/root_username
-      MONGO_INITDB_ROOT_PASSWORD: '$(cat /run/secrets/root_password)'
+      MONGO_INITDB_ROOT_PASSWORD: root_password
       PORT_DEBUG: 5005
       <<: *env-vars
       DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m

@@ -1,7 +1,7 @@
 package com.mongo.rs.core.config;
 
 
-import com.mongo.rs.core.YamlConverter;
+import com.mongo.rs.core.YamlProcessor;
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
 import lombok.Getter;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
-@PropertySource(value = "classpath:application.yml", factory = YamlConverter.class)
+@PropertySource(value = "classpath:application.yml", factory = YamlProcessor.class)
 @ConfigurationProperties(prefix = "db.mongodb.replicaset")
 @Setter
 @Getter

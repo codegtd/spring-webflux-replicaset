@@ -33,30 +33,48 @@
            2. Modular env_files
               1. [Tutorial](https://www.youtube.com/watch?v=1je3VxDF67o)
         3. Running SH-Scripts
-        4. Secrets
-           1. [secrets-with-docker-compose](https://www.rockyourcode.com/using-docker-secrets-with-docker-compose/)
-           2. [secrets-during-development](https://blog.mikesir87.io/2017/05/using-docker-secrets-during-development/)
-           3. [docker-secrets](https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose)
-           3. [earthly.dev](https://earthly.dev/blog/docker-secrets/)
-           3. [secured-mongodb-container](https://medium.com/@leonfeng/set-up-a-secured-mongodb-container-e895807054bd)
-    2. Dockerfile
+    2. Secrets
+       1. Idea:
+          1. Docker secrets needs to be supported by the image that will be use this it. Some images have it, such as:
+             1. MySQL offical docker-image
+             2. MongoDb official docker-Image
+          2. The webapp should support it as well, using the library:
+             1. [Spring Boot Docker Secret Starter](https://github.com/rozidan/docker-secret-spring-boot-starter#spring-boot-docker-secret-starter)
+       2. How secrets will work?
+          1. Problem to solve:
+             1. When env_variables read the 'sensitive data'(such as Password + login + tokens, etc..) externally (env.file)
+                1. It is mandatory, exclude this env-file from VCS (git.ignore)
+                2. The content (ex. password) will be visible in containers because env_variables (docker inspect 
+                   container) allow that;
+             2. How to solve?: Docker-Secrets:
+                1. It will hide this sensitive content, make this content hidden in docker-inspect;
+                2. It will substitute the env_vars content for the "path of the secrets", not the content of it, HOWEVER, using it.
+                   1. The env-var in compose must have the suffix _FILE
+       3. Sources:
+          1. [secrets-with-docker-compose](https://www.rockyourcode.com/using-docker-secrets-with-docker-compose/)
+          2. [secrets-during-development](https://blog.mikesir87.io/2017/05/using-docker-secrets-during-development/)
+          3. [docker-secrets](https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose)
+          4. [earthly.dev](https://earthly.dev/blog/docker-secrets/)
+          5. [secured-mongodb-container](https://medium.com/@leonfeng/set-up-a-secured-mongodb-container-e895807054bd)
+          6. [Docker Secret in Microservice](https://blogmilind.wordpress.com/2018/03/14/docker-secret-in-microservice/)
+    3. Dockerfile
         1. _Specific file:_ **Dockerfile**
-    3. Batch Scripts:
+    4. Batch Scripts:
         1. Parametric-scripts (env_variables)
             1. Parametric-scripts IDE execution
         2. Reusing bat-scripts:
             1. ex.: compose-up.bat using clean.bat
-    4. SH Scripts:
+    5. SH Scripts:
        1. Running
        2. Environment variables
           1. [Loading](https://zwbetz.com/set-environment-variables-in-your-bash-shell-from-a-env-file/)
           2. [Delete](https://www.baeldung.com/linux/delete-shell-env-variable)
-    5. Replicaset
+    6. Replicaset
        1. singlenode
           1. **NOTE**: 
               - singlenode require:
                   * Only ONE VM in the cloud
-                      + IT CAN DECREASE THE COST "CONSIDERABLY"
+                      + IT CAN _**DECREASE**_ THE COST "CONSIDERABLY"
           2. Types:
              1. NoAuthentication
              2. Authenticated
@@ -69,7 +87,7 @@
                 1. Run multiple nodes within a single machine is an anti-pattern, and MUST BE AVOIDED in Production.
              2. Multiple nodes requires:
                 1. Multiple Vm's in the cloud
-                   1. IT CAN INCREASE THE COST "CONSIDERABLY"
+                   1. IT CAN _**INCREASE**_ THE COST "CONSIDERABLY"
           2. Types:
              1. NoAuthentication
              2. Three nodes - Authenticated:

@@ -3,4 +3,4 @@ spring:
     mongodb:
       username: root
       password: root
-      authentication-database: root_admin_db.txt
+      authentication-database: admin

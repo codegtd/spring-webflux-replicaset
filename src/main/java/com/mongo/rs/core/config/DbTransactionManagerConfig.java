@@ -10,8 +10,8 @@ import org.springframework.data.mongodb.ReactiveMongoTransactionManager;
 
 
 //@Profile("dev-single-node-rs")
-@Profile("dev-three-nodes-rs")
-//@Profile("prod-single-node-rs-auth")
+//@Profile("dev-three-nodes-rs")
+@Profile("prod-single-node-rs-auth")
 @Slf4j
 @Configuration
 public class DbTransactionManagerConfig {
