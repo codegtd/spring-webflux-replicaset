@@ -28,7 +28,7 @@ services:
     depends_on:
       - mongo2
     healthcheck:
-      # test: [ 'CMD', 'mongo', '-u', 'root_admin_db.txt', '-p', 'root_admin_db.txt', '--port', '9042' ]
+      # test: [ 'CMD', 'mongo', '-u', 'db_name.txt', '-p', 'db_name.txt', '--port', '9042' ]
       # test: mongo --user=$$RS_USERNAME --password=$$RS_PASSWORD --port=9042
       test: echo 'db.runCommand("ping").ok' | mongo mongo1:9042/test --quiet
       interval: 20s
@@ -50,7 +50,7 @@ services:
     depends_on:
       - mongo3
     healthcheck:
-      # test: [ 'CMD', 'mongo', '-u', 'root_admin_db.txt', '-p', 'root_admin_db.txt', '--port', '9142' ]
+      # test: [ 'CMD', 'mongo', '-u', 'db_name.txt', '-p', 'db_name.txt', '--port', '9142' ]
       # test: mongo --user=$$RS_USERNAME --password=$$RS_PASSWORD --port=9142
       test: echo 'db.runCommand("ping").ok' | mongo mongo1:9142/test --quiet
       interval: 20s
@@ -70,7 +70,7 @@ services:
     volumes:
       - ~/mongors/data3:/data/db
     healthcheck:
-      # test: [ 'CMD', 'mongo', '-u', 'root_admin_db.txt', '-p', 'root_admin_db.txt', '--port', '9242' ]
+      # test: [ 'CMD', 'mongo', '-u', 'db_name.txt', '-p', 'db_name.txt', '--port', '9242' ]
       # test: mongo --user=$$RS_USERNAME --password=$$RS_PASSWORD --port=9242
       test: echo 'db.runCommand("ping").ok' | mongo mongo1:9242/test --quiet
       interval: 20s

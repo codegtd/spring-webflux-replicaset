@@ -1,6 +1,5 @@
 version: "3.5"
-#https://medium.com/@leonfeng/set-up-a-secured-mongodb-container-e895807054bd
-#https://earthly.dev/blog/docker-secrets/
+
 x-common-variables:
   &env-vars
   PORT_API: 8080
@@ -37,33 +36,35 @@ services:
       - mongo-keys:/opt/keyfile
       - mongo-db0:/data/db
     environment:
-      MONGO_INITDB_DATABASE_FILE: /run/secrets/root_db
-      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/root_username
-      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/root_password
+      MONGO_INITDB_DATABASE_FILE: /run/secrets/db_name
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/db_username
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/db_password
     secrets:
-      - root_db
-      - root_username
-      - root_password
+      - db_name
+      - db_username
+      - db_password
 
   rs-setup:
     container_name: rs-setup
     image: mongo:4.4.4
-    command: bash -c "chmod +x /scripts/rs-setup.sh; /scripts/rs-setup.sh;"
+#    db + username + password were not passed in this command as 'arguments'
+#    because safety reasons - please check script
+    command: bash -c "chmod +x /scripts/rs-setup.sh; /scripts/rs-setup.sh mongo1-db 27017;"
     volumes:
       - ./rs-setup.sh:/scripts/rs-setup.sh
     networks:
       - api-net
     depends_on:
       - mongo1
-    #    HARD-CODING STYLE: WORKS PERFECTLY AS WELL-
-    #    command: bash -c "
-    #      sleep 5 &&
-    #      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.initiate()\" &&
-    #      sleep 5 &&
-    #      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.status()\" &&
-    #      sleep 5 &&
-    #      mongo -u "root" -p "password" --host mongo1-db --port 27017 --eval \"rs.conf()\" &&
-    #      sleep infinity"
+    #HARD-CODING STYLE: WORKS PERFECTLY AS WELL-
+    #command: bash -c "
+    #sleep 5 &&
+    #mongo -u "root" -p "pass" --host mongo1-db --port 27017 --eval \"rs.initiate()\" &&
+    #sleep 5 &&
+    #mongo -u "root" -p "pass" --host mongo1-db --port 27017 --eval \"rs.status()\" &&
+    #sleep 5 &&
+    #mongo -u "root" -p "pass" --host mongo1-db --port 27017 --eval \"rs.conf()\" &&
+    #sleep infinity"
 
   apisinglenodeauth:
     container_name: apisinglenodeauth
@@ -82,19 +83,23 @@ services:
       - rs-setup
     env_file:
       - envs/env-rs-general.env
-      - envs/env-rs-root-auth.env
+      - envs/env-rs-admin-auth.env
     environment:
-      MONGO_INITDB_ROOT_PASSWORD: root_password
+      MONGO_DATABASE: db_name
+      MONGO_USERNAME: db_username
+      MONGO_PASSWORD: db_password
       PORT_DEBUG: 5005
       <<: *env-vars
       DEBUG_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
     secrets:
-      - root_password
+      - db_name
+      - db_username
+      - db_password
 
 secrets:
-  root_db:
-    file: root-db-secrets/root_admin_db.txt
-  root_username:
-    file: root-db-secrets/root_username.txt
-  root_password:
-    file: root-db-secrets/root_password.txt
+  db_name:
+    file: db-secrets/db_name.txt
+  db_username:
+    file: db-secrets/db_username.txt
+  db_password:
+    file: db-secrets/db_password.txt

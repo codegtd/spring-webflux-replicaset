@@ -4,15 +4,12 @@ spring:
       - org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
       - org.springframework.boot.autoconfigure.mongo.MongoReactiveAutoConfiguration
 
-#app:
-#  password: ${PASSWORD:testPWD}
-
 db:
   mongodb:
     replicaset:
-      database: ${MONGO_INITDB_DATABASE}
-      username: ${MONGO_INITDB_ROOT_USERNAME}
-      password: ${MONGO_INITDB_ROOT_PASSWORD}
+      database: ${MONGO_DATABASE}
+      username: ${MONGO_USERNAME}
+      password: ${MONGO_PASSWORD}
       replicaset_name: ${REPLICASET_NAME}
       root_uri: ${REPLICASET_URL}
       auth_db: ${REPLICASET_AUTH}

@@ -10,9 +10,8 @@ spring:
 #      - TEST
 #      - DEV
 #      - PROD
-# 2) EVERYTIME THAT CHANGE IT HERE:
-#    - MUST BE CHANGED IN:
-#      - DevTransactionManagerConfig
+# 2) WHEN CHANGE HERE:
+#    - "MUST" BE CHANGE: DevTransactionManagerConfig
 # 3) Change the Active-Profile according the BOOTSTRAP-SCRIPTS-RUN-CONFIGURATION-INTELLIJ
 #    active: dev-single-node-rs
 #    active: dev-three-nodes-rs

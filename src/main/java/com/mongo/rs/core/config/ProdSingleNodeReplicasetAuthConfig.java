@@ -44,16 +44,16 @@ public class ProdSingleNodeReplicasetAuthConfig extends AbstractReactiveMongoCon
       ╠══════════════════════════════════════════════════════════════════════╣
       ║ mongodb://username:password                                          ║
       ║           @mongo1:9042,mongo2:9142,mongo3:9242/api-db                ║
-      ║           ?replicaSet=docker-rs&authSource=root_admin_db.txt                     ║
+      ║           ?replicaSet=docker-rs&authSource=db_name.txt                     ║
       ╚══════════════════════════════════════════════════════════════════════╝*/
     final String connection =
          "mongodb://" +
-              //              username + ":" + password +
-              username + ":" + getPasswordFromDockerSecretFolder(password) +
+              // username + ":" + password +
+              getDockerSecret(username) + ":" + getDockerSecret(password) +
               // ROOTURI: replicasetPrimary + ":" + replicasetPort
               "@" + rootUri +
-              // DATABASE: OMMITT/SUPRESS database when it should be created late/after
-              "/" + database +
+              // DATABASE: OMMIT/SUPRESS database when it should be created late/after
+              "/" + getDockerSecret(database) +
               "?replicaSet=" + replicasetName +
               "&authSource=" + authDb;
 
@@ -78,30 +78,27 @@ public class ProdSingleNodeReplicasetAuthConfig extends AbstractReactiveMongoCon
   @Override
   protected String getDatabaseName() {
 
-    return database;
+    return getDockerSecret(database) ;
   }
 
   @SneakyThrows
-  private String getPasswordFromDockerSecretFolder(String secretName) {
+  private String getDockerSecret(String secretName) {
     // 1) Creates secret-path-folder
-    String secretPath = "/run/secrets/" + secretName;
-    String ret = "";
-
-//    System.out.println(secretPath.concat(" +++secretPath1"));
+    final String dockerSecretsFolderPath = "/run/secrets/";
+    String secretPath = dockerSecretsFolderPath + secretName;
+    String passwordSecret = "";
 
     // 2) if a secret is present, inject as a 'secret' (readAllBytes from secretPath)
     if (Files.exists(Paths.get(secretPath))) {
-//      System.out.println(Files.exists(Paths.get(secretPath)) + " +++secretPath2");
 
       final byte[] readFile = Files.readAllBytes(Paths.get(secretPath));
 
-      ret = new StringBuilder(
+      passwordSecret = new StringBuilder(
            new String(
                 readFile))
            .toString();
     }
 
-//    System.out.println(Files.exists(Paths.get(secretPath)) + " +++ret");
-    return ret;
+    return passwordSecret;
   }
 }

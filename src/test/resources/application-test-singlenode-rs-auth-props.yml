@@ -1,9 +1,11 @@
-# SAME PROPERTIES AS: ./DOCKER/RS-SINGLENODE-AUTH/ENV-FILE
+# SAME PROPERTIES AS:
+# - ./DOCKER/RS-SINGLENODE-AUTH/DB-SCRETS
+# - ./DOCKER/RS-SINGLENODE-AUTH/ENVS
 spring:
   data:
     mongodb:
       host: mongo1
       port: 27017
-      username: root
-      password: password
-      authentication-database: root_admin_db.txt
+      username: usern
+      password: passxxx
+      authentication-database: admin

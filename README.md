@@ -1,168 +1,183 @@
-### Project Index
+## Spring-WebFlux-Replicaset
 
-1. WebFlux:
-    1. RestControllers
+### Table of Contents
 
+<!-- AUTO-GENERATED-CONTENT:START (TOC:collapse=false&collapseText="Click") -->
+<details>
+<summary>"Expand"</summary>
 
-2. Application.Yml:
-    1. Importation of properties:
-        1. [PropertySource](https://www.baeldung.com/configuration-properties-in-spring-boot)
-    2. Yml filesystem-Format
-    3. Custom Logging.pattern.console
+<!-- AUTO-GENERATED-CONTENT:END -->
+* [WebFlux](#webflux)
+* [Application.Yml](#application_yml)
+* [Application Profiles](#application-profiles)
+* [Docker](#docker)
+* [Docker-Secrets](#docker-secrets)
+* [Docker Mongo-Replicaset](#docker-mongo-replicaset)
+* [Testcontainers](#testcontainers)
+* [Architectural Strategy](#architectural-strategy)
+* [Spring Data](#spring-data-findPostsByAuthor_Id)
+* [Project Organization](#project-organization)
+* [Exceptions](#exceptions)
+* [Tests Junit 5](#tests-junit-5)
+</details>
 
+### WebFlux
+1. RestControllers
 
-3. Application PROFILES:
-    1. **Sufix:** Defining Application-sufix.Yml files
-    2. **Annotations:** Selecting beans with specific Db properties
-    3. **Groups:**
-        1. Active group using _active-profile property_
-        2. Grouping profiles:
-           1. [baeldung](https://www.baeldung.com/spring-profiles#4-profile-groups)
+### Application_yml
+1. Importation of properties:
+    1. [PropertySource](https://www.baeldung.com/configuration-properties-in-spring-boot)
+2. Yml filesystem-Format
+3. Custom Logging.pattern.console
 
+### Application PROFILES
+1. **Sufix:** Defining Application-sufix.Yml files
+2. **Annotations:** Selecting beans with specific Db properties
+3. **Groups:**
+    1. Active group using _active-profile property_
+    2. Grouping profiles:
+       1. [baeldung](https://www.baeldung.com/spring-profiles#4-profile-groups)
 
-4. Docker:
-    1. Compose
-        1. _Specific file:_ **docker-compose.yml**
-           1. Profiles:
-              1. compose-dev-Replicaset: single-node
-                 1. [compose-replicaset-singlenode](https://stackoverflow.com/questions/60671005/docker-compose-for-mongodb-replicaset)
-              2. compose-dev-Standalone: standalone-db
-              3. compose-prod-replicaset: three nodes
-        2. Environment:
-           1. compose variables
-           2. Modular env_files
-              1. [Tutorial](https://www.youtube.com/watch?v=1je3VxDF67o)
-        3. Running SH-Scripts
-    2. Secrets
-       1. Idea:
-          1. Docker secrets needs to be supported by the image that will be use this it. Some images have it, such as:
-             1. MySQL offical docker-image
-             2. MongoDb official docker-Image
-          2. The webapp should support it as well, using the library:
-             1. [Spring Boot Docker Secret Starter](https://github.com/rozidan/docker-secret-spring-boot-starter#spring-boot-docker-secret-starter)
-       2. How secrets will work?
-          1. Problem to solve:
-             1. When env_variables read the 'sensitive data'(such as Password + login + tokens, etc..) externally (env.file)
-                1. It is mandatory, exclude this env-file from VCS (git.ignore)
-                2. The content (ex. password) will be visible in containers because env_variables (docker inspect 
-                   container) allow that;
-             2. How to solve?: Docker-Secrets:
-                1. It will hide this sensitive content, make this content hidden in docker-inspect;
-                2. It will substitute the env_vars content for the "path of the secrets", not the content of it, HOWEVER, using it.
-                   1. The env-var in compose must have the suffix _FILE
-       3. Sources:
-          1. [secrets-with-docker-compose](https://www.rockyourcode.com/using-docker-secrets-with-docker-compose/)
-          2. [secrets-during-development](https://blog.mikesir87.io/2017/05/using-docker-secrets-during-development/)
-          3. [docker-secrets](https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose)
-          4. [earthly.dev](https://earthly.dev/blog/docker-secrets/)
-          5. [secured-mongodb-container](https://medium.com/@leonfeng/set-up-a-secured-mongodb-container-e895807054bd)
-          6. [Docker Secret in Microservice](https://blogmilind.wordpress.com/2018/03/14/docker-secret-in-microservice/)
-    3. Dockerfile
-        1. _Specific file:_ **Dockerfile**
-    4. Batch Scripts:
-        1. Parametric-scripts (env_variables)
-            1. Parametric-scripts IDE execution
-        2. Reusing bat-scripts:
-            1. ex.: compose-up.bat using clean.bat
-    5. SH Scripts:
-       1. Running
-       2. Environment variables
-          1. [Loading](https://zwbetz.com/set-environment-variables-in-your-bash-shell-from-a-env-file/)
-          2. [Delete](https://www.baeldung.com/linux/delete-shell-env-variable)
-    6. Replicaset
-       1. singlenode
-          1. **NOTE**: 
-              - singlenode require:
-                  * Only ONE VM in the cloud
-                      + IT CAN _**DECREASE**_ THE COST "CONSIDERABLY"
-          2. Types:
-             1. NoAuthentication
-             2. Authenticated
-                1. dynamic mongodb-keyfile (generate as a service in compose) 
-                2. [3Nodes - Base for single node authentication](https://www.youtube.com/watch?v=-XzMfd4XQak)
-                   1. [GitHub](https://github.com/willitscale/learning-docker)
-       2. Three nodes:
-          1. **NOTE**: 
-             1. This replica set is for *Local Development* purposes ONLY. 
-                1. Run multiple nodes within a single machine is an anti-pattern, and MUST BE AVOIDED in Production.
-             2. Multiple nodes requires:
-                1. Multiple Vm's in the cloud
-                   1. IT CAN _**INCREASE**_ THE COST "CONSIDERABLY"
-          2. Types:
-             1. NoAuthentication
-             2. Three nodes - Authenticated:
-                1. [ProfileProduction](https://sntnupl.com/mongodb-replicaset-for-development-using-docker)
-                2. [yowko](https://github.com/yowko/docker-compose-mongodb-replica-set-with-auth/blob/master/docker-compose.yaml)
-                3. [prashix](https://prashix.medium.com/setup-mongodb-replicaset-with-authentication-enabled-using-docker-compose-5edd2ad46a90)
-                4. [keyfile](https://www.educba.com/mongodb-keyfile/)
-                5. [mongo-authentication](https://mkyong.com/mongodb/mongodb-authentication-example/)
-                6. [MongoCli](https://www.mongodb.com/docs/manual/reference/configuration-file-settings-command-line
-                   -options-mapping/#std-label-conf-file-command-line-mapping/)
-       3. StandAlone - ProfileDevelopment
-          1. Only archive because:
-             1. it does not allow transactions, therefore:
-                1. it does not run queues(CREATE+DELETE+UPDATE)
+### Docker
+1. Compose
+    1. _Specific file:_ **docker-compose.yml**
+       1. Profiles:
+          1. compose-dev-Replicaset: single-node
+             1. [compose-replicaset-singlenode](https://stackoverflow.com/questions/60671005/docker-compose-for-mongodb-replicaset)
+          2. compose-dev-Standalone: standalone-db
+          3. compose-prod-replicaset: three nodes
+    2. Environment:
+       1. compose variables
+       2. Modular env_files
+          1. [Tutorial](https://www.youtube.com/watch?v=1je3VxDF67o)
+    3. Running SH-Scripts
+2. Dockerfile
+    1. _Specific file:_ **Dockerfile**
+3. Batch Scripts:
+    1. Parametric-scripts (env_variables)
+        1. Parametric-scripts IDE execution
+    2. Reusing bat-scripts:
+        1. ex.: compose-up.bat using clean.bat
+4. SH Scripts:
+    1. Running
+    2. Environment variables
+        1. [Loading](https://zwbetz.com/set-environment-variables-in-your-bash-shell-from-a-env-file/)
+        2. [Delete](https://www.baeldung.com/linux/delete-shell-env-variable)
 
+### Docker-Secrets
+1. Idea:
+   1. Docker secrets needs to be supported by the image that will be use this it. Some images have it, such as:
+      1. MySQL offical docker-image
+      2. MongoDb official docker-Image
+   2. The webapp should support it as well, using the library:
+      1. [Spring Boot Docker Secret Starter](https://github.com/rozidan/docker-secret-spring-boot-starter#spring-boot-docker-secret-starter)
+2. How secrets will work?
+   1. Problem to solve:
+      1. When env_variables read the 'sensitive data'(such as Password + login + tokens, etc..) externally (env.file)
+         1. It is mandatory, exclude this env-file from VCS (git.ignore)
+         2. The content (ex. password) will be visible in containers because env_variables (docker inspect 
+            container) allow that;
+      2. How to solve?: Docker-Secrets:
+         1. It will hide this sensitive content, make this content hidden in docker-inspect;
+         2. It will substitute the env_vars content for the "path of the secrets", not the content of it, HOWEVER, using it.
+            1. The env-var in compose must have the suffix _FILE
+3. Sources:
+   1. [secrets-with-docker-compose](https://www.rockyourcode.com/using-docker-secrets-with-docker-compose/)
+   2. [secrets-during-development](https://blog.mikesir87.io/2017/05/using-docker-secrets-during-development/)
+   3. [docker-secrets](https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose)
+   4. [earthly.dev](https://earthly.dev/blog/docker-secrets/)
+   5. [secured-mongodb-container](https://medium.com/@leonfeng/set-up-a-secured-mongodb-container-e895807054bd)
+   6. [Docker Secret in Microservice](https://blogmilind.wordpress.com/2018/03/14/docker-secret-in-microservice/)
 
-5. Testcontainers:
-    * Containers
-      * Automatic replicaset allow test transactions
-    * Compose
-      * MongoDb StandAlone
+### Docker-Mongo-Replicaset
+1. singlenode
+   1. **NOTE**: 
+       - singlenode require:
+           * Only ONE VM in the cloud
+               + IT CAN _**DECREASE**_ THE COST "CONSIDERABLY"
+   2. Types:
+      1. NoAuthentication
+      2. Authenticated
+         1. dynamic mongodb-keyfile (generate as a service in compose) 
+         2. [3Nodes - Base for single node authentication](https://www.youtube.com/watch?v=-XzMfd4XQak)
+            1. [GitHub](https://github.com/willitscale/learning-docker)
+2. Three nodes:
+   1. **NOTE**: 
+      1. This replica set is for *Local Development* purposes ONLY. 
+         1. Run multiple nodes within a single machine is an anti-pattern, and MUST BE AVOIDED in Production.
+      2. Multiple nodes requires:
+         1. Multiple Vm's in the cloud
+            1. IT CAN _**INCREASE**_ THE COST "CONSIDERABLY"
+   2. Types:
+      1. NoAuthentication
+      2. Three nodes - Authenticated:
+         1. [ProfileProduction](https://sntnupl.com/mongodb-replicaset-for-development-using-docker)
+         2. [yowko](https://github.com/yowko/docker-compose-mongodb-replica-set-with-auth/blob/master/docker-compose.yaml)
+         3. [prashix](https://prashix.medium.com/setup-mongodb-replicaset-with-authentication-enabled-using-docker-compose-5edd2ad46a90)
+         4. [keyfile](https://www.educba.com/mongodb-keyfile/)
+         5. [mongo-authentication](https://mkyong.com/mongodb/mongodb-authentication-example/)
+         6. [MongoCli](https://www.mongodb.com/docs/manual/reference/configuration-file-settings-command-line
+            -options-mapping/#std-label-conf-file-command-line-mapping/)
+3. StandAlone - ProfileDevelopment
+   1. Only archive because:
+      1. it does not allow transactions, therefore:
+         1. it does not run queues(CREATE+DELETE+UPDATE)
 
+### Testcontainers
+* Containers
+  * Automatic replicaset allow test transactions
+* Compose
+  * MongoDb StandAlone
 
-6. Architectural Strategy:
-    * Screaming Architecture (core + modules)
-    * CDC: Contract driven development
-    * Testability:
-        * TDD with CDC: 
-          * Resources/Controllers
+### Architectural Strategy
+* Screaming Architecture (core + modules)
+* CDC: Contract driven development
+* Testability:
+    * TDD with CDC: 
+      * Resources/Controllers
 
-7. Spring Data  (findPostsByAuthor_Id)
-    1. @Transactions
-    3. Examples:
-        1. [SpringaData Project](https://github.com/spring-projects/spring-data-examples)
-        2. [MongoDB](https://github.com/spring-projects/spring-data-examples/tree/main/mongodb)
-        3. [Reactive MongoDB](https://github.com/spring-projects/spring-data-examples/tree/main/mongodb/reactive)
+### Spring Data findPostsByAuthor_Id
+1. @Transactions
+3. Examples:
+    1. [SpringaData Project](https://github.com/spring-projects/spring-data-examples)
+    2. [MongoDB](https://github.com/spring-projects/spring-data-examples/tree/main/mongodb)
+    3. [Reactive MongoDB](https://github.com/spring-projects/spring-data-examples/tree/main/mongodb/reactive)
 
+### Project Organization
+1. Crud (ReactiveCrudRepository)
 
-8. Project Organization:
-    1. Crud (ReactiveCrudRepository)
+### Exceptions
+1. Exceptions must be in  Controller/Resource:
+    1. Reason:
+        1. Como stream pode ser manipulado por diferentes grupos de thread, caso um erro aconteça em uma thread que não é a que operou a controller,o ControllerAdvice não vai ser notificado "
+    2. As stream can be handled by different thread groups, if an error happens on a thread other than the one that operated the controller, ControllerAdvice will not be notified "
+2. Articles:
+   1.  [Medium](https://medium.com/nstech/programa%C3%A7%C3%A3o-reativa-com-spring-boot-webflux-e-mongodb-chega-de-sofrer-f92fb64517c3)
+   2. [Github](https://github.com/netshoes/blog-spring-reactive)
+3. Custom
+    1. Importation/validation of properties:
+        1. @PropertySource
+        2. @ConfigurationProperties:
+            1. Automatic importation from PropertiesFile to Class-Instances-variables
+                1. Do not need "@Value" annotation
 
-
-9. Exceptions:
-    1. Exceptions must be in  Controller/Resource:
-        1. Reason:
-            1. Como stream pode ser manipulado por diferentes grupos de thread, caso um erro aconteça em uma thread que não é a que operou a controller,o ControllerAdvice não vai ser notificado "
-            2. As stream can be handled by different thread groups, if an error happens on a thread other than the one that operated the controller, ControllerAdvice will not be notified "
-        2. Articles:
-           1.  [Medium](https://medium.com/nstech/programa%C3%A7%C3%A3o-reativa-com-spring-boot-webflux-e-mongodb-chega-de-sofrer-f92fb64517c3)
-           2. [Github](https://github.com/netshoes/blog-spring-reactive)
-    2. Custom
-        1. Importation/validation of properties:
-            1. @PropertySource
-            2. @ConfigurationProperties:
-                1. Automatic importation from PropertiesFile to Class-Instances-variables
-                    1. Do not need "@Value" annotation
-
-
-10. Tests - Junit 5:
-    1. MultiThread/Parallel Test
-        1. Aborted: Because server-costs in CI/CD
-    2. RestAssured:
-        1. RestAssuredWebTestClient:
-            1. Reactive RestAssured
-        2. JsonSchemaValidator - CDD Contracts Driven Development
-            1. Validate Responses
-    3. Ordered tests (Junit 5.8.2)
-    4. Suites
-       1. [junit5-test-suites-examples](https://howtodoinjava.com/junit5/junit5-test-suites-examples/)
-    5. Tags
-    6. System.setProperty:
-       1. Get environment.getActiveProfiles() for detect ReplicasetProfile
-    7. EnabledIfSystemProperty
-       1. [junit5-enabledifsystempropert](https://self-learning-java-tutorial.blogspot.com/2021/07/junit5-enabledifsystemproperty.html)
-    8. Spring Expression Language (SpEL) expressions:
-       1. EnabledIf + SpEL
-          2. [spring-5-enabledIf](https://www.baeldung.com/spring-5-enabledIf)
-          3. [junit-5-conditional-test-execution](https://www.baeldung.com/junit-5-conditional-test-execution)
+### Tests Junit 5
+1. MultiThread/Parallel Test
+    1. Aborted: Because server-costs in CI/CD
+2. RestAssured:
+    1. RestAssuredWebTestClient:
+        1. Reactive RestAssured
+    2. JsonSchemaValidator - CDD Contracts Driven Development
+        1. Validate Responses
+3. Ordered tests (Junit 5.8.2)
+4. Suites
+   1. [junit5-test-suites-examples](https://howtodoinjava.com/junit5/junit5-test-suites-examples/)
+5. Tags
+6. System.setProperty:
+   1. Get environment.getActiveProfiles() for detect ReplicasetProfile
+7. EnabledIfSystemProperty
+   1. [junit5-enabledifsystempropert](https://self-learning-java-tutorial.blogspot.com/2021/07/junit5-enabledifsystemproperty.html)
+8. Spring Expression Language (SpEL) expressions:
+   1. EnabledIf + SpEL
+      2. [spring-5-enabledIf](https://www.baeldung.com/spring-5-enabledIf)
+      3. [junit-5-conditional-test-execution](https://www.baeldung.com/junit-5-conditional-test-execution)
