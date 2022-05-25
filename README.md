@@ -90,12 +90,15 @@
    6. [Docker Secret in Microservice](https://blogmilind.wordpress.com/2018/03/14/docker-secret-in-microservice/)
 
 ### Docker-Mongo-Replicaset
-1. singlenode
-   1. **NOTE**: 
-       - singlenode require:
-           * Only ONE VM in the cloud
+1. Singlenode
+   1. Idea:
+      1. Three nodes is the ideal, either for redundance, or transactions;
+         1. However
+            1. It will increasy A LOT the HOST-SERVER
+         2. Singlenode IS CHEAPER and allow transactions, as well:
+           * It is cheaper because requires only ONE VM in the cloud
                + IT CAN _**DECREASE**_ THE COST "CONSIDERABLY"
-   2. Types:
+   3. Types:
       1. NoAuthentication
       2. Authenticated
          1. dynamic mongodb-keyfile (generate as a service in compose) 

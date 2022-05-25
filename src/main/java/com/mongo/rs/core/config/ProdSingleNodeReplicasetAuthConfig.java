@@ -42,13 +42,13 @@ public class ProdSingleNodeReplicasetAuthConfig extends AbstractReactiveMongoCon
     /*╔══════════════════════════════════════════════════════════════════════╗
       ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (FULL:NO USER + PASSWORD) ║
       ╠══════════════════════════════════════════════════════════════════════╣
-      ║ mongodb://username:password                                          ║
+      ║ mongodb://app_db_username:app_db_password                                          ║
       ║           @mongo1:9042,mongo2:9142,mongo3:9242/api-db                ║
-      ║           ?replicaSet=docker-rs&authSource=db_name.txt                     ║
+      ║           ?replicaSet=docker-rs&authSource=app_db_name.txt                     ║
       ╚══════════════════════════════════════════════════════════════════════╝*/
     final String connection =
          "mongodb://" +
-              // username + ":" + password +
+              // app_db_username + ":" + app_db_password +
               getDockerSecret(username) + ":" + getDockerSecret(password) +
               // ROOTURI: replicasetPrimary + ":" + replicasetPort
               "@" + rootUri +

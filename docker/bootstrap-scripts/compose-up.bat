@@ -29,7 +29,10 @@ if %parameter1%==devsingle (docker-compose -f dev-singlenode-replicaset-noauth-c
 cd ..
 
 cd rs-singlenode-auth
-if %parameter1%==prodsingleauth (docker-compose -f prod-singlenode-replicaset-auth-compose.yml up --build --force-recreate)
+if %parameter1%==prodsingleauth (
+    docker-compose -f prod-singlenode-replicaset-auth-compose.yml up --build --force-recreate --detach
+    docker-compose -f prod-singlenode-replicaset-auth-compose.yml rm -svf rs-setup
+    docker-compose -f prod-singlenode-replicaset-auth-compose.yml rm -svf mongo-key)
 cd ..
 
 cd rs-threenodes

@@ -8,10 +8,10 @@ import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
 @Suite
-@SuiteDisplayName("DevThreeNodesReplicasetNoAuthSuiteTests")
+@SuiteDisplayName("ThreeNodesReplicasetNoAuthSuite")
 @SelectClasses({
      CommonReplicasetNoAuthTest.class,
      TransactionsReplicasetNoAuthTest.class})
 @IncludeTags({"replicaset"})
-public class DevThreeNodesReplicasetNoAuthSuiteTests {
+public class ThreeNodesReplicasetNoAuthSuiteTests {
 }

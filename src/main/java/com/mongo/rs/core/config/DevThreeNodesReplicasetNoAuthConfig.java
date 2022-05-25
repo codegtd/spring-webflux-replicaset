@@ -39,7 +39,7 @@ public class DevThreeNodesReplicasetNoAuthConfig extends AbstractReactiveMongoCo
       ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (NO USER + PASSWORD) ║
       ╠═════════════════════════════════════════════════════════════════╣
       ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db            ║
-      ║           ?replicaSet=docker-rs&authSource=db_name.txt                ║
+      ║           ?replicaSet=docker-rs&authSource=app_db_name.txt                ║
       ╚═════════════════════════════════════════════════════════════════╝*/
     final String
          connection =

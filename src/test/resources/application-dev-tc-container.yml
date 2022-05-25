@@ -1,6 +1,6 @@
 spring:
   data:
     mongodb:
-#      username: root
-#      password: root
-#      authentication-database: db_name.txt
+#      app_db_username: root
+#      app_db_password: root
+#      authentication-database: app_db_name.txt

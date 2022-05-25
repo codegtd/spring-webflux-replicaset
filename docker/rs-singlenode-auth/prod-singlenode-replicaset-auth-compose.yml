@@ -47,7 +47,7 @@ services:
   rs-setup:
     container_name: rs-setup
     image: mongo:4.4.4
-#    db + username + password were not passed in this command as 'arguments'
+#    db + app_db_username + app_db_password were not passed in this command as 'arguments'
 #    because safety reasons - please check script
     command: bash -c "chmod +x /scripts/rs-setup.sh; /scripts/rs-setup.sh mongo1-db 27017;"
     volumes:
@@ -65,7 +65,7 @@ services:
     #sleep 5 &&
     #mongo -u "root" -p "pass" --host mongo1-db --port 27017 --eval \"rs.conf()\" &&
     #sleep infinity"
-
+#https://www.youtube.com/watch?v=SOd_XMIGRqo&t=435s
   apisinglenodeauth:
     container_name: apisinglenodeauth
     image: pauloportfolio/apisinglenodeauth
@@ -79,6 +79,9 @@ services:
       - "5005:5005"
     networks:
       - api-net
+    command: bash -c "chmod +x /scripts/clean-secrets.sh; /scripts/clean-secrets.sh;"
+    volumes:
+      - ./rs-clean-secrets.sh:/scripts/clean-secrets.sh
     depends_on:
       - rs-setup
     env_file:
@@ -98,8 +101,8 @@ services:
 
 secrets:
   db_name:
-    file: db-secrets/db_name.txt
+    file: secrets/app_db_name.txt
   db_username:
-    file: db-secrets/db_username.txt
+    file: secrets/app_db_username.txt
   db_password:
-    file: db-secrets/db_password.txt
+    file: secrets/app_db_password.txt

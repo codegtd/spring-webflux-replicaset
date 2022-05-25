@@ -27,19 +27,19 @@
 //  private String port;
 //  private String authenticationDatabase;
 //  private String database;
-//  private String username;
-//  private String password;
+//  private String app_db_username;
+//  private String app_db_password;
 //
 //  @Override
 //  public MongoClient reactiveMongoClient() {
 //    /*╔════════════════════════════════╗
 //      ║    STANDALONE-MONGO-DB  URL    ║
 //      ╠════════════════════════════════╩═══════════════════════════╗
-//      ║ mongodb://user:password@host:port/database?authSource=auth ║
+//      ║ mongodb://user:app_db_password@host:port/database?authSource=auth ║
 //      ╚════════════════════════════════════════════════════════════╝*/
 //    String appDbConnection =
 //         "mongodb://" +
-//              username + ":" + password +
+//              app_db_username + ":" + app_db_password +
 //              "@" + host + ":" + port +
 //              "/" + database +
 //              "?authSource=" + authenticationDatabase;
