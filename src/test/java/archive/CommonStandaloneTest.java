@@ -20,7 +20,7 @@ import static com.mongo.rs.core.databuilders.UserBuilder.userNoID;
 import static com.mongo.rs.core.utils.RestAssureSpecs.requestSpecsSetPath;
 import static com.mongo.rs.core.utils.RestAssureSpecs.responseSpecs;
 import static com.mongo.rs.core.utils.TestUtils.*;
-import static com.mongo.rs.modules.user.UserConfigRoutes.*;
+import static com.mongo.rs.modules.user.UserRoutes.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.*;

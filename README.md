@@ -1,25 +1,19 @@
 ## Spring-WebFlux-Replicaset
 
 ### Table of Contents
-
-<!-- AUTO-GENERATED-CONTENT:START (TOC:collapse=false&collapseText="Click") -->
-<details>
-<summary>"Expand"</summary>
-
-<!-- AUTO-GENERATED-CONTENT:END -->
 * [WebFlux](#webflux)
 * [Application.Yml](#application_yml)
 * [Application Profiles](#application-profiles)
 * [Docker](#docker)
-* [Docker-Secrets](#docker-secrets)
-* [Docker Mongo-Replicaset](#docker-mongo-replicaset)
+* [Secrets](#docker-secrets)
+* [Mongo-Replicaset](#docker-mongo-replicaset)
 * [Testcontainers](#testcontainers)
 * [Architectural Strategy](#architectural-strategy)
 * [Spring Data](#spring-data-findPostsByAuthor_Id)
 * [Project Organization](#project-organization)
 * [Exceptions](#exceptions)
 * [Tests Junit 5](#tests-junit-5)
-</details>
+* [GitGuardian pre commit-githook](#gitguardian-with-git)
 
 ### WebFlux
 1. RestControllers
@@ -63,6 +57,12 @@
     2. Environment variables
         1. [Loading](https://zwbetz.com/set-environment-variables-in-your-bash-shell-from-a-env-file/)
         2. [Delete](https://www.baeldung.com/linux/delete-shell-env-variable)
+5. Docker images safety
+   1. Aspects:
+      1. Delete the \run\secrets\<all-secrets> does not solve the problem because the historial layers in the docker 
+         can contains some credentials
+   2. Source:
+      1. [Finding leaked credentials in Docker images](https://www.youtube.com/watch?v=SOd_XMIGRqo&t=435s)
 
 ### Docker-Secrets
 1. Idea:
@@ -77,11 +77,20 @@
          1. It is mandatory, exclude this env-file from VCS (git.ignore)
          2. The content (ex. password) will be visible in containers because env_variables (docker inspect 
             container) allow that;
-      2. How to solve?: Docker-Secrets:
-         1. It will hide this sensitive content, make this content hidden in docker-inspect;
-         2. It will substitute the env_vars content for the "path of the secrets", not the content of it, HOWEVER, using it.
-            1. The env-var in compose must have the suffix _FILE
-3. Sources:
+   2. How to solve it?: Docker-Secrets:
+      1. It will hide this sensitive content, make this content hidden in docker-inspect;
+      2. It will substitute the env_vars content for the "path of the secrets", not the content of it, HOWEVER, using it.
+         1. The env-var in compose must have the suffix _FILE
+3. Secrets Storage 
+   1. Default-Storage Folder:
+      1. '/run/secrets', of course, inside the service/worker is using them
+   2. Custom Target Folder:
+      1. xxxx
+   3. Each SECRET own its file, in the Storage-Folder
+   4. Deletion/removing forbidden:
+      1. [" After you create a secret,you cannot remove a secret that a service is using. However, 
+         you can grant or revoke a running service's access to secrets using docker service update ."](https://docs.docker.com/engine/swarm/secrets/#advanced-example-use-secrets-with-a-wordpress-service)
+4. Sources:
    1. [secrets-with-docker-compose](https://www.rockyourcode.com/using-docker-secrets-with-docker-compose/)
    2. [secrets-during-development](https://blog.mikesir87.io/2017/05/using-docker-secrets-during-development/)
    3. [docker-secrets](https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose)
@@ -184,3 +193,26 @@
    1. EnabledIf + SpEL
       2. [spring-5-enabledIf](https://www.baeldung.com/spring-5-enabledIf)
       3. [junit-5-conditional-test-execution](https://www.baeldung.com/junit-5-conditional-test-execution)
+
+
+9. ### GitGuardian with Git
+   1. Idea:
+      1. Concept:
+         1. GitGuardian shield (ggshield) is a CLI application that runs in your local environment or in a CI.
+         2. The purpouse is detect more than 300 types of secrets, as well as other potential security vulnerabilities or policy breaks.
+      2. In a nutshell:
+         1. Scan files searching SECRETS BEFORE commit/push 
+            1. It avoids send SECRETS to web (ex.: docker-hub, github, etc...)
+   2. Scan-time - the scan can be done:
+      1. Pre-commit: prevent send the secret sin GitHistory 
+      2. Pre-push: needs to clena githistory (not recommended)
+      3. docker images using GGShield-CLI
+   3. GitGuardian - APi-KEY:
+      1. export:
+         1. use export to send it as env-var in terminal-session  
+      2. env-var-file:
+         1. create env-var-file inside the repository
+            1. ADD IT IN GIT-IGNORE!!
+   4. Source:
+      1. [Detect secrets with a pre-commit-githook {export}](https://youtu.be/8bDKn3y7Br4)
+      1. [Detect secrets with a pre-push-githook {env-var-file}](https://youtu.be/uc70CE1MXvM)

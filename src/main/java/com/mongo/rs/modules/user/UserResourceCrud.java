@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-import static com.mongo.rs.modules.user.UserConfigRoutes.*;
+import static com.mongo.rs.modules.user.UserRoutes.*;
 import static io.netty.util.internal.StringUtil.isNullOrEmpty;
 import static org.springframework.http.HttpStatus.*;
 

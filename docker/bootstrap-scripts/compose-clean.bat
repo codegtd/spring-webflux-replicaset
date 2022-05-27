@@ -32,8 +32,13 @@ cd ..\mongo-secrets
 cd
 ::if %parameter1%==mongosecrets (docker-compose -f mongo-secrets-compose.yml down --remove-orphans)
 docker-compose -f secrets-compose.yml down --remove-orphans
-cd ..
 
+
+cd ..\mongo-standalone
+cd
+::if %parameter1%==mongosecrets (docker-compose -f mongo-secrets-compose.yml down --remove-orphans)
+docker-compose -f compose-dev-standalone.yml down --remove-orphans
+cd ..
 ::------------------------------------------------------------------------------
 docker container prune --force
 docker system prune --volumes --force
@@ -43,6 +48,7 @@ docker builder prune --all --force
 docker image rm pauloportfolio/api3nodes
 docker image rm pauloportfolio/apisinglenodeauth
 docker image rm pauloportfolio/apisinglenode
+docker image rm pauloportfolio/apistandalone
 ::------------------------------------------------------------------------------
 
 echo ===========================================================================

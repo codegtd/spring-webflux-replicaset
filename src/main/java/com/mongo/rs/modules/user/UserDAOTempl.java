@@ -6,9 +6,9 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Repository("repoColections")
+@Repository("userDAOTempl")
 @RequiredArgsConstructor
-public class UserDAOTemplColections {
+public class UserDAOTempl {
 
   private final ReactiveMongoTemplate reactiveMongoTemplate;
 

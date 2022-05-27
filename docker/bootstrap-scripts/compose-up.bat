@@ -43,7 +43,10 @@ cd mongo-secrets
 if %parameter1%==mongosecrets (docker-compose -f secrets-compose.yml up --build --force-recreate)
 cd ..
 
+cd mongo-standalone
+if %parameter1%==devstd (docker-compose -f compose-dev-standalone.yml up --build --force-recreate)
+cd ..
+
 echo ===========================================================================
 echo           5) DOCKER-COMPOSE: Finishing in profile %parameter1%
 echo ===========================================================================
-::if %parameter1%==devstd (docker-compose -f compose-dev-standalone.yml --verbose up --build --force-recreate)
