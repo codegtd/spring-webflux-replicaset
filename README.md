@@ -201,18 +201,27 @@
          1. GitGuardian shield (ggshield) is a CLI application that runs in your local environment or in a CI.
          2. The purpouse is detect more than 300 types of secrets, as well as other potential security vulnerabilities or policy breaks.
       2. In a nutshell:
-         1. Scan files searching SECRETS BEFORE commit/push 
-            1. It avoids send SECRETS to web (ex.: docker-hub, github, etc...)
+         1. Scan files searching SECRETS **_"BEFORE"_** commit/push 
+            1. Avoiding to send SECRETS to web (ex.: docker-hub, github, etc...)
    2. Scan-time - the scan can be done:
-      1. Pre-commit: prevent send the secret sin GitHistory 
+      1. Pre-commit: prevent send the secrets in GitHistory 
       2. Pre-push: needs to clena githistory (not recommended)
-      3. docker images using GGShield-CLI
-   3. GitGuardian - APi-KEY:
+      3. [Pre-commit vs Pre-push](https://youtu.be/uc70CE1MXvM)
+      4. docker images using GGShield-CLI
+   3. GitGuardian - API-KEY:
       1. export:
          1. use export to send it as env-var in terminal-session  
       2. env-var-file:
          1. create env-var-file inside the repository
             1. ADD IT IN GIT-IGNORE!!
-   4. Source:
+   4. PIP:
+      1. Installation:
+         1. [Install phyton](https://www.python.org/downloads/)
+         2. python.exe -m pip install --upgrade pip
+      2. PIP is used to install:
+         1. pre-commit: pip install pre-commit
+         2. ggshield: pip install ggshield
+         
+   5. Source:
       1. [Detect secrets with a pre-commit-githook {export}](https://youtu.be/8bDKn3y7Br4)
-      1. [Detect secrets with a pre-push-githook {env-var-file}](https://youtu.be/uc70CE1MXvM)
+      2. [Detect secrets with a pre-push-githook {env-var-file}](https://youtu.be/uc70CE1MXvM)
