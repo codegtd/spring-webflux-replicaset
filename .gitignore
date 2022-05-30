@@ -40,3 +40,4 @@ build/
 /docker/mongo-data-db-std/
 /docker/replicaset-prod/
 /.env
+/.cache_ggshield

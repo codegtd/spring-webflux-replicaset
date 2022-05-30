@@ -19,36 +19,37 @@ import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRep
 @ConfigurationProperties(prefix = "db.mongodb.replicaset")
 @Setter
 @Getter
-@Profile("dev-three-nodes-rs")
+@Profile("dev-single-node-rs")
 @Import({DbTransactionManagerConfig.class})
 @Slf4j
 @Configuration
 @EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user"})
-public class DevThreeNodesReplicasetNoAuthConfig extends AbstractReactiveMongoConfiguration {
+public class ReplicasetSingleNodeConfig extends AbstractReactiveMongoConfiguration {
 
   private String rootUri;
   private String database;
   private String replicasetName;
-  private String authDb;
+  private String authenticationDatabase;
   private String username;
   private String password;
 
   @Override
   public MongoClient reactiveMongoClient() {
-    /*╔═════════════════════════════════════════════════════════════════╗
-      ║ REPLICASET-3-NODES-MONGO-DB PRODUCTION URL (NO USER + PASSWORD) ║
-      ╠═════════════════════════════════════════════════════════════════╣
-      ║ mongodb://mongo1:9042,mongo2:9142,mongo3:9242/api-db            ║
-      ║           ?replicaSet=docker-rs&authSource=app_db_name.txt                ║
-      ╚═════════════════════════════════════════════════════════════════╝*/
-    final String
-         connection =
-         "mongodb://" + rootUri +
-              "/" + database +
-              "?replicaSet=" + replicasetName +
-              "&authSource=" + authDb;
+/*╔═══════════════════════════════════════════════════╗
+  ║ DEV-SINGLENODE-REPLICASET-NOAUTH DEVELOPMENT URL  ║
+  ╠═══════════════════════════════════════════════════╣
+  ║ mongodb://myservice-mongodb:27017/                ║
+  ║ ?connect=direct                                   ║
+  ║ &replicaSet=singleNodeReplSet                     ║
+  ║ &readPreference=primary                           ║
+  ╚═══════════════════════════════════════════════════╝*/
+    final String connection =
+         rootUri +
+              "/?connect=direct" +
+              "&replicaSet=" + replicasetName +
+              "&readPreference=primary";
 
-    System.out.println("DevThreeNodesReplicasetNoAuth ---> " + connection);
+    System.out.println("DevSingleNodeReplicasetNoAuth ---> " + connection);
 
     return MongoClients.create(connection);
   }

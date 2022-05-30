@@ -13,7 +13,7 @@
 * [Project Organization](#project-organization)
 * [Exceptions](#exceptions)
 * [Tests Junit 5](#tests-junit-5)
-* [GitGuardian pre commit-githook](#gitguardian-with-git)
+* [GitGuardian pre commit-githook](#gitguardian)
 
 ### WebFlux
 1. RestControllers
@@ -65,32 +65,33 @@
       1. [Finding leaked credentials in Docker images](https://www.youtube.com/watch?v=SOd_XMIGRqo&t=435s)
 
 ### Docker-Secrets
-1. Idea:
-   1. Docker secrets needs to be supported by the image that will be use this it. Some images have it, such as:
-      1. MySQL offical docker-image
-      2. MongoDb official docker-Image
+1. Disclaimer:
+   1. Docker secrets needs to be supported by the image that will use it.
+      1. Examples of images supported:
+         1. MySQL offical docker-image
+         2. MongoDb official docker-Image
    2. The webapp should support it as well, using the library:
       1. [Spring Boot Docker Secret Starter](https://github.com/rozidan/docker-secret-spring-boot-starter#spring-boot-docker-secret-starter)
+      2. Or using a Custom-Implementation
 2. How secrets will work?
    1. Problem to solve:
-      1. When env_variables read the 'sensitive data'(such as Password + login + tokens, etc..) externally (env.file)
-         1. It is mandatory, exclude this env-file from VCS (git.ignore)
-         2. The content (ex. password) will be visible in containers because env_variables (docker inspect 
-            container) allow that;
-   2. How to solve it?: Docker-Secrets:
-      1. It will hide this sensitive content, make this content hidden in docker-inspect;
-      2. It will substitute the env_vars content for the "path of the secrets", not the content of it, HOWEVER, using it.
-         1. The env-var in compose must have the suffix _FILE
-3. Secrets Storage 
+      1. Using simple env_vars(compose-environment) this 'sensitive data'(ex.: password) comes from 'outside'
+         1. It is mandatory, exclude those env_vars from VCS (gitignore)
+      2. However, the sensitive content(from env_vars) (ex. password) will be visible (docker inspect container);
+3. How to solve it?:
+   1. Docker-Secrets, can hide the sensitive content, 'blocking' docker-inspect;
+   2. How?
+      1. Docker-Secrets will show, instead the env_vars_content, the "path-secrets"
+      2. HOWEVER, this content will be available.
+         1. The 'secret-file' in compose(environment) must have the suffix _FILE
+4. Where the Secrets are Storaged in container/service 
    1. Default-Storage Folder:
-      1. '/run/secrets', of course, inside the service/worker is using them
-   2. Custom Target Folder:
-      1. xxxx
-   3. Each SECRET own its file, in the Storage-Folder
-   4. Deletion/removing forbidden:
-      1. [" After you create a secret,you cannot remove a secret that a service is using. However, 
-         you can grant or revoke a running service's access to secrets using docker service update ."](https://docs.docker.com/engine/swarm/secrets/#advanced-example-use-secrets-with-a-wordpress-service)
-4. Sources:
+      1. '/run/secrets', of course, inside the service/worker that is using them
+   2. Each SECRET own its file, in the Storage-Folder
+   3. [Deletion/removing forbidden:](https://docs.docker.com/engine/swarm/secrets/#advanced-example-use-secrets-with-a-wordpress-service)
+   > " After you create a secret,you cannot remove a secret that a service is using. However, 
+   you can grant or revoke a running service's access to secrets using docker service update ."
+5. Sources:
    1. [secrets-with-docker-compose](https://www.rockyourcode.com/using-docker-secrets-with-docker-compose/)
    2. [secrets-during-development](https://blog.mikesir87.io/2017/05/using-docker-secrets-during-development/)
    3. [docker-secrets](https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose)
@@ -195,7 +196,7 @@
       3. [junit-5-conditional-test-execution](https://www.baeldung.com/junit-5-conditional-test-execution)
 
 
-9. ### GitGuardian with Git
+### GitGuardian
    1. Idea:
       1. Concept:
          1. GitGuardian shield (ggshield) is a CLI application that runs in your local environment or in a CI.
@@ -219,11 +220,17 @@
          1. [Install phyton](https://www.python.org/downloads/)
          2. python.exe -m pip install --upgrade pip
       2. PIP is used to install:
-         1. pre-commit: pip install pre-commit
-         2. ggshield: pip install ggshield
+         1. pre-commit:
+      ```
+      pip install pre-commit
+      ```
+         2. ggshield:
+      ```
+      pip install ggshield
+      ```
    5. Enabling GGshield in the Git-Local-Repository 
       1. [Tutorial](https://youtu.be/ySTG2NODQCg)
-         
-   6. Source:
+      
+   7. Source:
       1. [Detect secrets with a pre-commit-githook {export}](https://youtu.be/8bDKn3y7Br4)
       2. [Detect secrets with a pre-push-githook {env-var-file}](https://youtu.be/uc70CE1MXvM)

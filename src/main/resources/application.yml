@@ -10,9 +10,9 @@ spring:
 # 2) CHANGES IN THIS PROPERTIES:
 #    2.1) "MUST" CHANGE: DevTransactionManagerConfig
 #    2.2) Change the Active-Profile according the BOOTSTRAP-SCRIPTS-RUN-CONFIGURATION-INTELLIJ
-#    active: dev-single-node-rs
+    active: dev-single-node-rs
 #    active: dev-three-nodes-rs
-    active: prod-single-node-rs-auth
+#    active: prod-single-node-rs-auth
     group:
       dev-single-node-rs: dev-singlenode-rs-noauth-props, log
       prod-single-node-rs-auth: prod-singlenode-rs-auth-props, log

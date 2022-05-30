@@ -28,12 +28,12 @@ import java.nio.file.Paths;
 @Slf4j
 @Configuration
 @EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user"})
-public class ProdSingleNodeReplicasetAuthConfig extends AbstractReactiveMongoConfiguration {
+public class ReplicasetSingleNodeAuthConfig extends AbstractReactiveMongoConfiguration {
 
   private String rootUri;
   private String database;
   private String replicasetName;
-  private String authDb;
+  private String authenticationDatabase;
   private String username;
   private String password;
 
@@ -55,7 +55,7 @@ public class ProdSingleNodeReplicasetAuthConfig extends AbstractReactiveMongoCon
               // DATABASE: OMMIT/SUPRESS database when it should be created late/after
               "/" + getDockerSecret(database) +
               "?replicaSet=" + replicasetName +
-              "&authSource=" + authDb;
+              "&authSource=" + authenticationDatabase;
 
 
     /*╔══════════════════════════════════════════════════════════════════════╗

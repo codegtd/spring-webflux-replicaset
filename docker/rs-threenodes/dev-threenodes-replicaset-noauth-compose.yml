@@ -5,11 +5,6 @@ x-common-variables:
   PORT_API: 8080
   PORT_DEBUG: 5005
 
-volumes:
-  api_vol:
-  secrets:
-    driver: local
-
 networks:
   api_net:
 
