@@ -39,3 +39,4 @@ build/
 /docker/ignore/
 /docker/mongo-data-db-std/
 /docker/replicaset-prod/
+/.env

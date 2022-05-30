@@ -221,7 +221,9 @@
       2. PIP is used to install:
          1. pre-commit: pip install pre-commit
          2. ggshield: pip install ggshield
+   5. Enabling GGshield in the Git-Local-Repository 
+      1. [Tutorial](https://youtu.be/ySTG2NODQCg)
          
-   5. Source:
+   6. Source:
       1. [Detect secrets with a pre-commit-githook {export}](https://youtu.be/8bDKn3y7Br4)
       2. [Detect secrets with a pre-push-githook {env-var-file}](https://youtu.be/uc70CE1MXvM)
