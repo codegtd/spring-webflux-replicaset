@@ -18,8 +18,8 @@ services:
     networks:
       - api-net
 
-  dev-single-node-rs:
-    container_name: dev-single-node-rs
+  rs-setup:
+    container_name: rs-setup
     image: mongo:4.4.4
     command: bash -c "
       sleep 5 &&
@@ -46,11 +46,11 @@ services:
     volumes:
       - ../docker/rs-singlenode/mongo-data-db-rs:/data/db
     depends_on:
-      - dev-single-node-rs
+      - rs-setup
     networks:
       - api-net
     env_file:
-      - dev-singlenode-replicaset-noauth.env
+      - singlenode-replicaset-noauth.env
     environment:
       PORT_DEBUG: 5005
       <<: *env-vars

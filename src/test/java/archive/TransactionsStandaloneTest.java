@@ -1,7 +1,7 @@
 package archive;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
-import com.mongo.rs.core.config.ReplicasetConfig;
+import com.mongo.rs.core.config.TestReplicasetConfig;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.User;
 import com.mongo.rs.modules.user.UserServiceCrud;
@@ -57,7 +57,7 @@ import static org.springframework.http.HttpStatus.CREATED;
   ╚══════════════════════════════════════════════════════════════════════╝
 */
 @Tags(value = {@Tag("standalone")})
-@Import({ReplicasetConfig.class})
+@Import({TestReplicasetConfig.class})
 @DisplayName("3 Standalone Transactions")
 @ResourceConfig
 @ActiveProfiles("test-dev-std")

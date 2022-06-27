@@ -1,18 +1,18 @@
 package com.mongo.rs;
 
 
-import com.mongo.rs.modules.CommonTestcontainerTest;
-import com.mongo.rs.modules.TransactionsTestcontainerTest;
+import com.mongo.rs.modules.TestcontainerTest;
+import com.mongo.rs.modules.TestcontainerTransactionsTest;
 import org.junit.platform.suite.api.IncludeTags;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
 
 @Suite
-@SuiteDisplayName("TestContainerSuite")
+@SuiteDisplayName("Testcontainer-Suite")
 @SelectClasses({
-     CommonTestcontainerTest.class,
-     TransactionsTestcontainerTest.class})
+     TestcontainerTest.class,
+     TestcontainerTransactionsTest.class})
 @IncludeTags({"testcontainer"})
-public class TestcontainerSuiteTests {
+public class TestcontainerSuite {
 }

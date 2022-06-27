@@ -3,17 +3,7 @@ server:
 
 spring:
   profiles:
-# 1) ACTIVE PROFILES:
-#    - IT IS ALLOWED "ONLY ONE PROFILE" in all @Configurations
-#    - For example: TEST, DEV or PROD.
-#
-# 2) CHANGES IN THIS PROPERTIES:
-#    2.1) "MUST" CHANGE: DevTransactionManagerConfig
-#    2.2) Change the Active-Profile according the BOOTSTRAP-SCRIPTS-RUN-CONFIGURATION-INTELLIJ
-    active: dev-single-node-rs
-#    active: dev-three-nodes-rs
-#    active: prod-single-node-rs-auth
+    active: rs-auth
     group:
-      dev-single-node-rs: dev-singlenode-rs-noauth-props, log
-      prod-single-node-rs-auth: prod-singlenode-rs-auth-props, log
-      dev-three-nodes-rs: dev-threenodes-rs-noauth-props, log
+      rs: singlenode, log
+      rs-auth: singlenode-auth, log

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory;
 import org.springframework.data.mongodb.ReactiveMongoTransactionManager;
 
 @TestConfiguration
-public class TransactionManagerConfig {
+public class TestTransactionManagerConfig {
 
   /*╔════════════════════════════════════════════════╗
     ║           TRANSACTION-MANAGER-BEAN             ║

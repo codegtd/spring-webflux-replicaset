@@ -1,7 +1,7 @@
 package com.mongo.rs.modules;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
-import com.mongo.rs.core.config.ReplicasetConfig;
+import com.mongo.rs.core.config.TestReplicasetConfig;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.User;
 import com.mongo.rs.modules.user.UserServiceCrud;
@@ -58,11 +58,11 @@ import static org.springframework.http.HttpStatus.CREATED;
   ╚══════════════════════════════════════════════════════════════════════╝
 */
 @Tags(value = {@Tag("replicaset")})
-@Import({ReplicasetConfig.class})
-@DisplayName("Replicaset Transactions NoAuth")
+@Import({TestReplicasetConfig.class})
+@DisplayName("Replicaset Transactions Auth")
 @ResourceConfig
-@ActiveProfiles({"test-singlenode-rs-noauth-compose"})
-public class TransactionsReplicasetNoAuthTest {
+@ActiveProfiles({"test-rs-auth"})
+public class ReplicasetAuthTransactionsTest {
   /*
 ╔════════════════════════════════════════════════════════════╗
 ║              TEST-TRANSACTIONS + TEST-CONTAINERS           ║

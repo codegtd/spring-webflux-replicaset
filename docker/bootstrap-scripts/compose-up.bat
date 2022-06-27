@@ -25,19 +25,23 @@ echo ===========================================================================
 cd
 
 cd rs-singlenode
-if %parameter1%==devsingle (docker-compose -f dev-singlenode-replicaset-noauth-compose.yml --verbose up --build --force-recreate)
+if %parameter1%==devrssingle (
+    docker-compose -f singlenode-replicaset-noauth-compose.yml up --build --force-recreate --detach
+    docker-compose -f singlenode-replicaset-noauth-compose.yml rm -svf rs-setup)
 cd ..
 
 cd rs-singlenode-auth
 if %parameter1%==prodsingleauth (
-    docker-compose -f prod-singlenode-replicaset-auth-compose.yml up --build --force-recreate --detach
-    docker-compose -f prod-singlenode-replicaset-auth-compose.yml rm -svf rs-setup
-    docker-compose -f prod-singlenode-replicaset-auth-compose.yml rm -svf mongo-key)
+    docker-compose -f singlenode-replicaset-auth-compose.yml up --build --force-recreate --detach
+    docker-compose -f singlenode-replicaset-auth-compose.yml rm -svf rs-setup
+    docker-compose -f singlenode-replicaset-auth-compose.yml rm -svf mongo-key)
 cd ..
 
-cd rs-threenodes
-if %parameter1%==devthree (docker-compose -f dev-threenodes-replicaset-noauth-compose.yml up --build --force-recreate)
-cd ..
+::cd rs-threenodes
+::if %parameter1%==devrsthree (
+::    docker-compose -f threenodes-replicaset-noauth-compose.yml up --build --force-recreate
+::    docker-compose -f threenodes-replicaset-noauth-compose.yml rm -svf rs-setup)
+::cd ..
 
 cd mongo-secrets
 if %parameter1%==mongosecrets (docker-compose -f secrets-compose.yml up --build --force-recreate)

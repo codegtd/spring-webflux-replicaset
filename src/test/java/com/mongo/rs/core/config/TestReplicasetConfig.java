@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Import;
 
 @Import({
      DbUtilsConfig.class,
-     TransactionManagerConfig.class
+     TestTransactionManagerConfig.class
 })
 @TestConfiguration
-public class ReplicasetConfig {
+public class TestReplicasetConfig {
 
 }

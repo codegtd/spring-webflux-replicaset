@@ -24,8 +24,7 @@ import static com.mongo.rs.modules.user.UserRoutes.*;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.*;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 /*   ╔═══════════════════════════════╗
      ║ USING CONTAINERS IN THE TESTS ║
@@ -46,10 +45,10 @@ import static org.springframework.http.HttpStatus.OK;
      ╚══════════════════════════════════════════════════════════╝*/
 @Tags(value = {@Tag("replicaset")})
 @Import({DbUtilsConfig.class})
-@DisplayName("Common Replicaset Auth")
+@DisplayName("Replicaset Auth")
 @ResourceConfig
-@ActiveProfiles({"test-singlenode-rs-auth-compose"})
-public class CommonReplicasetAuthTest {
+@ActiveProfiles({"test-rs-auth"})
+public class ReplicasetAuthTest {
   final String enabledTest = "true";
 
   // MOCKED-SERVER: WEB-TEST-CLIENT(non-blocking client)'
@@ -66,6 +65,7 @@ public class CommonReplicasetAuthTest {
 
   private User user1;
   private User user2;
+  private User userNoId;
 
 
   @BeforeAll
@@ -122,7 +122,6 @@ public class CommonReplicasetAuthTest {
                               .toString(), "method-end");
   }
 
-
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)
   @DisplayName("3 saveWithID")
@@ -148,7 +147,6 @@ public class CommonReplicasetAuthTest {
 
     dbUtils.countAndExecuteFlux(serviceCrud.findAll(), 3);
   }
-
 
   @Test
   @EnabledIf(expression = enabledTest, loadContext = true)

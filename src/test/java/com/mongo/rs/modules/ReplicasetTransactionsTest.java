@@ -1,8 +1,7 @@
 package com.mongo.rs.modules;
 
 import com.mongo.rs.core.annotations.ResourceConfig;
-import com.mongo.rs.core.config.ReplicasetConfig;
-import com.mongo.rs.core.testcontainer.container.TcContainerReplicaset;
+import com.mongo.rs.core.config.TestReplicasetConfig;
 import com.mongo.rs.core.utils.TestDbUtils;
 import com.mongo.rs.modules.user.User;
 import com.mongo.rs.modules.user.UserServiceCrud;
@@ -58,13 +57,12 @@ import static org.springframework.http.HttpStatus.CREATED;
   ║  d) and setting this URI in 'Properties of the Test'                 ║
   ╚══════════════════════════════════════════════════════════════════════╝
 */
-@Tags(value = {@Tag("testcontainer")})
-@Import({ReplicasetConfig.class})
-@DisplayName("TC Transactions")
+@Tags(value = {@Tag("replicaset")})
+@Import({TestReplicasetConfig.class})
+@DisplayName("Replicaset Transactions")
 @ResourceConfig
-@ActiveProfiles({"test-testcontainer-containermodule-rs"})
-@TcContainerReplicaset // TEST TRANSACTIONS
-public class TransactionsTestcontainerTest {
+@ActiveProfiles({"test-rs"})
+public class ReplicasetTransactionsTest {
   /*
 ╔════════════════════════════════════════════════════════════╗
 ║              TEST-TRANSACTIONS + TEST-CONTAINERS           ║

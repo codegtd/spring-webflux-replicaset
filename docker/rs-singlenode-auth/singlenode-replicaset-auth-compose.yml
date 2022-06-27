@@ -65,6 +65,7 @@ services:
     #sleep 5 &&
     #mongo -u "root" -p "pass" --host mongo1-db --port 27017 --eval \"rs.conf()\" &&
     #sleep infinity"
+
   apisinglenodeauth:
     container_name: apisinglenodeauth
     image: pauloportfolio/apisinglenodeauth

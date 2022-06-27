@@ -1,4 +1,4 @@
-package com.mongo.rs.core.testcontainer.compose;
+package archive;
 
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -32,9 +32,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
   ║B.3) START DOCKER-CONTAINER (DOCKER-BAT-SCRIPT-PROFILE)   ║
   ║B.4) RUN THE TESTS                                        ║
   ╚══════════════════════════════════════════════════════════╝*/
-@Retention(RUNTIME)
-@Target(TYPE)
-@Testcontainers
-
-public @interface TcCompose {
-}
+//@Retention(RUNTIME)
+//@Target(TYPE)
+//@Testcontainers
+//public @interface TcCompose {
+//}

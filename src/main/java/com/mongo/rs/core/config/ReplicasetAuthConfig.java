@@ -8,11 +8,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.config.AbstractReactiveMongoConfiguration;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 
@@ -23,12 +25,12 @@ import java.nio.file.Paths;
 @ConfigurationProperties(prefix = "db.mongodb.replicaset")
 @Setter
 @Getter
-@Profile("prod-single-node-rs-auth")
-@Import({DbTransactionManagerConfig.class})
+@Profile("rs-auth")
+@Import({TransactionManagerConfig.class})
 @Slf4j
 @Configuration
 @EnableReactiveMongoRepositories(basePackages = {"com.mongo.rs.modules.user"})
-public class ReplicasetSingleNodeAuthConfig extends AbstractReactiveMongoConfiguration {
+public class ReplicasetAuthConfig extends AbstractReactiveMongoConfiguration {
 
   private String rootUri;
   private String database;
@@ -36,6 +38,9 @@ public class ReplicasetSingleNodeAuthConfig extends AbstractReactiveMongoConfigu
   private String authenticationDatabase;
   private String username;
   private String password;
+
+  @Autowired
+  private Environment environment;
 
   @Override
   public MongoClient reactiveMongoClient() {
@@ -68,8 +73,8 @@ public class ReplicasetSingleNodeAuthConfig extends AbstractReactiveMongoConfigu
     //      "?replicaSet=" + replicasetName +
     //      "&authSource=" + replicasetAuthenticationDb
 
-    System.out.println(
-         "DevThreeNodesReplicasetAuth ---> " + connection);
+
+    System.out.println("Profile: "+environment.getActiveProfiles()[0]+" | Uri: " + connection);
 
     return MongoClients.create(connection);
   }
